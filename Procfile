@@ -1,1 +1,1 @@
-web: cd backend && sbt run
+web: (cd backend & sbt run)
