@@ -1,1 +1,1 @@
-web: (cd backend & sbt run)
+web: sh -c 'cd ./backend && sbt run'
