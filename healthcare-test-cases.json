@@ -1,0 +1,129 @@
+{
+  "processes": [
+    {
+      "name": "AwardContract",
+      "inputs": [
+        {
+          "type": "var",
+          "name": "AcceptedContract",
+          "args": []
+        },
+        {
+          "type": "var",
+          "name": "ServiceProvider",
+          "args": []
+        }
+      ],
+      "output": {
+        "type": "var",
+        "name": "OpenContract",
+        "args": []
+      }
+    },
+    {
+      "name": "DelegateHealthcareService",
+      "inputs": [
+        {
+          "type": "var",
+          "name": "Patient",
+          "args": []
+        },
+        {
+          "type": "var",
+          "name": "HealthcareActor",
+          "args": []
+        },
+        {
+          "type": "var",
+          "name": "HealthcareService",
+          "args": []
+        }
+      ],
+      "output": {
+        "type": "plus",
+        "name": "",
+        "args": [
+          {
+            "type": "plus",
+            "name": "",
+            "args": [
+              {
+                "type": "times",
+                "name": "",
+                "args": [
+                  {
+                    "type": "var",
+                    "name": "CheckedHealthcareService",
+                    "args": []
+                  },
+                  {
+                    "type": "var",
+                    "name": "ClosedContract",
+                    "args": []
+                  }
+                ]
+              },
+              {
+                "type": "times",
+                "name": "",
+                "args": [
+                  {
+                    "type": "var",
+                    "name": "Delegation",
+                    "args": []
+                  },
+                  {
+                    "type": "var",
+                    "name": "ServiceRequester",
+                    "args": []
+                  },
+                  {
+                    "type": "var",
+                    "name": "OpenContract",
+                    "args": []
+                  },
+                  {
+                    "type": "var",
+                    "name": "Obstacle",
+                    "args": []
+                  },
+                  {
+                    "type": "var",
+                    "name": "PendingHealthcareService",
+                    "args": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "times",
+            "name": "",
+            "args": [
+              {
+                "type": "var",
+                "name": "PendingHealthcareService",
+                "args": []
+              },
+              {
+                "type": "var",
+                "name": "Delegation",
+                "args": []
+              },
+              {
+                "type": "var",
+                "name": "ServiceRequester",
+                "args": []
+              },
+              {
+                "type": "var",
+                "name": "RejectedContract",
+                "args": []
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
