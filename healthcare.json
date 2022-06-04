@@ -1,0 +1,20 @@
+{
+  "input": {
+    "requestedServicesId": "1",
+    "requesterId": "1",
+    "requester": "Dr. Petros Papapa",
+    "serviceId": "1",
+    "serviceName": "Haemodialysis",
+    "patientId": "1",
+    "patientName": "French Patient",
+    "date": "some date here in timestamp",
+    "type": "some type?",
+    "stateId": "1"
+  },
+  "output": {
+    "requestedServicesId": "int",
+    "stateId": "int",
+    "notes": "text",
+    "date": "some date here in timestamp"
+  }
+}
