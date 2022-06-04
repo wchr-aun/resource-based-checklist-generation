@@ -4,23 +4,26 @@ Please provide a brief summary of the goal and methods of your research. You sho
 - If you perform data analyses, what methods will you use?
 - To what extent will the design of later parts of your study be affected by the findings of earlier parts?
 
-  The goal of this survey is to collect the feedback of participants' opinions regarding the usage and design of the user interface of the MSc project.
-  The list of the questions that will be asked is related to the beauty and convenience of the user interface, which is scored from the scales of 0 to 5 and 0 to 10. The questionnaire will include three sections: SUS (System Usability Scale Questionnaire), QUIS (Questionnaire  for  User  Interaction  Satisfaction) and open-ended feedback.
-  To analyse the data, we will use the numbers from the questionnaire and scale them up to 100. Then, we will measure them against Bangor's adjective ratings to translate the final numbers into interpretable feedback.
-  The design of the later parts of the study will not affect the earlier parts since this survey is meant to collect participants' opinions. Therefore, each question in the questionnaire will not be related to each other.
+  The goal of my MSc project is to build a prototype of WorkflowFM's new feature. WorkflowFM is a research project that has been working on by a research team from the University of Edinburgh.
+  This survey is created to collect the feedback of participants' opinions regarding the usability and satisfaction of the user interface of the MSc project.
+  A list of the questions that will be asked is related to the usability and satisfaction of the user interface, which is scored from the scales of 0 to 5 and 0 to 10. The questionnaire will include three sections: SUS (System Usability Scale Questionnaire), QUIS (Questionnaire  for  User  Interaction  Satisfaction) and open-ended feedback.
+  To analyse the data, we will use the numbers from the questionnaire and scale them up to 100. Then, we will measure them against Baangor's adjective ratings to translate the final numbers into interpretable feedback.
+  The design of the later parts will not be affected by the findings of the earlier parts because our study is to collect participants' opinions at the end to evaluate our prototype.
 
 Who will directly benefit from your research?
-  Research team of the MSc project, users from the industries that want to use the product of this MSc project, the competitors in the field related to the project.
+  - Research team from the University of Edinburgh that has been working on the project
+  - Users from the industries that want to use the product of this MSc project; e.g. engineers from a manufactory, doctors from a hospital
+  - The competitors in the field related to the project
 
 How do you ensure confidentiality? Describe your procedures for anonymisation / pseudonymisation, ensuring differential privacy, and other relevant procedures. Recommended length: 50 words. 
-  We ensure the confidentiality by not collecting their personal information in the first place. We only collect the opinions of the participants while using the system.
+  We ensure the confidentiality by not collecting their personal information in the first place. We only collect the opinions of the participants while using the system. In the case where any personal information is collected into our system, we will immediately remove the information out of the system.
 
 How have you trained all researchers who have access to the data on their responsibilities for safe data handling and storage?  Listing training programmes and certificates is enough. 
   All the researchers will go through all the mandatory data protection training on LEARN.
   Training course: DATA PROTECTION TRAINING
 
 What information about participants or data subjects will you collect or use?
-  We will collect participants' opinions regarding the beauty and convenience of the user interface of the system.
+  We will collect participants' opinions regarding the usability and satisfaction of the user interface of the system. Additionally, if it happens to have any personal information slipped into our system, we will remove the information immediately.
 
 How will you store data securely?
-  We will create a private storage on Onenote in our university's account, and store the data there.
+  We will create a private storage on Sharepoint in our university's account, and store the data there.
