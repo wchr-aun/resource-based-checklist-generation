@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/my-akka-http-project
+web: target/universal/stage/bin/backend
