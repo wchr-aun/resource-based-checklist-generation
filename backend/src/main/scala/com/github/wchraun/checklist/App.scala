@@ -4,11 +4,13 @@ import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Route
+import akka.util.Timeout
+import akka.http.scaladsl.server.Directives.concat
 
 import scala.util.{Failure, Properties, Success}
 
 //#main-class
-object QuickstartApp {
+object App {
   //#start-http-server
   private def startHttpServer(routes: Route)(implicit system: ActorSystem[_]): Unit = {
     // Akka HTTP still needs a classic ActorSystem to start
@@ -28,11 +30,16 @@ object QuickstartApp {
   def main(args: Array[String]): Unit = {
     //#server-bootstrapping
     val rootBehavior = Behaviors.setup[Nothing] { context =>
-      val userRegistryActor = context.spawn(UserRegistry(), "UserRegistryActor")
-      context.watch(userRegistryActor)
+      val checklistGenerationActor = context.spawn(ChecklistGeneration(), "ChecklistGenerationActor")
+      context.watch(checklistGenerationActor)
 
-      val routes = new UserRoutes(userRegistryActor)(context.system)
-      startHttpServer(routes.userRoutes)(context.system)
+      val timeout = Timeout.create(context.system.settings.config.getDuration("my-app.routes.ask-timeout"))
+
+      val routes = concat(
+        new DefaultRoutes().routes,
+        new ChecklistRoutes(checklistGenerationActor)(context.system, timeout).checklistRoutes
+      )
+      startHttpServer(routes)(context.system)
 
       Behaviors.empty
     }
