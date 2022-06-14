@@ -1,0 +1,21 @@
+{
+  "responses": {
+    "components": [
+      {
+        "order": 0,
+        "name": "Service",
+        "value": "General Diagnosis",
+        "type": "input",
+        "editable": false,
+        "required": true,
+        "validation": "regex",
+        "css": "css: 10px;",
+        "function": "null",
+        "inputDependency": "",
+        "inputDependencyField": "",
+        "outputDependency": "",
+        "outputDependencyField": ""
+      }
+    ]
+  }
+}

@@ -3,21 +3,27 @@ package com.github.wchraun.checklist
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Route
-
-import scala.concurrent.Future
 import akka.actor.typed.ActorRef
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.AskPattern._
 import akka.util.Timeout
-import com.github.wchraun.checklist.ChecklistGeneration.GetUsers2
 
-class ChecklistRoutes(userRegistry: ActorRef[ChecklistGeneration.Command])(implicit val system: ActorSystem[_], implicit val timeout: Timeout) {
+import scala.concurrent.Future
+import com.github.wchraun.checklist.Checklist._
+
+class ChecklistRoutes(checklist: ActorRef[Checklist.Command])(implicit val system: ActorSystem[_], implicit val timeout: Timeout) {
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
   import JsonFormats._
 
-  def getUsers2(): Future[Users] =
-    userRegistry.ask(GetUsers2)
+  def getChecklist(id: String): Future[String] =
+    checklist.ask(GetChecklist(id, _))
+  def getChecklists(): Future[String] =
+    checklist.ask(GetChecklists(_))
+  def startChecklist(arg: StartChecklistArg): Future[String] =
+    checklist.ask(StartChecklist(arg, _))
+  def submitChecklist(id: String): Future[String] =
+    checklist.ask(SubmitChecklist(id, _))
 
   val checklistRoutes: Route =
   pathPrefix("checklist") {
@@ -25,19 +31,36 @@ class ChecklistRoutes(userRegistry: ActorRef[ChecklistGeneration.Command])(impli
       pathEnd {
         concat(
           get {
-            complete(StatusCodes.OK, "Generate a draft checklist!")
+            onSuccess(getChecklists()) { response =>
+              complete(StatusCodes.OK, response)
+            }
           },
           post {
-            complete(StatusCodes.Created, "Created a checklist!")
+            entity(as[StartChecklistArg]) { arg =>
+              onSuccess(startChecklist(arg)) { response =>
+                complete(StatusCodes.Created, response)
+              }
+            }
           }
         )
       },
       path(Segment) { checklistId =>
-        get {
-          rejectEmptyResponse {
-            complete(StatusCodes.OK, s"Checklist ID #$checklistId")
+        concat(
+          get {
+            rejectEmptyResponse {
+              onSuccess(getChecklist(checklistId)) { response =>
+                complete(StatusCodes.OK, response)
+              }
+            }
+          },
+          post {
+            rejectEmptyResponse {
+              onSuccess(submitChecklist(checklistId)) { response =>
+                complete(StatusCodes.Accepted, response)
+              }
+            }
           }
-        }
+        )
       }
     )
   }

@@ -30,14 +30,17 @@ object App {
   def main(args: Array[String]): Unit = {
     //#server-bootstrapping
     val rootBehavior = Behaviors.setup[Nothing] { context =>
-      val checklistGenerationActor = context.spawn(ChecklistGeneration(), "ChecklistGenerationActor")
-      context.watch(checklistGenerationActor)
+      val checklistActor = context.spawn(Checklist(), "ChecklistActor")
+      val templateActor = context.spawn(Template(), "TemplateActor")
+      context.watch(checklistActor)
+      context.watch(templateActor)
 
       val timeout = Timeout.create(context.system.settings.config.getDuration("my-app.routes.ask-timeout"))
 
       val routes = concat(
         new DefaultRoutes().routes,
-        new ChecklistRoutes(checklistGenerationActor)(context.system, timeout).checklistRoutes
+        new ChecklistRoutes(checklistActor)(context.system, timeout).checklistRoutes,
+        new TemplateRoutes(templateActor)(context.system, timeout).templateRoutes
       )
       startHttpServer(routes)(context.system)
 
