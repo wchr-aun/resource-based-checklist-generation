@@ -37,16 +37,18 @@ object App {
 
       val timeout = Timeout.create(context.system.settings.config.getDuration("my-app.routes.ask-timeout"))
 
+      val database = new Database()
+
       val routes = concat(
         new DefaultRoutes().routes,
         new ChecklistRoutes(checklistActor)(context.system, timeout).checklistRoutes,
-        new TemplateRoutes(templateActor)(context.system, timeout).templateRoutes
+        new TemplateRoutes(templateActor)(context.system, timeout, database).templateRoutes
       )
       startHttpServer(routes)(context.system)
 
       Behaviors.empty
     }
-    val system = ActorSystem[Nothing](rootBehavior, "HelloAkkaHttpServer")
+    val system = ActorSystem[Nothing](rootBehavior, "ChecklistGenerationToolHttpServer")
     //#server-bootstrapping
   }
 }

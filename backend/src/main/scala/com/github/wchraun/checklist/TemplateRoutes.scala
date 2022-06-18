@@ -11,7 +11,7 @@ import akka.util.Timeout
 import scala.concurrent.Future
 import com.github.wchraun.checklist.Template._
 
-class TemplateRoutes(template: ActorRef[Template.Command])(implicit val system: ActorSystem[_], implicit val timeout: Timeout) {
+class TemplateRoutes(template: ActorRef[Template.Command])(implicit val system: ActorSystem[_], implicit val timeout: Timeout, implicit val database: Database) {
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
   import JsonFormats._
@@ -20,8 +20,9 @@ class TemplateRoutes(template: ActorRef[Template.Command])(implicit val system: 
     template.ask(GetTemplate(id, _))
   def getTemplates(): Future[String] =
     template.ask(GetTemplates)
-  def createTemplate(process: Process): Future[String] =
-    template.ask(CreateTemplate(process, _))
+  def createTemplate(process: Process): Future[CreateTemplateResponse] =
+    template.ask(CreateTemplate(process, _, database))
+
   def saveTemplate(id: String): Future[String] =
     template.ask(SaveTemplate(id, _))
 
@@ -37,8 +38,9 @@ class TemplateRoutes(template: ActorRef[Template.Command])(implicit val system: 
             },
             post {
               entity(as[Process]) { process =>
-                onSuccess(createTemplate(process)) { response =>
-                  complete(StatusCodes.Created, response)
+                onSuccess(createTemplate(process)) { response => {
+                  complete(response)
+                }
                 }
               }
             }

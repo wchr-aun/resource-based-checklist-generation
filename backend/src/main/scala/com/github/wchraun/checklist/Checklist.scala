@@ -5,8 +5,6 @@ import akka.actor.typed.ActorRef
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
 
-final case class StartChecklistArg(templateId: String)
-
 object Checklist {
   sealed trait Command
   final case class GetChecklist(id: String, replyTo: ActorRef[String]) extends Command

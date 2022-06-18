@@ -5,14 +5,11 @@ import akka.actor.typed.ActorRef
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
 
-final case class Arg(argType: String, name: String)
-final case class Process(name: String, inputs: String, output: String)
-
 object Template {
   sealed trait Command
   final case class GetTemplate(id: String, replyTo: ActorRef[String]) extends Command
   final case class GetTemplates(replyTo: ActorRef[String]) extends Command
-  final case class CreateTemplate(process: Process, replyTo: ActorRef[String]) extends Command
+  final case class CreateTemplate(process: Process, replyTo: ActorRef[CreateTemplateResponse], database: Database) extends Command
   final case class SaveTemplate(id: String, replyTo: ActorRef[String]) extends Command
 
   def apply(): Behavior[Command] = generator()
@@ -25,15 +22,26 @@ object Template {
       case GetTemplates(replyTo) =>
         replyTo ! "Get All Templates"
         Behaviors.same
-      case CreateTemplate(process, replyTo) =>
-        replyTo ! generateDraft(process)
+        Behaviors.same
+      case CreateTemplate(process, replyTo, db) =>
+        replyTo ! generateTemplate(process, db)
         Behaviors.same
       case SaveTemplate(id, replyTo) =>
         replyTo ! s"Saved Checklist ID #$id!"
         Behaviors.same
     }
 
-  private def generateDraft(process: Process) =
-    s"Created a template: ${process.name}!"
+  private def generateTemplate(process: Process, db: Database) = {
+    val inputComponents = process.inputs.zipWithIndex
+      .map{case(arg, i) => Component(i, arg.name, "", ComponentType.HEADER, false, false, "", "", "", "", "", "", "",
+        db.executeQuery(s"SELECT * from datamodel WHERE name = '${arg.name}'").zipWithIndex
+          .map{case(field, i) => Component(i, field, "", ComponentType.INPUT, false, false, "", "", "", "", "", "", "", Array.empty[Component])})}
+
+    val outputComponents = Component(process.inputs.length, process.output.name, "", ComponentType.HEADER, false, false, "", "", "", "", "", "", "",
+      db.executeQuery(s"SELECT * from datamodel WHERE name = '${process.output.name}'").zipWithIndex
+        .map{case(field, i) => Component(i, field, "", ComponentType.INPUT, true, true, "", "", "", "", "", "", "", Array.empty[Component])})
+
+    CreateTemplateResponse(process.name, inputComponents :+ outputComponents)
+  }
 }
 //#user-registry-actor

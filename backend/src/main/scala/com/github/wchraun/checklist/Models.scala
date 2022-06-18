@@ -1,0 +1,40 @@
+package com.github.wchraun.checklist
+
+object ComponentType extends Enumeration {
+  type ComponentType = Value
+  val INPUT, PARAGRAPH, DROPDOWN, CHOICES, CHECKBOXES, DATE, TIME, UPLOAD, HEADER = Value
+}
+
+final object ArgType extends Enumeration {
+  type ArgType = Value
+  val VARR, PLUS, TIMES = Value
+}
+
+import com.github.wchraun.checklist.ArgType.ArgType
+import com.github.wchraun.checklist.ComponentType.ComponentType
+
+final case class StartChecklistArg(templateId: String)
+
+final case class Arg(argType: ArgType, name: String, args: Option[Array[Arg]])
+final case class Process(name: String, inputs: Array[Arg], output: Arg)
+final case class Component(
+                            order: Int,
+                            name: String,
+                            value: String,
+                            componentType: ComponentType,
+                            editable: Boolean,
+                            required: Boolean,
+                            validation: String,
+                            css: String,
+                            function: String,
+                            inputDependency: String,
+                            inputDependencyField: String,
+                            outputDependency: String,
+                            outputDependencyField: String,
+                            children: Array[Component]
+                          )
+
+final case class CreateTemplateResponse(
+                                         processName: String,
+                                         components: Array[Component]
+                                       )
