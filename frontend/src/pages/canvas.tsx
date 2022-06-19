@@ -55,7 +55,7 @@ const CreateATemplate: NextPage<Props> = (props) => {
 };
 
 CreateATemplate.getInitialProps = async (ctx) => {
-  const res = await fetch("http://localhost:8080/template", {
+  const res = await fetch(`${process.env.BACKEND_URL}/template`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

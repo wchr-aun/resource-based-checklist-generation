@@ -1,10 +1,7 @@
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { NextPage } from "next";
-import { emit } from "process";
 import { useState } from "react";
-import { EventEmitter } from "stream";
-import { Component } from "../models/response";
 
 interface Props {
   name: string;
