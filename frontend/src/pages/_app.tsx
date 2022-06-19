@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Resource-based Checklist Generation</title>
       </Head>
       <Header />
-      <div className="lg:px-32 px-8 py-8">
+      <div className="lg:px-32 px-8 py-8 select-none">
         <Component {...pageProps} />
       </div>
     </Provider>

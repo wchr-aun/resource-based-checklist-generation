@@ -35,11 +35,11 @@ object Template {
     val inputComponents = process.inputs.zipWithIndex
       .map{case(arg, i) => Component(i, arg.name, "", ComponentType.HEADER, false, false, "", "", "", "", "", "", "",
         db.executeQuery(s"SELECT * from datamodel WHERE name = '${arg.name}'").zipWithIndex
-          .map{case(field, i) => Component(i, field, "", ComponentType.INPUT, false, false, "", "", "", "", "", "", "", Array.empty[Component])})}
+          .map{case(field, i) => Component(i, field, "", ComponentType.INPUT, false, false, "", "", "", "", field, "", "", Array.empty[Component])})}
 
     val outputComponents = Component(process.inputs.length, process.output.name, "", ComponentType.HEADER, false, false, "", "", "", "", "", "", "",
       db.executeQuery(s"SELECT * from datamodel WHERE name = '${process.output.name}'").zipWithIndex
-        .map{case(field, i) => Component(i, field, "", ComponentType.INPUT, true, true, "", "", "", "", "", "", "", Array.empty[Component])})
+        .map{case(field, i) => Component(i, field, "", ComponentType.INPUT, true, true, "", "", "", "", "", "", field, Array.empty[Component])})
 
     CreateTemplateResponse(process.name, inputComponents :+ outputComponents)
   }

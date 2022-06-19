@@ -4,10 +4,12 @@ import {
   faCircleDot,
   faSquareCaretDown,
   faSquareCheck,
+  faPlus,
+  faMinus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Component,
   COMPONENT_TYPES,
@@ -22,15 +24,20 @@ import Divider from "@components/Divider";
 import {
   addNewField,
   addNewModel,
+  clearComponentChildren,
+  reorderComponents,
   selectComponents,
+  selectOriginalProcessName,
   selectProcessName,
   setForm,
+  setProcessName,
   updateComponent,
 } from "./formSlice";
 import { useAppDispatch, useAppSelector } from "@app/hooks";
 import Date from "@components/inputs/Date";
 import Time from "@components/inputs/Time";
 import AddingChoices from "@features/form/components/AddingChoices";
+import Reorder from "@features/form/components/Reorder";
 
 interface Props {
   originalTemplate: Template;
@@ -41,12 +48,9 @@ const FormTemplate: NextPage<Props> = (props) => {
   const dispatch = useAppDispatch();
   const processName = useAppSelector(selectProcessName);
   const components = useAppSelector(selectComponents);
+  const originalProcessName = useAppSelector(selectOriginalProcessName);
 
   const [collapsible, setCollapsible] = useState<Record<string, boolean>>({});
-
-  useEffect(() => {
-    console.log("hi");
-  });
 
   const submitForm = () => {
     alert("not implemented");
@@ -61,58 +65,90 @@ const FormTemplate: NextPage<Props> = (props) => {
   const onUpdateComponentType = (prefix: string, value: string) => {
     dispatch(updateComponent({ prefix, field: "componentType", value }));
     dispatch(updateComponent({ prefix, field: "validation", value: "" }));
+    if (value === COMPONENT_TYPES.HEADER)
+      dispatch(clearComponentChildren(prefix));
   };
 
-  const dfsComponent = (parent: Component, prefix: string = "root"): any => {
+  const dfsComponent = (
+    parent: Component,
+    childrenNo: number,
+    key: string = "root"
+  ): any => {
+    const prefix = `${key}.${parent.originalName}`;
     if (parent.componentType === "HEADER") {
-      if (collapsible[prefix + parent.name] === undefined)
-        setCollapsible({ ...collapsible, [prefix + parent.name]: false });
+      if (collapsible[prefix] === undefined) {
+        setCollapsible({ ...collapsible, [prefix]: false });
+      }
 
       return (
-        <div className="pb-5" key={`${prefix}.${parent.name}`}>
+        <div key={prefix}>
           <div className="cursor-pointer flex space-x-1">
-            <Input value={parent.name} className="font-semibold w-9/12" />
+            <Input
+              placeholder={parent.originalName}
+              value={parent.name}
+              className="font-semibold w-8/12"
+              onChange={(value) =>
+                dispatch(
+                  updateComponent({
+                    prefix,
+                    field: "name",
+                    value,
+                  })
+                )
+              }
+            />
             <div className="w-2/12">
               <Dropdown
                 name="Select Type"
                 options={COMPONENT_TYPE_LIST}
-                prefix={`${prefix}.${parent.name}`}
+                prefix={prefix}
                 value={parent.componentType}
                 onUpdateValue={onUpdateComponentType}
               />
             </div>
+            <div className="w-1/12 flex">
+              <Reorder
+                order={parent.order}
+                childrenNo={components.length - 1}
+                onClick={(direction) =>
+                  dispatch(
+                    reorderComponents({
+                      prefix: key,
+                      focusedOrder: parent.order,
+                      direction,
+                    })
+                  )
+                }
+              />
+            </div>
             <div
               className={`w-1/12 flex justify-center items-center border rounded-full ${
-                collapsible[prefix + parent.name] ? "bg-gray-100" : "bg-white"
+                collapsible[prefix] ? "bg-gray-100" : "bg-white"
               }`}
               onClick={() => {
                 setCollapsible({
                   ...collapsible,
-                  [prefix + parent.name]: !collapsible[prefix + parent.name],
+                  [prefix]: !collapsible[prefix],
                 });
               }}
             >
               <FontAwesomeIcon
                 color="#374151"
-                icon={
-                  collapsible[prefix + parent.name] ? faAngleUp : faAngleDown
-                }
+                icon={collapsible[prefix] ? faMinus : faPlus}
                 size="lg"
               />
             </div>
           </div>
-          {collapsible[prefix + parent.name] && (
+          {collapsible[prefix] && (
             <div className="pl-5 pt-5">
               {[...parent.children]
                 .sort((a, b) => a.order - b.order)
                 .map((component) =>
-                  dfsComponent(component, `${prefix}.${parent.name}`)
+                  dfsComponent(component, parent.children.length, prefix)
                 )}
               <div
                 className="text-sm text-gray-400 p-2 border border-dashed rounded-md cursor-pointer text-center bg-gray-100 hover:bg-gray-50"
-                onClick={() =>
-                  dispatch(addNewField(`${prefix}.${parent.name}`))
-                }
+                onClick={() => dispatch(addNewField(prefix))}
               >
                 + Add a Field
               </div>
@@ -122,24 +158,50 @@ const FormTemplate: NextPage<Props> = (props) => {
       );
     } else {
       return (
-        <div className="flex-col mb-6 space-y-1" key={prefix + parent.name}>
+        <div className="flex-col mb-6 space-y-1" key={prefix}>
           <div className="md:flex space-x-1">
-            <Input className="w-10/12" value={parent.name} />
+            <Input
+              placeholder={parent.originalName}
+              className="w-9/12"
+              value={parent.name}
+              onChange={(value) =>
+                dispatch(
+                  updateComponent({
+                    prefix,
+                    field: "name",
+                    value,
+                  })
+                )
+              }
+            />
 
             <div className="w-2/12">
               <Dropdown
                 name="Select Type"
                 options={COMPONENT_TYPE_LIST}
-                prefix={`${prefix}.${parent.name}`}
+                prefix={prefix}
                 value={parent.componentType}
                 onUpdateValue={onUpdateComponentType}
               />
             </div>
+            <div className="w-1/12 flex">
+              <Reorder
+                order={parent.order}
+                childrenNo={childrenNo - 1}
+                onClick={(direction) =>
+                  dispatch(
+                    reorderComponents({
+                      prefix: key,
+                      focusedOrder: parent.order,
+                      direction,
+                    })
+                  )
+                }
+              />
+            </div>
           </div>
 
-          {parent.componentType === "INPUT" && (
-            <Input value={parent.value} disabled={true} />
-          )}
+          {parent.componentType === "INPUT" && <Input disabled={true} />}
           {parent.componentType === "PARAGRAPH" && (
             <Paragraph disabled={true} className="resize-none" />
           )}
@@ -186,7 +248,7 @@ const FormTemplate: NextPage<Props> = (props) => {
               onAddOption={() =>
                 dispatch(
                   updateComponent({
-                    prefix: `${prefix}.${parent.name}`,
+                    prefix,
                     field: "validation",
                     value: parent.validation + "|",
                   })
@@ -198,9 +260,41 @@ const FormTemplate: NextPage<Props> = (props) => {
           {(parent.componentType === "INPUT" ||
             parent.componentType === "PARAGRAPH") && (
             <div className="text-xs flex space-x-3">
-              <Input value="Validation" />
-              <Checkbox name="Required" />
-              <Checkbox name="Editable" />
+              <Input
+                value={parent.validation}
+                placeholder="Validation"
+                onChange={(value) =>
+                  dispatch(
+                    updateComponent({ prefix, field: "validation", value })
+                  )
+                }
+              />
+              <Checkbox
+                name="Required"
+                checked={parent.required}
+                onChecked={() =>
+                  dispatch(
+                    updateComponent({
+                      prefix,
+                      field: "required",
+                      value: !parent.required,
+                    })
+                  )
+                }
+              />
+              <Checkbox
+                name="Editable"
+                checked={parent.editable}
+                onChecked={() =>
+                  dispatch(
+                    updateComponent({
+                      prefix,
+                      field: "editable",
+                      value: !parent.editable,
+                    })
+                  )
+                }
+              />
             </div>
           )}
         </div>
@@ -210,12 +304,22 @@ const FormTemplate: NextPage<Props> = (props) => {
 
   return (
     <div>
-      <Input value={processName} className="text-3xl font-bold" />
+      <Input
+        value={processName}
+        placeholder={originalProcessName}
+        className="text-3xl font-bold"
+        onChange={(name) => dispatch(setProcessName(name))}
+      />
       <Divider />
-      <div className="border p-5">
+      <div className="border p-5 space-y-3">
         {[...components]
           .sort((a, b) => a.order - b.order)
-          .map((component) => dfsComponent(component))}
+          .map((component, i) => {
+            return [
+              dfsComponent(component, component.children.length),
+              <Divider key={i} />,
+            ];
+          })}
 
         <div
           className="text-sm text-gray-400 p-2 border border-dashed rounded-md cursor-pointer text-center bg-gray-100 hover:bg-gray-50"

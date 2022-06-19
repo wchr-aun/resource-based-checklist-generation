@@ -1,4 +1,4 @@
-export interface Component {
+export interface BaseComponent {
   componentType: string;
   css: string;
   editable: boolean;
@@ -12,17 +12,22 @@ export interface Component {
   required: boolean;
   validation: string;
   value: string;
+  children: BaseComponent[];
+}
+
+export interface Component extends BaseComponent {
   children: Component[];
+  originalName: string;
 }
 
 export interface Template {
-  components: Component[];
+  components: BaseComponent[];
   processName: string;
 }
 
 export interface Form {
   processName: string;
-  components: Component[];
+  components: BaseComponent[];
 }
 
 export const COMPONENT_TYPE_LIST = [
