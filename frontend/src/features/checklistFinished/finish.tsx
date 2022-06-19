@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import Checklist from "./checklist";
+import Checklist from "@components/ChecklistIcon";
 
 const ChecklistFinished: NextPage = () => {
   return (

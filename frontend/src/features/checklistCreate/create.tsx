@@ -2,7 +2,7 @@ import { faClipboardList, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { NextPage } from "next";
 import Link from "next/link";
-import Checklist from "./checklist";
+import Checklist from "@components/ChecklistIcon";
 
 const ChecklistCreate: NextPage = () => {
   return (
