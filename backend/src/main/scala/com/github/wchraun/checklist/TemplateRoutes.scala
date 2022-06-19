@@ -26,44 +26,59 @@ class TemplateRoutes(template: ActorRef[Template.Command])(implicit val system: 
   def saveTemplate(id: String): Future[String] =
     template.ask(SaveTemplate(id, _))
 
+  private val cors = new CORSHandler {}
+
   val templateRoutes: Route =
     pathPrefix("template") {
       concat(
         pathEnd {
           concat(
             get {
-              onSuccess(getTemplates()) { response =>
-                complete(StatusCodes.OK, response)
-              }
+              cors.corsHandler(
+                onSuccess(getTemplates()) { response =>
+                  complete(StatusCodes.OK, response)
+                }
+              )
             },
             post {
-              entity(as[Process]) { process =>
-                onSuccess(createTemplate(process)) { response => {
-                  complete(response)
+              cors.corsHandler(
+                entity(as[Process]) { process =>
+                  onSuccess(createTemplate(process)) { response => {
+                    complete(response)
+                  }}
                 }
-                }
-              }
+              )
+            },
+            options {
+              cors.corsHandler(complete(StatusCodes.OK))
             }
           )
         },
         path(Segment) { checklistId =>
           concat(
             get {
-              rejectEmptyResponse {
-                onSuccess(getTemplate(checklistId)) { response =>
-                  complete(StatusCodes.OK, response)
+              cors.corsHandler(
+                rejectEmptyResponse {
+                  onSuccess(getTemplate(checklistId)) { response =>
+                    complete(StatusCodes.OK, response)
+                  }
                 }
-              }
+              )
             },
             post {
-              rejectEmptyResponse {
-                onSuccess(saveTemplate(checklistId)) { response =>
-                  complete(StatusCodes.Accepted, response)
+              cors.corsHandler(
+                rejectEmptyResponse {
+                  onSuccess(saveTemplate(checklistId)) { response =>
+                    complete(StatusCodes.Accepted, response)
+                  }
                 }
-              }
+              )
+            },
+            options {
+              cors.corsHandler(complete(StatusCodes.OK))
             }
           )
-        }
+        },
       )
     }
   //#all-routes
