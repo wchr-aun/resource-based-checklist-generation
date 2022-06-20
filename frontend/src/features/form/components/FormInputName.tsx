@@ -52,7 +52,7 @@ const FormInputName: NextPage<Props> = (props) => {
           onUpdateValue={onDropdownChange}
         />
       </div>
-      <div className="w-1/12 flex space-x-3 justify-center">
+      <div className="w-1/12 flex space-x-5 justify-center">
         <div className="flex self-center text-gray-600 hover:text-gray-400">
           <FontAwesomeIcon
             className="cursor-pointer"

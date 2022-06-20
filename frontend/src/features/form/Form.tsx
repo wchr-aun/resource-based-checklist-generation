@@ -161,7 +161,11 @@ const FormTemplate: NextPage<Props> = (props) => {
             node={parent}
             onAddOption={() =>
               dispatch(
-                updateComponent({ prefix, field: "validation", value: "|" })
+                updateComponent({
+                  prefix,
+                  field: "validation",
+                  value: parent.validation + "|",
+                })
               )
             }
             onValidationChange={(value) =>
@@ -193,6 +197,9 @@ const FormTemplate: NextPage<Props> = (props) => {
                   value,
                 })
               )
+            }
+            onUpdateChoice={(value) =>
+              dispatch(updateComponent({ prefix, field: "validation", value }))
             }
           />
         </div>

@@ -6,9 +6,11 @@ import Paragraph from "@components/inputs/Paragraph";
 import Time from "@components/inputs/Time";
 import {
   faCircleDot,
+  faGear,
   faSquareCaretDown,
   faSquareCheck,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Component, COMPONENT_TYPES } from "@models";
 import type { NextPage } from "next";
 import AddingChoices from "./AddingChoices";
@@ -20,6 +22,7 @@ interface Props {
   onRequiredChange: () => void;
   onEditableChange: () => void;
   onSelectFunction: (value: string) => void;
+  onUpdateChoice: (value: string) => void;
 }
 
 const FormInputDetails: NextPage<Props> = (props) => {
@@ -30,6 +33,7 @@ const FormInputDetails: NextPage<Props> = (props) => {
     onRequiredChange,
     onEditableChange,
     onSelectFunction,
+    onUpdateChoice,
   } = props;
   return (
     <div className="flex-col space-y-1 w-full">
@@ -71,7 +75,7 @@ const FormInputDetails: NextPage<Props> = (props) => {
         node.componentType === COMPONENT_TYPES.CHOICES ||
         node.componentType === COMPONENT_TYPES.DROPDOWN) && (
         <AddingChoices
-          choices={node.validation.split("|")}
+          validation={node.validation}
           icon={
             node.componentType === COMPONENT_TYPES.CHECKBOXES
               ? faSquareCheck
@@ -79,30 +83,38 @@ const FormInputDetails: NextPage<Props> = (props) => {
               ? faCircleDot
               : faSquareCaretDown
           }
-          onAddOption={() => onAddOption()}
+          onAddOption={onAddOption}
+          onUpdateChoice={onUpdateChoice}
         />
       )}
 
-      {(node.componentType === "INPUT" ||
-        node.componentType === "PARAGRAPH") && (
-        <div className="text-xs flex space-x-3">
-          <Input
-            value={node.validation}
-            placeholder="Validation"
-            onChange={onValidationChange}
-          />
-          <Checkbox
-            name="Required"
-            checked={node.required}
-            onChecked={onRequiredChange}
-          />
-          <Checkbox
-            name="Editable"
-            checked={node.editable}
-            onChecked={onEditableChange}
-          />
-        </div>
-      )}
+      {node.componentType !== COMPONENT_TYPES.HEADER &&
+        node.componentType !== COMPONENT_TYPES.CHECKBOXES &&
+        node.componentType !== COMPONENT_TYPES.CHOICES &&
+        node.componentType !== COMPONENT_TYPES.DROPDOWN && (
+          <div className="text-xs flex space-x-3">
+            <Input
+              value={node.validation}
+              placeholder="Validation"
+              onChange={onValidationChange}
+            />
+            <Checkbox
+              name="Required"
+              checked={node.required}
+              onChecked={onRequiredChange}
+            />
+            <Checkbox
+              name="Editable"
+              checked={node.editable}
+              onChecked={onEditableChange}
+            />
+          </div>
+        )}
+
+      <div className="text-xs justify-end font-medium text-gray-500 flex space-x-1">
+        <div>Dependency Setup</div>
+        <FontAwesomeIcon icon={faGear} />
+      </div>
     </div>
   );
 };
