@@ -1,30 +1,14 @@
-import {
-  faAngleDown,
-  faAngleUp,
-  faCircleDot,
-  faSquareCaretDown,
-  faSquareCheck,
-  faPlus,
-  faMinus,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { NextPage } from "next";
 import { useState } from "react";
-import {
-  Component,
-  COMPONENT_TYPES,
-  COMPONENT_TYPE_LIST,
-  Template,
-} from "@models";
-import Checkbox from "@components/inputs/Checkbox";
-import Dropdown from "@components/inputs/Dropdown";
+import { Component, COMPONENT_TYPES, Template } from "@models";
 import Input from "@components/inputs/Input";
-import Paragraph from "@components/inputs/Paragraph";
 import Divider from "@components/Divider";
 import {
   addNewField,
   addNewModel,
   clearComponentChildren,
+  deleteComponent,
+  duplicateComponent,
   reorderComponents,
   selectComponents,
   selectOriginalProcessName,
@@ -34,10 +18,6 @@ import {
   updateComponent,
 } from "./formSlice";
 import { useAppDispatch, useAppSelector } from "@app/hooks";
-import Date from "@components/inputs/Date";
-import Time from "@components/inputs/Time";
-import AddingChoices from "@features/form/components/AddingChoices";
-import Reorder from "@features/form/components/Reorder";
 import FormInputName from "./components/FormInputName";
 import FormInputDetails from "./components/FormInputDetails";
 
@@ -67,6 +47,7 @@ const FormTemplate: NextPage<Props> = (props) => {
   const onUpdateComponentType = (prefix: string, value: string) => {
     dispatch(updateComponent({ prefix, field: "componentType", value }));
     dispatch(updateComponent({ prefix, field: "validation", value: "" }));
+    dispatch(updateComponent({ prefix, field: "function", value: "" }));
     if (value !== COMPONENT_TYPES.HEADER)
       dispatch(clearComponentChildren(prefix));
   };
@@ -86,7 +67,7 @@ const FormTemplate: NextPage<Props> = (props) => {
         <div
           key={prefix}
           className={`p-5 mb-5 border border-gray-300 rounded-md ${
-            key.split(".").length % 2 == 0 ? "bg-white" : "bg-gray-100"
+            key.split(".").length % 2 ? "bg-white" : "bg-gray-100"
           }`}
         >
           <div className="cursor-pointer flex space-x-1">
@@ -107,10 +88,20 @@ const FormTemplate: NextPage<Props> = (props) => {
                   })
                 )
               }
+              onDuplicate={() =>
+                dispatch(
+                  duplicateComponent({ prefix: key, index: parent.order })
+                )
+              }
+              onDelete={() =>
+                dispatch(deleteComponent({ prefix: key, index: parent.order }))
+              }
             />
             <div
-              className={`w-1/12 flex justify-center items-center border rounded-md ${
-                collapsible[prefix] ? "bg-gray-50" : "bg-white"
+              className={`w-1/12 flex justify-center items-center border rounded-md text-xs ${
+                collapsible[prefix]
+                  ? "bg-gray-200 border-gray-200 text-gray-500"
+                  : "bg-white text-gray-800 border-gray-300 shadow-sm"
               }`}
               onClick={() => {
                 setCollapsible({
@@ -120,11 +111,6 @@ const FormTemplate: NextPage<Props> = (props) => {
               }}
             >
               {collapsible[prefix] ? "Collapse" : "Expand"}
-              {/* <FontAwesomeIcon
-                color="#374151"
-                icon={collapsible[prefix] ? faMinus : faPlus}
-                size="lg"
-              /> */}
             </div>
           </div>
           {collapsible[prefix] && (
@@ -164,6 +150,12 @@ const FormTemplate: NextPage<Props> = (props) => {
                 })
               )
             }
+            onDuplicate={() =>
+              dispatch(duplicateComponent({ prefix: key, index: parent.order }))
+            }
+            onDelete={() =>
+              dispatch(deleteComponent({ prefix: key, index: parent.order }))
+            }
           />
           <FormInputDetails
             node={parent}
@@ -172,104 +164,37 @@ const FormTemplate: NextPage<Props> = (props) => {
                 updateComponent({ prefix, field: "validation", value: "|" })
               )
             }
+            onValidationChange={(value) =>
+              dispatch(updateComponent({ prefix, field: "validation", value }))
+            }
+            onRequiredChange={() =>
+              dispatch(
+                updateComponent({
+                  prefix,
+                  field: "required",
+                  value: !parent.required,
+                })
+              )
+            }
+            onEditableChange={() =>
+              dispatch(
+                updateComponent({
+                  prefix,
+                  field: "editable",
+                  value: !parent.editable,
+                })
+              )
+            }
+            onSelectFunction={(value) =>
+              dispatch(
+                updateComponent({
+                  prefix,
+                  field: "function",
+                  value,
+                })
+              )
+            }
           />
-
-          {parent.componentType === "INPUT" && <Input disabled={true} />}
-          {parent.componentType === "PARAGRAPH" && (
-            <Paragraph disabled={true} className="resize-none" />
-          )}
-          {parent.componentType === "DATE" && (
-            <div className="flex space-x-1">
-              <div className="w-4/5">
-                <Date disabled={true} />
-              </div>
-              <div className="w-1/5">
-                <Dropdown
-                  name="Select an Option"
-                  options={["Normal", "getCurrentDate"]}
-                  onUpdateValue={() => {}}
-                />
-              </div>
-            </div>
-          )}
-          {parent.componentType === "TIME" && (
-            <div className="flex space-x-1">
-              <div className="w-4/5">
-                <Time disabled={true} />
-              </div>
-              <div className="w-1/5">
-                <Dropdown
-                  name="Select an Option"
-                  options={["Normal", "getCurrentTime"]}
-                  onUpdateValue={() => {}}
-                />
-              </div>
-            </div>
-          )}
-          {(parent.componentType === COMPONENT_TYPES.CHECKBOXES ||
-            parent.componentType === COMPONENT_TYPES.CHOICES ||
-            parent.componentType === COMPONENT_TYPES.DROPDOWN) && (
-            <AddingChoices
-              choices={parent.validation.split("|")}
-              icon={
-                parent.componentType === COMPONENT_TYPES.CHECKBOXES
-                  ? faSquareCheck
-                  : parent.componentType === COMPONENT_TYPES.CHOICES
-                  ? faCircleDot
-                  : faSquareCaretDown
-              }
-              onAddOption={() =>
-                dispatch(
-                  updateComponent({
-                    prefix,
-                    field: "validation",
-                    value: parent.validation + "|",
-                  })
-                )
-              }
-            />
-          )}
-
-          {(parent.componentType === "INPUT" ||
-            parent.componentType === "PARAGRAPH") && (
-            <div className="text-xs flex space-x-3">
-              <Input
-                value={parent.validation}
-                placeholder="Validation"
-                onChange={(value) =>
-                  dispatch(
-                    updateComponent({ prefix, field: "validation", value })
-                  )
-                }
-              />
-              <Checkbox
-                name="Required"
-                checked={parent.required}
-                onChecked={() =>
-                  dispatch(
-                    updateComponent({
-                      prefix,
-                      field: "required",
-                      value: !parent.required,
-                    })
-                  )
-                }
-              />
-              <Checkbox
-                name="Editable"
-                checked={parent.editable}
-                onChecked={() =>
-                  dispatch(
-                    updateComponent({
-                      prefix,
-                      field: "editable",
-                      value: !parent.editable,
-                    })
-                  )
-                }
-              />
-            </div>
-          )}
         </div>
       );
     }
@@ -284,13 +209,13 @@ const FormTemplate: NextPage<Props> = (props) => {
         onChange={(name) => dispatch(setProcessName(name))}
       />
       <Divider />
-      <div className="border border-gray-300 rounded-md p-5">
+      <div className="border border-gray-300 rounded-md p-5 bg-gray-100">
         {[...components]
           .sort((a, b) => a.order - b.order)
-          .map((component) => {
+          .map((component, i) => {
             return [
               dfsComponent(component, components.length),
-              <Divider className="mb-5" />,
+              <Divider className="mb-5" key={i} />,
             ];
           })}
 

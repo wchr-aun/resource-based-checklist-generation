@@ -9,18 +9,28 @@ import {
   faSquareCaretDown,
   faSquareCheck,
 } from "@fortawesome/free-solid-svg-icons";
-import { Component, COMPONENT_TYPES, COMPONENT_TYPE_LIST } from "@models";
+import { Component, COMPONENT_TYPES } from "@models";
 import type { NextPage } from "next";
 import AddingChoices from "./AddingChoices";
-import Reorder from "./Reorder";
 
 interface Props {
   node: Component;
   onAddOption: () => void;
+  onValidationChange: (value: string) => void;
+  onRequiredChange: () => void;
+  onEditableChange: () => void;
+  onSelectFunction: (value: string) => void;
 }
 
 const FormInputDetails: NextPage<Props> = (props) => {
-  const { node, onAddOption } = props;
+  const {
+    node,
+    onAddOption,
+    onValidationChange,
+    onRequiredChange,
+    onEditableChange,
+    onSelectFunction,
+  } = props;
   return (
     <div className="flex-col space-y-1 w-full">
       {node.componentType === "INPUT" && <Input disabled={true} />}
@@ -36,7 +46,8 @@ const FormInputDetails: NextPage<Props> = (props) => {
             <Dropdown
               name="Select an Option"
               options={["Normal", "getCurrentDate"]}
-              onUpdateValue={() => {}}
+              onUpdateValue={(_, value) => onSelectFunction(value)}
+              value={node.function}
             />
           </div>
         </div>
@@ -50,7 +61,8 @@ const FormInputDetails: NextPage<Props> = (props) => {
             <Dropdown
               name="Select an Option"
               options={["Normal", "getCurrentTime"]}
-              onUpdateValue={() => {}}
+              onUpdateValue={(_, value) => onSelectFunction(value)}
+              value={node.function}
             />
           </div>
         </div>
@@ -71,46 +83,26 @@ const FormInputDetails: NextPage<Props> = (props) => {
         />
       )}
 
-      {/* {(node.componentType === "INPUT" ||
-            node.componentType === "PARAGRAPH") && (
-            <div className="text-xs flex space-x-3">
-              <Input
-                value={node.validation}
-                placeholder="Validation"
-                onChange={(value) =>
-                  dispatch(
-                    updateComponent({ prefix, field: "validation", value })
-                  )
-                }
-              />
-              <Checkbox
-                name="Required"
-                checked={node.required}
-                onChecked={() =>
-                  dispatch(
-                    updateComponent({
-                      prefix,
-                      field: "required",
-                      value: !node.required,
-                    })
-                  )
-                }
-              />
-              <Checkbox
-                name="Editable"
-                checked={node.editable}
-                onChecked={() =>
-                  dispatch(
-                    updateComponent({
-                      prefix,
-                      field: "editable",
-                      value: !node.editable,
-                    })
-                  )
-                }
-              />
-            </div>
-          )} */}
+      {(node.componentType === "INPUT" ||
+        node.componentType === "PARAGRAPH") && (
+        <div className="text-xs flex space-x-3">
+          <Input
+            value={node.validation}
+            placeholder="Validation"
+            onChange={onValidationChange}
+          />
+          <Checkbox
+            name="Required"
+            checked={node.required}
+            onChecked={onRequiredChange}
+          />
+          <Checkbox
+            name="Editable"
+            checked={node.editable}
+            onChecked={onEditableChange}
+          />
+        </div>
+      )}
     </div>
   );
 };
