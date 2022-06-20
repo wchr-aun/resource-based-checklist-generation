@@ -1,8 +1,13 @@
 import type { NextPage } from "next";
 
-const Divider: NextPage = () => {
+interface Props {
+  className?: string;
+}
+
+const Divider: NextPage<Props> = (props) => {
+  const { className = "" } = props;
   return (
-    <div className="py-4">
+    <div className={`${className} py-4`}>
       <div className="w-full border-t border-gray-300"></div>
     </div>
   );

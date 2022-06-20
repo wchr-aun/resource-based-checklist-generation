@@ -85,7 +85,10 @@ export const formSlice = createSlice({
         outputDependencyField: "",
         validation: "",
         value: "",
-        order: node.children.reduce((p, c) => Math.max(p, c.order), 0) + 1,
+        order:
+          node.children.length !== 0
+            ? node.children.reduce((p, c) => Math.max(p, c.order), 0) + 1
+            : 0,
         children: [],
         originalName: `New Field - (${node.children.length + 1})`,
       });
