@@ -21,7 +21,7 @@ object JsonFormats  {
 
   implicit val argJsonFormat: RootJsonFormat[Arg] = rootFormat(lazyFormat(jsonFormat3(Arg)))
   implicit val processJsonFormat = jsonFormat3(Process)
-  implicit val componentJsonFormat: RootJsonFormat[Component] = rootFormat(lazyFormat(jsonFormat14(Component)))
+  implicit val componentJsonFormat: RootJsonFormat[Component] = rootFormat(lazyFormat(jsonFormat13(Component)))
 
   implicit val createTemplateResponseJsonFormat = jsonFormat2(CreateTemplateResponse)
 }

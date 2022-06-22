@@ -32,16 +32,39 @@ object Template {
     }
 
   private def generateTemplate(process: Process, db: Database) = {
-    val inputComponents = process.inputs.zipWithIndex
-      .map{case(arg, i) => Component(i, arg.name, "", ComponentType.HEADER, false, false, "", "", "", "", "", "", "",
-        db.executeQuery(s"SELECT * from datamodel WHERE name = '${arg.name}'").zipWithIndex
-          .map{case(field, i) => Component(i, field, "", ComponentType.INPUT, false, false, "", "", "", "", field, "", "", Array.empty[Component])})}
+//    val inputComponents = process.inputs.zipWithIndex
+//      .map{case(arg, i) => Component(i, arg.name, "", ComponentType.HEADER, false, false, "", "", "", "", "", "", "",
+//        db.executeQuery(s"SELECT * from datamodel WHERE name = '${arg.name}'").zipWithIndex
+//          .map{case(field, i) => Component(i, field, "", ComponentType.INPUT, false, false, "", "", "", "", field, "", "", Array.empty[Component])})}
 
-    val outputComponents = Component(process.inputs.length, process.output.name, "", ComponentType.HEADER, false, false, "", "", "", "", "", "", "",
-      db.executeQuery(s"SELECT * from datamodel WHERE name = '${process.output.name}'").zipWithIndex
-        .map{case(field, i) => Component(i, field, "", ComponentType.INPUT, true, true, "", "", "", "", "", "", field, Array.empty[Component])})
+    def dfsGetChildArg(child: Arg, index: Int = 0): Array[Component] = {
+      if (child.argType != ArgType.VARR) {
+        child.args.get.map(_.name).mkString("")
+        Array[Component](
+          Component(
+            index,
+            if (child.args.get.map(_.name).mkString("") != "")
+              s"${child.argType.toString}(${child.args.get.map(arg => arg.name).mkString(", ")})"
+            else s"Untitled Header - ${index + 1}",
+            "",
+            ComponentType.HEADER,
+            false,
+            false,
+            "", "", "", "", "", "",
+            child.args.get.zipWithIndex.flatMap{case(arg, i) => dfsGetChildArg(arg, i)}
+          )
+        )
+      }
+      else {
+        Array[Component](
+          Component(index, child.name, "", ComponentType.HEADER, false, false, "", "", "", "", "", "",
+            db.executeQuery(s"SELECT * from datamodel WHERE name = '${child.name}'").zipWithIndex
+              .map { case (field, i) => Component(i, field, "", ComponentType.INPUT, true, true, "", "", "", "", "", field, Array.empty[Component]) })
+        )
+      }
+    }
 
-    CreateTemplateResponse(process.name, inputComponents :+ outputComponents)
+    CreateTemplateResponse(process.name, dfsGetChildArg(process.output))
   }
 }
 //#user-registry-actor

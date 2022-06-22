@@ -10,7 +10,7 @@ class Database {
   val url = Properties.envOrElse("DB_URL", "jdbc:postgresql://localhost:5432/db")
   val driver = "org.postgresql.Driver"
   val username = Properties.envOrElse("DB_USERNAME", "username")
-  val password = Properties.envOrElse("DB_PASSWORD", "username")
+  val password = Properties.envOrElse("DB_PASSWORD", "password")
   var connection: Connection = _
   try {
     Class.forName(driver)

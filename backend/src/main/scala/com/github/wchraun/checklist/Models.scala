@@ -25,7 +25,6 @@ final case class Component(
                             editable: Boolean,
                             required: Boolean,
                             validation: String,
-                            css: String,
                             function: String,
                             inputDependency: String,
                             inputDependencyField: String,
