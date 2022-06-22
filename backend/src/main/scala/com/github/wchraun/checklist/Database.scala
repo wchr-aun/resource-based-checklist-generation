@@ -19,12 +19,14 @@ class Database {
     case e: Exception => e.printStackTrace
   }
 
-  def executeQuery(query: String) = {
-    val statement = connection.createStatement
-    val rs = statement.executeQuery(query)
-    var result = Array.empty[String]
+  def getDataModel(modelName: String) = {
+    val sql = "SELECT \"table\", field from datamodel WHERE name = ?"
+    val preparedStatement = connection.prepareStatement(sql)
+    preparedStatement.setString(1, modelName)
+    val rs = preparedStatement.executeQuery()
+    var result = Array.empty[(String, String)]
     while (rs.next) {
-      result = result :+ rs.getString("field")
+      result = result :+ Tuple2(rs.getString("table"), rs.getString("field"))
     }
     result
   }

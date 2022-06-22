@@ -32,10 +32,9 @@ object Template {
     }
 
   private def generateTemplate(process: Process, db: Database) = {
-//    val inputComponents = process.inputs.zipWithIndex
-//      .map{case(arg, i) => Component(i, arg.name, "", ComponentType.HEADER, false, false, "", "", "", "", "", "", "",
-//        db.executeQuery(s"SELECT * from datamodel WHERE name = '${arg.name}'").zipWithIndex
-//          .map{case(field, i) => Component(i, field, "", ComponentType.INPUT, false, false, "", "", "", "", field, "", "", Array.empty[Component])})}
+    val inputDetails = process.inputs.zipWithIndex.map{case(arg, i) => Details(arg.name, i, "", "", "",
+      db.getDataModel(arg.name).zipWithIndex
+        .map{case((table, field), i) => Details(field, i, "", table, field, Array.empty[Details])})}
 
     def dfsGetChildArg(child: Arg, index: Int = 0): Array[Component] = {
       if (child.argType != ArgType.VARR) {
@@ -58,13 +57,16 @@ object Template {
       else {
         Array[Component](
           Component(index, child.name, "", ComponentType.HEADER, false, false, "", "", "", "", "", "",
-            db.executeQuery(s"SELECT * from datamodel WHERE name = '${child.name}'").zipWithIndex
-              .map { case (field, i) => Component(i, field, "", ComponentType.INPUT, true, true, "", "", "", "", "", field, Array.empty[Component]) })
+            db.getDataModel(child.name).zipWithIndex
+              .map { case((table, field), i) =>
+                Component(i, field, "", ComponentType.INPUT, true, true, "", "", "", "", table, field, Array.empty[Component])
+              }
+          )
         )
       }
     }
 
-    CreateTemplateResponse(process.name, dfsGetChildArg(process.output))
+    CreateTemplateResponse(process.name, inputDetails, dfsGetChildArg(process.output))
   }
 }
 //#user-registry-actor
