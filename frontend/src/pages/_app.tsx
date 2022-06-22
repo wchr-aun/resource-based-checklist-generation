@@ -11,9 +11,11 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>Resource-based Checklist Generation</title>
       </Head>
-      <Header />
-      <div className="lg:px-32 px-8 py-8 select-none">
-        <Component {...pageProps} />
+      <div className="select-none">
+        <Header />
+        <div className="lg:px-32 px-8 py-8">
+          <Component {...pageProps} />
+        </div>
       </div>
     </Provider>
   );

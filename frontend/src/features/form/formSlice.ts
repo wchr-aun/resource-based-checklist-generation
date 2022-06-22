@@ -59,7 +59,8 @@ export const formSlice = createSlice({
           | "validation"
           | "name"
           | "editable"
-          | "required";
+          | "required"
+          | "function";
         value: string | boolean;
       }>
     ) => {
@@ -85,7 +86,10 @@ export const formSlice = createSlice({
         outputDependencyField: "",
         validation: "",
         value: "",
-        order: node.children.reduce((p, c) => Math.max(p, c.order), 0) + 1,
+        order:
+          node.children.length !== 0
+            ? node.children.reduce((p, c) => Math.max(p, c.order), 0) + 1
+            : 0,
         children: [],
         originalName: `New Field - (${node.children.length + 1})`,
       });
@@ -106,7 +110,10 @@ export const formSlice = createSlice({
           outputDependencyField: "",
           validation: "",
           value: "",
-          order: state.components.reduce((p, c) => Math.max(p, c.order), 0) + 1,
+          order:
+            state.components.length !== 0
+              ? state.components.reduce((p, c) => Math.max(p, c.order), 0) + 1
+              : 0,
           children: [],
           originalName: `New Model - (${state.components.length + 1})`,
         },
@@ -136,6 +143,44 @@ export const formSlice = createSlice({
     setProcessName: (state, action: PayloadAction<string>) => {
       state.processName = action.payload;
     },
+    duplicateComponent: (
+      state,
+      action: PayloadAction<{ prefix: string; index: number }>
+    ) => {
+      const { prefix, index } = action.payload;
+      const node = getNode(prefix, state.components);
+      if (!node) return;
+      node.children.splice(index, 0, {
+        ...node.children[index],
+        order: node.children[index].order + 0.1,
+        originalName:
+          (node.children[index].name || node.children[index].originalName) +
+          " - duplicate",
+        name:
+          (node.children[index].name || node.children[index].originalName) +
+          " - duplicate",
+      });
+
+      node.children.sort((a, b) => a.order - b.order);
+      node.children.forEach((c, i) => {
+        c.order = i;
+      });
+    },
+    deleteComponent: (
+      state,
+      action: PayloadAction<{ prefix: string; index: number }>
+    ) => {
+      const { prefix, index } = action.payload;
+      const node = getNode(prefix, state.components);
+      if (!node) return;
+      node.children.splice(index, 1);
+      node.children.sort((a, b) => a.order - b.order);
+
+      node.children.sort((a, b) => a.order - b.order);
+      node.children.forEach((c, i) => {
+        c.order = i;
+      });
+    },
     clearComponentChildren: (state, action: PayloadAction<string>) => {
       const prefix = action.payload;
       const node = getNode(prefix, state.components);
@@ -154,6 +199,8 @@ export const {
   addNewField,
   addNewModel,
   setProcessName,
+  deleteComponent,
+  duplicateComponent,
   clearComponentChildren,
   resetForm,
   reorderComponents,
