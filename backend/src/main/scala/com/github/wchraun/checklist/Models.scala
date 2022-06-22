@@ -17,6 +17,12 @@ final case class StartChecklistArg(templateId: String)
 
 final case class Arg(argType: ArgType, name: String, args: Option[Array[Arg]])
 final case class Process(name: String, inputs: Array[Arg], output: Arg)
+final case class Details(name: String,
+                         order: Int,
+                         value: String,
+                         inputDependency: String,
+                         inputDependencyField: String,
+                         children: Array[Details])
 final case class Component(
                             order: Int,
                             name: String,
@@ -25,7 +31,6 @@ final case class Component(
                             editable: Boolean,
                             required: Boolean,
                             validation: String,
-                            css: String,
                             function: String,
                             inputDependency: String,
                             inputDependencyField: String,
@@ -36,5 +41,6 @@ final case class Component(
 
 final case class CreateTemplateResponse(
                                          processName: String,
+                                         details: Array[Details],
                                          components: Array[Component]
                                        )
