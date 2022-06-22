@@ -1,8 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMinusCircle,
-  IconDefinition,
-} from "@fortawesome/free-solid-svg-icons";
+import { faTimes, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import type { NextPage } from "next";
 import Input from "@components/inputs/Input";
 
@@ -43,11 +40,14 @@ const AddingChoices: NextPage<Props> = (props) => {
             }
           />
           <div className="w-1/12 flex self-center justify-center ">
-            <FontAwesomeIcon
-              icon={faMinusCircle}
-              className="cursor-pointer text-gray-500 hover:text-red-400"
-              onClick={() => onUpdateChoice(deleteChoice(choices, i))}
-            />
+            {i !== 0 && (
+              <FontAwesomeIcon
+                icon={faTimes}
+                size="lg"
+                className="cursor-pointer text-gray-500 hover:text-red-400"
+                onClick={() => onUpdateChoice(deleteChoice(choices, i))}
+              />
+            )}
           </div>
         </div>
       ))}
