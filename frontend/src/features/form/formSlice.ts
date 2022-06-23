@@ -1,4 +1,4 @@
-import { BaseComponent, Component, Template } from "@models";
+import { BaseComponent, Component, Details, Form, Information } from "@models";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import type { AppState } from "../../app/store";
@@ -7,12 +7,14 @@ export interface FormState {
   processName: string;
   originalProcessName: string;
   components: Component[];
+  information: Information[];
 }
 
 const initialState: FormState = {
   processName: "",
   originalProcessName: "",
   components: [],
+  information: [],
 };
 
 const getNode = (prefix: string, components: Component[]): Component => {
@@ -42,13 +44,14 @@ export const formSlice = createSlice({
   name: "process",
   initialState,
   reducers: {
-    setForm: (state, action: PayloadAction<Template>) => {
-      const { processName, components } = action.payload;
+    setForm: (state, action: PayloadAction<Form>) => {
+      const { processName, components, information } = action.payload;
       state.processName = processName;
       state.originalProcessName = processName;
       state.components = components.flatMap((component) =>
         insertOriginalNames({ ...component })
       );
+      state.information = information;
     },
     updateComponent: (
       state,
@@ -181,6 +184,32 @@ export const formSlice = createSlice({
         c.order = i;
       });
     },
+    toggleHideInput: (
+      state,
+      action: PayloadAction<{ infoIndex: number; detailsIndex: number }>
+    ) => {
+      const { infoIndex, detailsIndex } = action.payload;
+      const value = state.information[infoIndex].details[detailsIndex].hide;
+      state.information[infoIndex].details[detailsIndex].hide = !value;
+    },
+    toggleHideAllInput: (state, action: PayloadAction<number>) => {
+      const index = action.payload;
+      const value = state.information[index].details.every((v) => v.hide);
+      state.information[index].details = state.information[index].details.map(
+        (v) => ({ ...v, hide: !value })
+      );
+    },
+    updateInputName: (
+      state,
+      action: PayloadAction<{
+        name: string;
+        infoIndex: number;
+        detailsIndex: number;
+      }>
+    ) => {
+      const { name, infoIndex, detailsIndex } = action.payload;
+      state.information[infoIndex].details[detailsIndex].name = name;
+    },
     clearComponentChildren: (state, action: PayloadAction<string>) => {
       const prefix = action.payload;
       const node = getNode(prefix, state.components);
@@ -201,6 +230,9 @@ export const {
   setProcessName,
   deleteComponent,
   duplicateComponent,
+  toggleHideInput,
+  toggleHideAllInput,
+  updateInputName,
   clearComponentChildren,
   resetForm,
   reorderComponents,
@@ -210,5 +242,6 @@ export const selectProcessName = (state: AppState) => state.form.processName;
 export const selectOriginalProcessName = (state: AppState) =>
   state.form.originalProcessName;
 export const selectComponents = (state: AppState) => state.form.components;
+export const selectInformation = (state: AppState) => state.form.information;
 
 export default formSlice.reducer;

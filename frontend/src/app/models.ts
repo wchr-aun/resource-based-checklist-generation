@@ -20,14 +20,25 @@ export interface Component extends BaseComponent {
   originalName: string;
 }
 
-export interface Template {
-  components: BaseComponent[];
-  processName: string;
+export interface Details {
+  name: string;
+  order: number;
+  value: string;
+  inputDependency: string;
+  inputDependencyField: string;
+  hide: boolean;
+}
+
+export interface Information {
+  name: string;
+  order: number;
+  details: Details[];
 }
 
 export interface Form {
   processName: string;
   components: BaseComponent[];
+  information: Information[];
 }
 
 export const COMPONENT_TYPE_LIST = [
