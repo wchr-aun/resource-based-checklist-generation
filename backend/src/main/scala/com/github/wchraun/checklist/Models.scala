@@ -22,7 +22,8 @@ final case class Details(name: String,
                          value: String,
                          inputDependency: String,
                          inputDependencyField: String,
-                         children: Array[Details])
+                         hide: Boolean)
+final case class Information(name: String, order: Int, details: Array[Details])
 final case class Component(
                             order: Int,
                             name: String,
@@ -41,6 +42,6 @@ final case class Component(
 
 final case class CreateTemplateResponse(
                                          processName: String,
-                                         details: Array[Details],
+                                         information: Array[Information],
                                          components: Array[Component]
                                        )

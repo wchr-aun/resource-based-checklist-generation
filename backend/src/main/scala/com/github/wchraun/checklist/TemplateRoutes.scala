@@ -11,6 +11,8 @@ import akka.util.Timeout
 import scala.concurrent.Future
 import com.github.wchraun.checklist.Template._
 
+import scala.util.{Failure, Success}
+
 class TemplateRoutes(template: ActorRef[Template.Command])(implicit val system: ActorSystem[_], implicit val timeout: Timeout, implicit val database: Database) {
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
@@ -35,8 +37,9 @@ class TemplateRoutes(template: ActorRef[Template.Command])(implicit val system: 
           concat(
             get {
               cors.corsHandler(
-                onSuccess(getTemplates()) { response =>
-                  complete(StatusCodes.OK, response)
+                onComplete(getTemplates()) {
+                  case Success(value) => complete(StatusCodes.OK, value)
+                  case Failure(exception) => complete(StatusCodes.ExpectationFailed, exception)
                 }
               )
             },

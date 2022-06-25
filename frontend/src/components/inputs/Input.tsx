@@ -8,7 +8,7 @@ interface Props {
   onChange?: (v: string) => void;
 }
 
-const Input: NextPage<Props> = (props) => {
+function Input(props: Props) {
   const {
     value = "",
     className = "",
@@ -26,6 +26,6 @@ const Input: NextPage<Props> = (props) => {
       value={value}
     />
   );
-};
+}
 
 export default Input;

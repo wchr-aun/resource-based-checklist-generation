@@ -1,8 +1,8 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 
-import counterReducer from "../features/counter/counterSlice";
-import formReducer from "../features/form/formSlice";
-import processInputReducer from "../features/processInput/processSlice";
+import counterReducer from "@features/counter/counterSlice";
+import formReducer from "@features/form/formSlice";
+import processInputReducer from "@features/processInput/processSlice";
 
 export function makeStore() {
   return configureStore({

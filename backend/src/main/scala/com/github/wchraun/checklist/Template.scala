@@ -32,13 +32,15 @@ object Template {
     }
 
   private def generateTemplate(process: Process, db: Database) = {
-    val inputDetails = process.inputs.zipWithIndex.map{case(arg, i) => Details(arg.name, i, "", "", "",
-      db.getDataModel(arg.name).zipWithIndex
-        .map{case((table, field), i) => Details(field, i, "", table, field, Array.empty[Details])})}
+    def dfsInputs(child: Arg): Array[Information] = {
+      Array(
+        Information(child.name, 0, db.getDataModel(child.name).zipWithIndex
+          .map{case((table, field), i) => Details(field, i, "", table, field, false)})
+      ) ++ child.args.get.flatMap(v => dfsInputs(v))
+    }
 
-    def dfsGetChildArg(child: Arg, index: Int = 0): Array[Component] = {
+    def dfsOutput(child: Arg, index: Int = 0): Array[Component] = {
       if (child.argType != ArgType.VARR) {
-        child.args.get.map(_.name).mkString("")
         Array[Component](
           Component(
             index,
@@ -50,7 +52,7 @@ object Template {
             false,
             false,
             "", "", "", "", "", "",
-            child.args.get.zipWithIndex.flatMap{case(arg, i) => dfsGetChildArg(arg, i)}
+            child.args.get.zipWithIndex.flatMap{case(arg, i) => dfsOutput(arg, i)}
           )
         )
       }
@@ -58,7 +60,7 @@ object Template {
         Array[Component](
           Component(index, child.name, "", ComponentType.HEADER, false, false, "", "", "", "", "", "",
             db.getDataModel(child.name).zipWithIndex
-              .map { case((table, field), i) =>
+              .map{case((table, field), i) =>
                 Component(i, field, "", ComponentType.INPUT, true, true, "", "", "", "", table, field, Array.empty[Component])
               }
           )
@@ -66,7 +68,16 @@ object Template {
       }
     }
 
-    CreateTemplateResponse(process.name, inputDetails, dfsGetChildArg(process.output))
+    CreateTemplateResponse(
+      process.name,
+      process.inputs.flatMap(v => dfsInputs(v))
+        .groupBy(_.name).zipWithIndex
+        .map{case(v, i) =>
+          Information(v._2.head.name, i, v._2.head.details)
+        }.toArray
+        .sortBy(_.order),
+      dfsOutput(process.output)
+    )
   }
 }
 //#user-registry-actor

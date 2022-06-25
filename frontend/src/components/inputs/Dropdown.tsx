@@ -9,11 +9,19 @@ interface Props {
   options: string[];
   value?: string;
   prefix?: string;
-  onUpdateValue: (prefix: string, v: string) => void;
+  onUpdateValue?: (prefix: string, v: string) => void;
+  className?: string;
 }
 
 const Dropdown: NextPage<Props> = (props) => {
-  const { name, value = "", options, prefix = "root", onUpdateValue } = props;
+  const {
+    name,
+    value = "",
+    options,
+    prefix = "root",
+    onUpdateValue = () => {},
+    className = "",
+  } = props;
   const [show, setShow] = useState<boolean>(false);
 
   const updateValue = (v: string) => {
@@ -22,7 +30,7 @@ const Dropdown: NextPage<Props> = (props) => {
   };
 
   return (
-    <div className="relative inline-block w-full">
+    <div className={`relative inline-block w-full ${className}`}>
       <button
         type="button"
         className="py-2 inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-gray-100 focus:ring-teal-500 font-semibold"
