@@ -48,6 +48,7 @@ const FormInputDetails: NextPage<Props> = (props) => {
           </div>
           <div className="w-1/5">
             <Dropdown
+              className="w-full"
               name="Select an Option"
               options={["Normal", "getCurrentDate"]}
               onUpdateValue={(_, value) => onSelectFunction(value)}
@@ -63,6 +64,7 @@ const FormInputDetails: NextPage<Props> = (props) => {
           </div>
           <div className="w-1/5">
             <Dropdown
+              className="w-full"
               name="Select an Option"
               options={["Normal", "getCurrentTime"]}
               onUpdateValue={(_, value) => onSelectFunction(value)}
