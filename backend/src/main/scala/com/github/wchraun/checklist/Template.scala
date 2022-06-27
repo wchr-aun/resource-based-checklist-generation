@@ -48,7 +48,7 @@ object Template {
               s"${child.argType.toString}(${child.args.get.map(arg => arg.name).mkString(", ")})"
             else s"Untitled Header - ${index + 1}",
             "",
-            ComponentType.HEADER,
+            if (child.argType == ArgType.PLUS) ComponentType.TAB else ComponentType.HEADER,
             false,
             false,
             "", "", "", "", "", "",

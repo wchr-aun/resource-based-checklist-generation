@@ -1,13 +1,15 @@
-import type { NextPage } from "next";
-import Checklist from "@components/ChecklistIcon";
+import { faTableList } from "@fortawesome/free-solid-svg-icons";
+import ItemList from "@components/ItemList";
 
-const ChecklistInProgess: NextPage = () => {
+function ChecklistInProgess() {
   return (
     <div>
-      <div className="font-bold underline mb-5 text-teal-500">In Progress</div>
-      <Checklist checklistName="Test" />
+      <div className="font-bold underline mb-5 text-indigo-900">
+        In Progress
+      </div>
+      <ItemList icon={faTableList} name="test" />
     </div>
   );
-};
+}
 
 export default ChecklistInProgess;

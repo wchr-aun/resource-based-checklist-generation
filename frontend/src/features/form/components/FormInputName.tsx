@@ -50,6 +50,7 @@ const FormInputName: NextPage<Props> = (props) => {
           prefix={prefix}
           value={node.componentType}
           onUpdateValue={onDropdownChange}
+          className="w-full"
         />
       </div>
       <div className="w-1/12 flex space-x-5 justify-center">

@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { MutableRefObject, SetStateAction, useEffect, useState } from "react";
-import { Component } from "@models";
+import { Component, COMPONENT_TYPES } from "@models";
 import Divider from "@components/Divider";
 import FormInputName from "./FormInputName";
 import FormInputDetails from "./FormInputDetails";
@@ -58,9 +58,12 @@ function OutputComponent(props: Props) {
     parent: Component,
     childrenNo: number,
     key: string = "root"
-  ): any => {
+  ): JSX.Element => {
     const prefix = `${key}.${parent.originalName}`;
-    if (parent.componentType === "HEADER") {
+    if (
+      parent.componentType === COMPONENT_TYPES.HEADER ||
+      parent.componentType === COMPONENT_TYPES.TAB
+    ) {
       if (collapsible[prefix] === undefined) {
         setCollapsible({ ...collapsible, [prefix]: false });
       }
@@ -109,7 +112,7 @@ function OutputComponent(props: Props) {
                   dfsComponent(component, parent.children.length, prefix)
                 )}
               <div
-                className="text-sm text-gray-600 p-2 border border-dashed rounded-md cursor-pointer text-center bg-gray-50 hover:bg-white"
+                className="text-sm text-gray-600 p-2 border border-dashed rounded-md cursor-pointer text-center bg-gray-100 hover:bg-white"
                 onClick={() => onAddNewField(prefix)}
               >
                 + Add a Field
@@ -148,7 +151,7 @@ function OutputComponent(props: Props) {
   };
 
   return (
-    <div className="border border-gray-300 rounded-md p-5 bg-gray-100">
+    <div className="border border-gray-300 rounded-md p-5 bg-gray-50">
       {[...components]
         .sort((a, b) => a.order - b.order)
         .map((component, i) => {
@@ -159,7 +162,7 @@ function OutputComponent(props: Props) {
         })}
 
       <div
-        className="text-sm text-gray-600 p-2 border border-dashed rounded-md cursor-pointer text-center bg-gray-50 hover:bg-white"
+        className="text-sm text-gray-600 p-2 border border-dashed rounded-md cursor-pointer text-center bg-gray-100 hover:bg-white"
         onClick={() => onAddModel()}
       >
         + Add a Model

@@ -7,6 +7,7 @@ interface Props {
   onChange?: (v: string) => void;
   validation?: RegExp;
   rows?: number;
+  placeholder?: string;
 }
 
 const Paragraph: NextPage<Props> = (props) => {
@@ -17,6 +18,7 @@ const Paragraph: NextPage<Props> = (props) => {
     onChange = (v: string) => {},
     validation = new RegExp(""),
     rows = 10,
+    placeholder = "",
   } = props;
   return (
     <textarea
@@ -29,6 +31,7 @@ const Paragraph: NextPage<Props> = (props) => {
       rows={rows}
       value={value}
       onChange={(e) => onChange(e.target.value)}
+      placeholder={placeholder}
     ></textarea>
   );
 };

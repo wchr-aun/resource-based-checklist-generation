@@ -52,7 +52,7 @@ const AddingChoices: NextPage<Props> = (props) => {
         </div>
       ))}
       <div
-        className="text-sm text-gray-400 p-2 border border-dashed rounded-md cursor-pointer text-center bg-gray-50 hover:bg-white"
+        className="text-sm text-gray-400 p-2 border border-dashed rounded-md cursor-pointer text-center bg-gray-100 hover:bg-white"
         onClick={onAddOption}
       >
         + Add an Option

@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <div className="select-none">
         <Header />
-        <div className="lg:px-32 px-8 py-8">
+        <div className="lg:px-32 px-8 py-4">
           <Component {...pageProps} />
         </div>
       </div>

@@ -47,11 +47,6 @@ INSERT INTO datamodel VALUES('AcceptedContract', 'contracts', 'reqservid');
 INSERT INTO datamodel VALUES('AcceptedContract', 'contracts', 'providerid');
 INSERT INTO datamodel VALUES('AcceptedContract', 'contracts', 'time_requested');
 INSERT INTO datamodel VALUES('AcceptedContract', 'contracts', 'stateid');
-INSERT INTO datamodel VALUES('AcceptedContract', 'requestedservices', 'serviceid');
-INSERT INTO datamodel VALUES('AcceptedContract', 'requestedservices', 'patientid');
-INSERT INTO datamodel VALUES('AcceptedContract', 'services', 'idservice');
-INSERT INTO datamodel VALUES('AcceptedContract', 'services', 'name');
-INSERT INTO datamodel VALUES('AcceptedContract', 'services', 'description');
 
 INSERT INTO datamodel VALUES('ServiceProvider', 'providers', 'idprovider');
 INSERT INTO datamodel VALUES('ServiceProvider', 'providers', 'actorid');
@@ -64,8 +59,30 @@ INSERT INTO datamodel VALUES('OpenContract', 'contracts', 'providerid');
 INSERT INTO datamodel VALUES('OpenContract', 'contracts', 'time_requested');
 INSERT INTO datamodel VALUES('OpenContract', 'contracts', 'time_opened');
 INSERT INTO datamodel VALUES('OpenContract', 'contracts', 'stateid');
-INSERT INTO datamodel VALUES('OpenContract', 'requestedservices', 'serviceid');
-INSERT INTO datamodel VALUES('OpenContract', 'requestedservices', 'patientid');
-INSERT INTO datamodel VALUES('OpenContract', 'services', 'idservice');
-INSERT INTO datamodel VALUES('OpenContract', 'services', 'name');
-INSERT INTO datamodel VALUES('OpenContract', 'services', 'description');
+
+INSERT INTO datamodel VALUES('ClosedContract', 'contracts', 'idcontract');
+INSERT INTO datamodel VALUES('ClosedContract', 'contracts', 'reqservid');
+INSERT INTO datamodel VALUES('ClosedContract', 'contracts', 'providerid');
+INSERT INTO datamodel VALUES('ClosedContract', 'contracts', 'time_requested');
+INSERT INTO datamodel VALUES('ClosedContract', 'contracts', 'time_opened');
+INSERT INTO datamodel VALUES('ClosedContract', 'contracts', 'time_closed');
+INSERT INTO datamodel VALUES('ClosedContract', 'contracts', 'stateid');
+
+INSERT INTO datamodel VALUES('Patient', 'patients', 'idpatient');
+INSERT INTO datamodel VALUES('Patient', 'patients', 'name');
+INSERT INTO datamodel VALUES('Patient', 'patients', 'surname');
+INSERT INTO datamodel VALUES('Patient', 'patients', 'dob');
+
+INSERT INTO datamodel VALUES('CheckedHealthcareService', 'services', 'idservice');
+INSERT INTO datamodel VALUES('CheckedHealthcareService', 'services', 'name');
+INSERT INTO datamodel VALUES('CheckedHealthcareService', 'services', 'description');
+
+INSERT INTO datamodel VALUES('HealthcareService', 'services', 'idservice');
+INSERT INTO datamodel VALUES('HealthcareService', 'services', 'name');
+INSERT INTO datamodel VALUES('HealthcareService', 'services', 'description');
+
+INSERT INTO datamodel VALUES('HealthcareActor', 'services', 'idstaff');
+INSERT INTO datamodel VALUES('HealthcareActor', 'services', 'name');
+INSERT INTO datamodel VALUES('HealthcareActor', 'services', 'surname');
+INSERT INTO datamodel VALUES('HealthcareActor', 'services', 'dob');
+INSERT INTO datamodel VALUES('HealthcareActor', 'services', 'title');

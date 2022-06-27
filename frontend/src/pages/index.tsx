@@ -59,14 +59,18 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className="grid grid-cols-1">
-      <ChecklistInProgess />
-      <Divider />
-      <ChecklistCreate onClickCreateTemplate={() => callApi()} />
+    <div className="grid grid-cols-1 space-y-5">
+      <div className="lg:px-64 py-8 bg-gray-100 lg:-mx-32 -mx-8 px-8 -my-4">
+        <ChecklistCreate onClickCreateTemplate={() => callApi()} />
+      </div>
+      <div className="pt-5">
+        <ChecklistInProgess />
+      </div>
       <Divider />
       <ChecklistFinished />
       <Divider />
       <ProcessInput />
+      <style>{"body { background-color: white; }"}</style>
     </div>
   );
 };

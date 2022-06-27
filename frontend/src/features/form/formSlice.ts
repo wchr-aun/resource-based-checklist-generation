@@ -1,7 +1,7 @@
 import { BaseComponent, Component, Details, Form, Information } from "@models";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import type { AppState } from "../../app/store";
+import type { AppState } from "@app/store";
 
 export interface FormState {
   processName: string;
@@ -80,7 +80,7 @@ export const formSlice = createSlice({
         name: "",
         componentType: "INPUT",
         css: "",
-        editable: false,
+        editable: true,
         function: "",
         required: false,
         inputDependency: "",
