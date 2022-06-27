@@ -25,10 +25,16 @@ function Checklist(props: Props) {
     last: boolean = false
   ) {
     const prefix = `${key}.${component.name || component.originalName}`;
-    if (tab[prefix] === undefined) {
+    if (
+      component.componentType === COMPONENT_TYPES.TAB &&
+      tab[prefix] === undefined
+    ) {
       setTab({ ...tab, [prefix]: 0 });
     }
-    if (show[prefix] === undefined) {
+    if (
+      component.componentType === COMPONENT_TYPES.HEADER &&
+      show[prefix] === undefined
+    ) {
       setShow({ ...show, [prefix]: true });
     }
     return (
