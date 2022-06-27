@@ -23,7 +23,11 @@ function Dropdown(props: Props) {
   const [show, setShow] = useState<boolean>(false);
   const catMenu = useRef<HTMLDivElement>(null);
   const closeOpenMenus = (e: MouseEvent) => {
-    if (catMenu.current && show && !catMenu.current.contains(e.target)) {
+    if (
+      catMenu.current &&
+      show &&
+      !catMenu.current.contains(e.target as Node | null)
+    ) {
       setShow(false);
     }
   };
