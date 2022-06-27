@@ -1,8 +1,6 @@
-import Reorder from "@features/form/components/Reorder";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import type { NextPage } from "next";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 interface Props {
   name: string;
@@ -23,18 +21,25 @@ function Dropdown(props: Props) {
     className = "",
   } = props;
   const [show, setShow] = useState<boolean>(false);
+  const catMenu = useRef<HTMLDivElement>(null);
+  const closeOpenMenus = (e: MouseEvent) => {
+    if (catMenu.current && show && !catMenu.current.contains(e.target)) {
+      setShow(false);
+    }
+  };
 
   const updateValue = (v: string) => {
     setShow(!show);
     onUpdateValue(prefix, v);
   };
+  document.addEventListener("mousedown", closeOpenMenus);
 
   return (
     <div className="w-full">
-      <div className={`relative inline-block ${className}`}>
+      <div className={`relative inline-block ${className}`} ref={catMenu}>
         <button
           type="button"
-          className={`${className} py-2 px-4 inline-flex justify-center rounded-md border border-gray-300 shadow-sm bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-gray-100 focus:ring-teal-500 font-semibold`}
+          className={`${className} py-2 px-4 inline-flex text-sm justify-center rounded-md border border-gray-300 shadow-sm bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-gray-100 focus:ring-teal-500 font-semibold`}
           onClick={() => setShow(!show)}
         >
           {options.find((v) => v === value) || name}

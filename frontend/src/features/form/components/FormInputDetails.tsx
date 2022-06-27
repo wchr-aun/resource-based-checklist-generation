@@ -37,9 +37,15 @@ const FormInputDetails: NextPage<Props> = (props) => {
   } = props;
   return (
     <div className="flex-col space-y-1 w-full">
-      {node.componentType === "INPUT" && <Input disabled={true} />}
+      {node.componentType === "INPUT" && (
+        <Input disabled={true} placeholder="Short answer text" />
+      )}
       {node.componentType === "PARAGRAPH" && (
-        <Paragraph disabled={true} className="resize-none" />
+        <Paragraph
+          disabled={true}
+          className="resize-none"
+          placeholder="Long answer text"
+        />
       )}
       {node.componentType === "DATE" && (
         <div className="flex space-x-1">

@@ -6,8 +6,8 @@ export interface ProcessInputState {
   process: string;
 }
 
-const initialState: ProcessInputState = {
-  process: JSON.stringify({
+const sampleProcesses = [
+  {
     name: "AwardContract",
     inputs: [
       {
@@ -26,7 +26,116 @@ const initialState: ProcessInputState = {
       name: "OpenContract",
       args: [],
     },
-  }),
+  },
+  {
+    name: "DelegateHealthcareService",
+    inputs: [
+      {
+        argType: "VARR",
+        name: "Patient",
+        args: [],
+      },
+      {
+        argType: "VARR",
+        name: "HealthcareActor",
+        args: [],
+      },
+      {
+        argType: "VARR",
+        name: "HealthcareService",
+        args: [],
+      },
+    ],
+    output: {
+      argType: "PLUS",
+      name: "",
+      args: [
+        {
+          argType: "PLUS",
+          name: "",
+          args: [
+            {
+              argType: "TIMES",
+              name: "",
+              args: [
+                {
+                  argType: "VARR",
+                  name: "CheckedHealthcareService",
+                  args: [],
+                },
+                {
+                  argType: "VARR",
+                  name: "ClosedContract",
+                  args: [],
+                },
+              ],
+            },
+            {
+              argType: "TIMES",
+              name: "",
+              args: [
+                {
+                  argType: "VARR",
+                  name: "Delegation",
+                  args: [],
+                },
+                {
+                  argType: "VARR",
+                  name: "ServiceRequester",
+                  args: [],
+                },
+                {
+                  argType: "VARR",
+                  name: "OpenContract",
+                  args: [],
+                },
+                {
+                  argType: "VARR",
+                  name: "Obstacle",
+                  args: [],
+                },
+                {
+                  argType: "VARR",
+                  name: "PendingHealthcareService",
+                  args: [],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          argType: "TIMES",
+          name: "",
+          args: [
+            {
+              argType: "VARR",
+              name: "PendingHealthcareService",
+              args: [],
+            },
+            {
+              argType: "VARR",
+              name: "Delegation",
+              args: [],
+            },
+            {
+              argType: "VARR",
+              name: "ServiceRequester",
+              args: [],
+            },
+            {
+              argType: "VARR",
+              name: "RejectedContract",
+              args: [],
+            },
+          ],
+        },
+      ],
+    },
+  },
+];
+
+const initialState: ProcessInputState = {
+  process: JSON.stringify(sampleProcesses[0], null, 2),
 };
 
 export const processInputSlice = createSlice({
@@ -39,11 +148,21 @@ export const processInputSlice = createSlice({
     resetProcessInput: (state) => {
       state = initialState;
     },
+    selectFirstProcess: (state) => {
+      state.process = JSON.stringify(sampleProcesses[0], null, 2);
+    },
+    selectSecondProcess: (state) => {
+      state.process = JSON.stringify(sampleProcesses[1], null, 2);
+    },
   },
 });
 
-export const { updateProcessInput, resetProcessInput } =
-  processInputSlice.actions;
+export const {
+  updateProcessInput,
+  resetProcessInput,
+  selectFirstProcess,
+  selectSecondProcess,
+} = processInputSlice.actions;
 
 export const selectProcessInput = (state: AppState) =>
   state.processInput.process;

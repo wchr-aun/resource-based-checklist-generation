@@ -2,7 +2,7 @@ package com.github.wchraun.checklist
 
 object ComponentType extends Enumeration {
   type ComponentType = Value
-  val INPUT, PARAGRAPH, DROPDOWN, CHOICES, CHECKBOXES, DATE, TIME, UPLOAD, HEADER = Value
+  val INPUT, PARAGRAPH, DROPDOWN, CHOICES, CHECKBOXES, DATE, TIME, UPLOAD, HEADER, TAB = Value
 }
 
 final object ArgType extends Enumeration {

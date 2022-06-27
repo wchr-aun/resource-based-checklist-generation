@@ -23,7 +23,7 @@ function InputComponent(props: Props) {
   const dispatch = useAppDispatch();
 
   return (
-    <div className="p-5 border border-gray-300 rounded-lg bg-gray-100">
+    <div className="p-5 border border-gray-300 rounded-lg bg-gray-50">
       {inputs.map((info, i) => (
         <div className="px-5 py-1" key={i}>
           <div className="font-bold text-lg mb-2 flex justify-between">

@@ -9,8 +9,8 @@ function Choices(props: Props) {
   const { options, value = "", onUpdateValue = () => {}, className } = props;
   return (
     <div className={`${className} space-y-2 p-2`}>
-      {options.map((option) => (
-        <div className="flex items-center">
+      {options.map((option, i) => (
+        <div className="flex items-center" key={i}>
           <input
             type="radio"
             value=""
