@@ -41,6 +41,8 @@ function DependencyModal(props: Props) {
       .flatMap((d) => d.children)
   );
   const updateInputDependency = (value: string) => {
+    if (value === inputDependency) return;
+    setInputDependencyField("");
     setInputDependency(value);
     setInputDependencyFields(
       inputDependencies
@@ -49,6 +51,7 @@ function DependencyModal(props: Props) {
     );
   };
   const updateOutputDependency = (value: string) => {
+    if (value === outputDependency) return;
     setOutputDependency(value);
     setOutputDependencyFields(
       outputDependencies

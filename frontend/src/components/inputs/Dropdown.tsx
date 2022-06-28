@@ -53,12 +53,12 @@ function Dropdown(props: Props) {
         {show && (
           <div className="z-10 origin-top-left w-full absolute mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
             <div className="py-1">
-              {options.map((v, i) => {
+              {[name].concat(options).map((v, i) => {
                 return (
                   <div
                     className="text-gray-700 block px-4 py-2 text-sm cursor-pointer hover:bg-gray-200"
                     key={`test ${i}`}
-                    onClick={() => updateValue(v)}
+                    onClick={() => updateValue(v !== name ? v : "")}
                   >
                     {v}
                   </div>

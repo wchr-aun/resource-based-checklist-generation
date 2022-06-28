@@ -7,8 +7,10 @@ import Time from "@components/inputs/Time";
 import {
   faCircleDot,
   faGear,
+  faLink,
   faSquareCaretDown,
   faSquareCheck,
+  faUnlink,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Component, COMPONENT_TYPES } from "@models";
@@ -121,13 +123,20 @@ const FormInputDetails: NextPage<Props> = (props) => {
           </div>
         )}
 
-      <div className="text-xs justify-end font-medium text-gray-500 flex">
+      <div className="text-sm justify-end font-bold text-gray-700 flex">
         <div
           className="cursor-pointer flex space-x-1"
           onClick={() => onClickSetupDependency(node)}
         >
           <div>Dependency Setup</div>
-          <FontAwesomeIcon icon={faGear} />
+          <FontAwesomeIcon
+            icon={
+              node.inputDependencyField && node.outputDependencyField
+                ? faLink
+                : faUnlink
+            }
+            className="mt-1"
+          />
         </div>
       </div>
     </div>
