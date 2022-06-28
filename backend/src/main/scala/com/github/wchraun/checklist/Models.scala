@@ -39,9 +39,10 @@ final case class Component(
                             outputDependencyField: String,
                             children: Array[Component]
                           )
-
+final case class DependencyDetails(name: String, children: Array[String])
 final case class CreateTemplateResponse(
                                          processName: String,
                                          information: Array[Information],
                                          components: Array[Component]
                                        )
+final case class GetDependencyResponse(inputDependencies: Array[DependencyDetails], outputDependencies: Array[DependencyDetails])

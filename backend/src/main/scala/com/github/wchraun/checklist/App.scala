@@ -32,8 +32,10 @@ object App {
     val rootBehavior = Behaviors.setup[Nothing] { context =>
       val checklistActor = context.spawn(Checklist(), "ChecklistActor")
       val templateActor = context.spawn(Template(), "TemplateActor")
+      val dependencyActor = context.spawn(Dependency(), "DependencyActor")
       context.watch(checklistActor)
       context.watch(templateActor)
+      context.watch(dependencyActor)
 
       val timeout = Timeout.create(context.system.settings.config.getDuration("my-app.routes.ask-timeout"))
 
@@ -42,7 +44,8 @@ object App {
       val routes = concat(
         new DefaultRoutes().routes,
         new ChecklistRoutes(checklistActor)(context.system, timeout).checklistRoutes,
-        new TemplateRoutes(templateActor)(context.system, timeout, database).templateRoutes
+        new TemplateRoutes(templateActor)(context.system, timeout, database).templateRoutes,
+        new DependencyRoutes(dependencyActor)(context.system, timeout, database).dependencyRoutes
       )
       startHttpServer(routes)(context.system)
 
