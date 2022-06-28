@@ -64,3 +64,13 @@ export enum COMPONENT_TYPES {
   TIME = "TIME",
   TAB = "TAB",
 }
+
+export interface DependencyDetails {
+  name: string;
+  children: string[];
+}
+
+export interface Dependencies {
+  inputDependencies: DependencyDetails[];
+  outputDependencies: DependencyDetails[];
+}

@@ -1,15 +1,15 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 
-import counterReducer from "@features/counter/counterSlice";
 import formReducer from "@features/form/formSlice";
 import processInputReducer from "@features/processInput/processSlice";
+import dependenciesReducer from "@features/form/dependencySlice";
 
 export function makeStore() {
   return configureStore({
     reducer: {
-      counter: counterReducer,
       form: formReducer,
       processInput: processInputReducer,
+      dependencies: dependenciesReducer,
     },
   });
 }

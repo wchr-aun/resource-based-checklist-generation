@@ -8,53 +8,21 @@ import store from "@app/store";
 import { useAppDispatch } from "@app/hooks";
 import { setForm } from "@features/form/formSlice";
 import Router from "next/router";
-
-const defaultTemplate = {
-  name: "AwardContract",
-  inputs: [
-    {
-      argType: "VARR",
-      name: "AcceptedContract",
-      args: [],
-    },
-    {
-      argType: "VARR",
-      name: "ServiceProvider",
-      args: [],
-    },
-  ],
-  output: {
-    argType: "VARR",
-    name: "OpenContract",
-    args: [],
-  },
-};
-
-const jsonValidation = (s: string) => {
-  try {
-    JSON.parse(s);
-    return s;
-  } catch {
-    return JSON.stringify(defaultTemplate);
-  }
-};
+import { getTemplate } from "api/template";
+import { getDependencies } from "api/dependency";
+import { setDependencies } from "@features/form/dependencySlice";
 
 const Home: NextPage = () => {
   const dispatch = useAppDispatch();
   const callApi = async () => {
-    const res = await fetch(`${process.env.BACKEND_URL}/template`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: jsonValidation(store.getState().processInput.process),
-    }).catch((error) => {
-      console.log(error);
-    });
-    if (!res) return {};
-    const templateResponse = await res.json();
-
+    const templateResponse = await getTemplate(
+      store.getState().processInput.process
+    );
+    const dependencyResponse = await getDependencies(
+      store.getState().processInput.process
+    );
     dispatch(setForm(templateResponse));
+    dispatch(setDependencies(dependencyResponse));
     Router.push("/canvas");
   };
 

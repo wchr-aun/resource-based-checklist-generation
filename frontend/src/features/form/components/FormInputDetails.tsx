@@ -23,6 +23,7 @@ interface Props {
   onEditableChange: () => void;
   onSelectFunction: (value: string) => void;
   onUpdateChoice: (value: string) => void;
+  onClickSetupDependency: (node: Component) => void;
 }
 
 const FormInputDetails: NextPage<Props> = (props) => {
@@ -34,6 +35,7 @@ const FormInputDetails: NextPage<Props> = (props) => {
     onEditableChange,
     onSelectFunction,
     onUpdateChoice,
+    onClickSetupDependency,
   } = props;
   return (
     <div className="flex-col space-y-1 w-full">
@@ -111,17 +113,22 @@ const FormInputDetails: NextPage<Props> = (props) => {
               checked={node.required}
               onChecked={onRequiredChange}
             />
-            <Checkbox
+            {/* <Checkbox
               name="Editable"
               checked={node.editable}
               onChecked={onEditableChange}
-            />
+            /> */}
           </div>
         )}
 
-      <div className="text-xs justify-end font-medium text-gray-500 flex space-x-1">
-        <div>Dependency Setup</div>
-        <FontAwesomeIcon icon={faGear} />
+      <div className="text-xs justify-end font-medium text-gray-500 flex">
+        <div
+          className="cursor-pointer flex space-x-1"
+          onClick={() => onClickSetupDependency(node)}
+        >
+          <div>Dependency Setup</div>
+          <FontAwesomeIcon icon={faGear} />
+        </div>
       </div>
     </div>
   );

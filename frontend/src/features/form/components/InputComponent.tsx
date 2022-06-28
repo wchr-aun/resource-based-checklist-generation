@@ -33,7 +33,6 @@ function InputComponent(props: Props) {
               onClick={() => dispatch(toggleHideAllInput(i))}
             >
               <span className="text-sm text-gray-500 flex self-center">
-                {/* ({details.inputDependency} - {details.inputDependencyField}) */}
                 {info.details.every((v) => v.hide) ? "Visible All" : "Hide All"}
               </span>
               <FontAwesomeIcon
@@ -62,10 +61,13 @@ function InputComponent(props: Props) {
                   }
                 />
               </div>
-              <Input disabled={true} className="w-8/12" />
+              <Input
+                disabled={true}
+                className={`${details.hide ? "line-through" : ""} w-8/12`}
+                placeholder={`Linked to { ${details.inputDependency} - ${details.inputDependencyField} } from the workflow`}
+              />
               <div className="flex space-x-2 w-2/12 justify-end self-center">
                 <span className="text-sm text-gray-500 flex self-center">
-                  {/* ({details.inputDependency} - {details.inputDependencyField}) */}
                   ({details.hide ? "Hidden" : "Visible"})
                 </span>
                 <div className="cursor-pointer text-gray-600">

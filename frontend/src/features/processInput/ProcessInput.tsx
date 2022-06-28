@@ -1,7 +1,12 @@
 import { useAppDispatch, useAppSelector } from "@app/hooks";
 import Paragraph from "@components/inputs/Paragraph";
 import type { NextPage } from "next";
-import { selectFirstProcess, selectProcessInput, selectSecondProcess, updateProcessInput,  } from "./processSlice";
+import {
+  selectFirstProcess,
+  selectProcessInput,
+  selectSecondProcess,
+  updateProcessInput,
+} from "./processSlice";
 
 const jsonValidation = (s: string) => {
   try {
@@ -21,10 +26,16 @@ const ProcessInput: NextPage = () => {
         <div className="text-xl font-bold underline flex self-center">
           Process Input:
         </div>
-        <button className="p-2 border rounded-lg bg-white border-gray-300" onClick={() => dispatch(selectFirstProcess())}>
+        <button
+          className="p-2 border rounded-lg bg-white border-gray-300"
+          onClick={() => dispatch(selectFirstProcess())}
+        >
           Sample 1
         </button>
-        <button className="p-2 border rounded-lg bg-white border-gray-300" onClick={() => dispatch(selectSecondProcess())}>
+        <button
+          className="p-2 border rounded-lg bg-white border-gray-300"
+          onClick={() => dispatch(selectSecondProcess())}
+        >
           Sample 2
         </button>
       </div>
