@@ -24,6 +24,8 @@ object JsonFormats  {
   implicit val detailsJsonFormat = jsonFormat6(Details)
   implicit val informationJsonFormat = jsonFormat3(Information)
   implicit val componentJsonFormat: RootJsonFormat[Component] = rootFormat(lazyFormat(jsonFormat13(Component)))
+  implicit val dependencyDetailsJsonFormat = jsonFormat2(DependencyDetails)
 
   implicit val createTemplateResponseJsonFormat = jsonFormat3(CreateTemplateResponse)
+  implicit val getDependencyResponseJsonFormat = jsonFormat2(GetDependencyResponse)
 }

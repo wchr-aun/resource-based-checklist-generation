@@ -35,7 +35,7 @@ object Template {
     def dfsInputs(child: Arg): Array[Information] = {
       Array(
         Information(child.name, 0, db.getDataModel(child.name).zipWithIndex
-          .map{case((table, field), i) => Details(field, i, "", table, field, false)})
+          .map{case((_, field), i) => Details(field, i, "", child.name, field, false)})
       ) ++ child.args.get.flatMap(v => dfsInputs(v))
     }
 
@@ -60,8 +60,8 @@ object Template {
         Array[Component](
           Component(index, child.name, "", ComponentType.HEADER, false, false, "", "", "", "", "", "",
             db.getDataModel(child.name).zipWithIndex
-              .map{case((table, field), i) =>
-                Component(i, field, "", ComponentType.INPUT, true, true, "", "", "", "", table, field, Array.empty[Component])
+              .map{case((_, field), i) =>
+                Component(i, field, "", ComponentType.INPUT, true, true, "", "", "", "", child.name, field, Array.empty[Component])
               }
           )
         )
