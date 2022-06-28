@@ -16,7 +16,7 @@ const Date: NextPage<Props> = (props) => {
   } = props;
   return (
     <input
-      className={`${className} appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-sm leading-tight focus:outline-none focus:bg-white focus:border-teal-500`}
+      className={`${className} appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-sm leading-tight focus:outline-none focus:bg-white focus:border-indigo-500`}
       disabled={disabled}
       type="date"
       value={value}

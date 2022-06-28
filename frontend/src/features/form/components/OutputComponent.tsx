@@ -25,6 +25,7 @@ interface Props {
   onSelectFunction: (prefix: string, value: string) => void;
   onUpdateChoice: (prefix: string, value: string) => void;
   triggerCollapseAll: MutableRefObject<() => void>;
+  onClickSetupDependency: (prefix: string, node: Component) => void;
 }
 
 function OutputComponent(props: Props) {
@@ -44,6 +45,7 @@ function OutputComponent(props: Props) {
     onSelectFunction,
     onUpdateChoice,
     triggerCollapseAll,
+    onClickSetupDependency,
   } = props;
 
   const [collapsible, setCollapsible] = useState<Record<string, boolean>>({});
@@ -72,7 +74,7 @@ function OutputComponent(props: Props) {
         <div
           key={prefix}
           className={`p-5 mb-5 border border-gray-300 rounded-md ${
-            key.split(".").length % 2 ? "bg-white" : "bg-gray-100"
+            key.split(".").length % 2 ? "bg-white" : "bg-gray-50"
           }`}
         >
           <div className="cursor-pointer flex space-x-1">
@@ -144,6 +146,9 @@ function OutputComponent(props: Props) {
             onEditableChange={() => onEditableChange(prefix, !parent.editable)}
             onSelectFunction={(value) => onSelectFunction(prefix, value)}
             onUpdateChoice={(value) => onUpdateChoice(prefix, value)}
+            onClickSetupDependency={(node) =>
+              onClickSetupDependency(prefix, node)
+            }
           />
         </div>
       );

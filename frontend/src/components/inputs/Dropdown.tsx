@@ -43,7 +43,7 @@ function Dropdown(props: Props) {
       <div className={`relative inline-block ${className}`} ref={catMenu}>
         <button
           type="button"
-          className={`${className} py-2 px-4 inline-flex text-sm justify-center rounded-md border border-gray-300 shadow-sm bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-gray-100 focus:ring-teal-500 font-semibold`}
+          className={`${className} py-2 px-4 inline-flex text-sm justify-center rounded-md border border-gray-300 shadow-sm bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-gray-100 focus:ring-indigo-500 font-semibold`}
           onClick={() => setShow(!show)}
         >
           {options.find((v) => v === value) || name}

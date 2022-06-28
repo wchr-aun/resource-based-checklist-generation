@@ -11,14 +11,19 @@ function Checkbox(props: Props) {
   const { name, checked = false, onChecked = () => {} } = props;
   return (
     <div className="felx self-center">
-      <div className="flex items-center">
+      <div
+        className="flex items-center cursor-pointer"
+        onClick={() => onChecked()}
+      >
         <input
           type="checkbox"
           checked={checked}
           className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
           onChange={() => onChecked()}
         />
-        <label className="ml-2 text-sm font-medium text-gray-900">{name}</label>
+        <label className="ml-2 text-sm font-medium text-gray-900 cursor-pointer">
+          {name}
+        </label>
       </div>
     </div>
   );

@@ -210,6 +210,30 @@ export const formSlice = createSlice({
       const { name, infoIndex, detailsIndex } = action.payload;
       state.information[infoIndex].details[detailsIndex].name = name;
     },
+    updateDependencies: (
+      state,
+      action: PayloadAction<{
+        prefix: string;
+        inputDependency: string;
+        inputDependencyField: string;
+        outputDependency: string;
+        outputDependencyField: string;
+      }>
+    ) => {
+      const {
+        prefix,
+        inputDependency,
+        inputDependencyField,
+        outputDependency,
+        outputDependencyField,
+      } = action.payload;
+      const node = getNode(prefix, state.components);
+      if (!node) return;
+      node.inputDependency = inputDependency;
+      node.inputDependencyField = inputDependencyField;
+      node.outputDependency = outputDependency;
+      node.outputDependencyField = outputDependencyField;
+    },
     clearComponentChildren: (state, action: PayloadAction<string>) => {
       const prefix = action.payload;
       const node = getNode(prefix, state.components);
@@ -217,7 +241,10 @@ export const formSlice = createSlice({
       node.children = [];
     },
     resetForm: (state) => {
-      state = initialState;
+      state.components = [];
+      state.information = [];
+      state.processName = "";
+      state.originalProcessName = "";
     },
   },
 });
@@ -233,6 +260,7 @@ export const {
   toggleHideInput,
   toggleHideAllInput,
   updateInputName,
+  updateDependencies,
   clearComponentChildren,
   resetForm,
   reorderComponents,

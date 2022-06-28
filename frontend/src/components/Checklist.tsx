@@ -105,13 +105,29 @@ function Checklist(props: Props) {
           component.componentType !== COMPONENT_TYPES.TAB && (
             <div className="flex space-y-1 space-x-2">
               <div className="font-medium w-2/12 flex justify-end self-center">
-                {component.name || component.originalName}:
+                {component.name || component.originalName}
+                {component.required ? (
+                  <span className="text-red-500 ml-1">*</span>
+                ) : (
+                  ""
+                )}
               </div>
               {component.componentType === COMPONENT_TYPES.INPUT && (
-                <Input className="w-10/12" disabled={!component.editable} />
+                <Input
+                  className="w-10/12"
+                  disabled={!!component.inputDependencyField}
+                  placeholder={
+                    !component.inputDependencyField
+                      ? ""
+                      : `Linked to { ${component.inputDependency} - ${component.inputDependencyField} }`
+                  }
+                />
               )}
               {component.componentType === COMPONENT_TYPES.PARAGRAPH && (
-                <Paragraph className="w-10/12" disabled={!component.editable} />
+                <Paragraph
+                  className="w-10/12"
+                  disabled={!!component.inputDependencyField}
+                />
               )}
               {component.componentType === COMPONENT_TYPES.DROPDOWN && (
                 <Dropdown

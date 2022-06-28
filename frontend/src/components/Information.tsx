@@ -16,11 +16,11 @@ function Information(props: Props) {
             {[...info.details]
               .sort((a, b) => a.order - b.order)
               .map(
-                (details) =>
+                (details, j) =>
                   !details.hide && (
-                    <div className="flex space-x-2 mb-3" key={details.name}>
+                    <div className="flex space-x-2 mb-3" key={j}>
                       <div className="font-semibold w-2/12 flex justify-end self-center">
-                        {details.name}:
+                        {details.name}
                       </div>
                       <div className="w-10/12 text-left border rounded-md p-2 text-sm">
                         {details.value || "-"}

@@ -9,7 +9,7 @@ function ChecklistCreate(props: Props) {
   const { onClickCreateTemplate } = props;
   return (
     <div>
-      {/* <div className="font-bold underline mb-5 text-teal-700">
+      {/* <div className="font-bold underline mb-5 text-indigo-700">
         Start A Checklist
       </div> */}
       <div className="flex space-x-5">
