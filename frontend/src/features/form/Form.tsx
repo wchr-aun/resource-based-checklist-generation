@@ -47,6 +47,7 @@ function FormTemplate(props: Props) {
 
   const [selectedNode, setSelectedNode] = useState<Component>({} as Component);
   const [selectedPrefix, setSelectedPrefix] = useState("root");
+  const [focusedComponent, setFocusedComponent] = useState(0);
 
   const submitForm = () => {
     alert("not implemented");
@@ -92,7 +93,12 @@ function FormTemplate(props: Props) {
 
   return (
     <div>
-      <div className="focus-within:pl-2 focus-within:bg-indigo-500 focus-within:border focus-within:rounded-lg">
+      <div
+        className={
+          focusedComponent === 1 ? "pl-2 bg-indigo-500 border rounded-lg" : ""
+        }
+        onFocus={() => setFocusedComponent(1)}
+      >
         <Input
           autoFocus={true}
           value={processName}
@@ -101,12 +107,32 @@ function FormTemplate(props: Props) {
           onChange={(name) => dispatch(setProcessName(name))}
         />
       </div>
+      {focusedComponent === 1 && (
+        <div className="text-sm ml-4 italic text-right uppercase">
+          Name of the form
+        </div>
+      )}
       <Divider />
-      <div className="focus-within:pl-2 focus-within:bg-indigo-500 focus-within:border focus-within:rounded-lg">
+      <div
+        className={
+          focusedComponent === 2 ? "pl-2 bg-indigo-500 border rounded-lg" : ""
+        }
+        onClick={() => setFocusedComponent(2)}
+      >
         <InputComponent inputs={information} />
       </div>
+      {focusedComponent === 2 && (
+        <div className="text-sm ml-4 italic text-right uppercase">
+          Information from the workflow
+        </div>
+      )}
       <Divider />
-      <div className="focus-within:pl-2 focus-within:bg-indigo-500 focus-within:border focus-within:rounded-lg">
+      <div
+        className={
+          focusedComponent === 3 ? "pl-2 bg-indigo-500 border rounded-lg" : ""
+        }
+        onClick={() => setFocusedComponent(3)}
+      >
         <OutputComponent
           triggerCollapseAll={triggerCollapseAll}
           components={components}
@@ -176,6 +202,11 @@ function FormTemplate(props: Props) {
           onClickSetupDependency={setupDependency}
         />
       </div>
+      {focusedComponent === 3 && (
+        <div className="text-sm ml-4 italic text-right uppercase">
+          Form Adjustment
+        </div>
+      )}
       <div className="flex justify-between bg-white border mt-2 px-5 pb-5">
         <div className="space-x-2">
           <Link href="/preview">
