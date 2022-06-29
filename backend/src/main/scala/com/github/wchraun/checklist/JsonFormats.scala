@@ -1,7 +1,6 @@
 package com.github.wchraun.checklist
 
 import spray.json.{DefaultJsonProtocol, DeserializationException, JsString, JsValue, RootJsonFormat}
-
 object JsonFormats  {
   import DefaultJsonProtocol._
 
@@ -28,4 +27,7 @@ object JsonFormats  {
 
   implicit val createTemplateResponseJsonFormat = jsonFormat3(CreateTemplateResponse)
   implicit val getDependencyResponseJsonFormat = jsonFormat2(GetDependencyResponse)
+  implicit val saveTemplateResponseJsonFormat = jsonFormat1(SaveTemplateResponse)
+  implicit val templateResponseJsonFormat = jsonFormat4(TemplateResponse)
+  implicit val getTemplatesResponseJsonFormat = jsonFormat1(GetTemplatesResponse)
 }
