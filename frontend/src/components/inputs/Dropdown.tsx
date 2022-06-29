@@ -7,7 +7,7 @@ interface Props {
   options: string[];
   value?: string;
   prefix?: string;
-  onUpdateValue?: (prefix: string, v: string) => void;
+  onUpdateValue?: (prefix: string, v: string, i: number) => void;
   className?: string;
 }
 
@@ -32,9 +32,9 @@ function Dropdown(props: Props) {
     }
   };
 
-  const updateValue = (v: string) => {
+  const updateValue = (v: string, i: number) => {
     setShow(!show);
-    onUpdateValue(prefix, v);
+    onUpdateValue(prefix, v, i);
   };
   document.addEventListener("mousedown", closeOpenMenus);
 
@@ -49,16 +49,15 @@ function Dropdown(props: Props) {
           {options.find((v) => v === value) || name}
           <FontAwesomeIcon className="pl-2 pt-1" icon={faAngleDown} size="sm" />
         </button>
-
         {show && (
-          <div className="z-10 origin-top-left w-full absolute mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <div className="w-full min-w-max z-10 origin-top-left absolute mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
             <div className="py-1">
               {[name].concat(options).map((v, i) => {
                 return (
                   <div
                     className="text-gray-700 block px-4 py-2 text-sm cursor-pointer hover:bg-gray-200"
                     key={`test ${i}`}
-                    onClick={() => updateValue(v !== name ? v : "")}
+                    onClick={() => updateValue(v !== name ? v : "", i)}
                   >
                     {v}
                   </div>

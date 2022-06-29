@@ -28,6 +28,10 @@ import {
   selectInputDependencies,
   selectOutputDependencies,
 } from "./dependencySlice";
+import { saveTemplate } from "api/template";
+import Router from "next/router";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   originalTemplate: Form;
@@ -42,16 +46,29 @@ function FormTemplate(props: Props) {
   const originalProcessName = useAppSelector(selectOriginalProcessName);
   const triggerCollapseAll = useRef(() => {});
   const openModal = useRef((v: boolean) => {});
+  const successModal = useRef((v: boolean) => {});
   const inputDependencies = useAppSelector(selectInputDependencies);
   const outputDependencies = useAppSelector(selectOutputDependencies);
+
+  const [savedTemplateId, setSavedTemplateId] = useState(-1);
 
   const [selectedNode, setSelectedNode] = useState<Component>({} as Component);
   const [selectedPrefix, setSelectedPrefix] = useState("root");
   const [focusedComponent, setFocusedComponent] = useState(0);
 
-  const submitForm = () => {
-    alert("not implemented");
-    console.log(components, information);
+  const submitForm = async () => {
+    const res = await saveTemplate({
+      processName,
+      components,
+      information,
+    });
+    successModal.current(true);
+    setSavedTemplateId(res.templateId);
+  };
+
+  const onCloseSuccessModal = () => {
+    Router.push("/");
+    successModal.current(false);
   };
 
   const resetForm = () => {
@@ -245,6 +262,30 @@ function FormTemplate(props: Props) {
           />
         }
         openModal={openModal}
+      />
+
+      <Modal
+        size="w-1/4"
+        body={
+          <div>
+            <div className="text-xl font-bold text-teal-600 uppercase">
+              Save Completed!
+              <FontAwesomeIcon icon={faCircleCheck} className="ml-2" />
+            </div>
+            <Divider />
+            <div>Your Template#{savedTemplateId} has been saved.</div>
+            <Divider />
+            <div className="flex justify-center">
+              <button
+                className="border border-teal-600 rounded-lg px-3 py-2 text-teal-600 hover:bg-teal-50 hover:text-teal-700 hover:border-teal-700"
+                onClick={() => onCloseSuccessModal()}
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        }
+        openModal={successModal}
       />
     </div>
   );

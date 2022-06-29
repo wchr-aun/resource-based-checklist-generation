@@ -23,7 +23,6 @@ export interface Component extends BaseComponent {
 export interface Details {
   name: string;
   order: number;
-  value: string;
   inputDependency: string;
   inputDependencyField: string;
   hide: boolean;
@@ -73,4 +72,11 @@ export interface DependencyDetails {
 export interface Dependencies {
   inputDependencies: DependencyDetails[];
   outputDependencies: DependencyDetails[];
+}
+
+export interface Template {
+  id: number;
+  name: string;
+  created: Date;
+  updated: Date;
 }
