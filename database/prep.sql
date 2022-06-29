@@ -86,3 +86,8 @@ INSERT INTO datamodel VALUES('HealthcareActor', 'services', 'name');
 INSERT INTO datamodel VALUES('HealthcareActor', 'services', 'surname');
 INSERT INTO datamodel VALUES('HealthcareActor', 'services', 'dob');
 INSERT INTO datamodel VALUES('HealthcareActor', 'services', 'title');
+
+CREATE TABLE templates (id SERIAL UNIQUE, "name" VARCHAR NOT NULL, created TIMESTAMP NOT NULL, updated TIMESTAMP NOT NULL);
+CREATE TABLE components (id SERIAL UNIQUE, template_id INTEGER REFERENCES templates(id) NOT NULL, input_dep VARCHAR, input_dep_field VARCHAR, output_dep VARCHAR, output_dep_field VARCHAR, "order" INTEGER NOT NULL, "name" VARCHAR NOT NULL, type VARCHAR NOT NULL, required BOOLEAN NOT NULL, validation VARCHAR, function VARCHAR, parent INTEGER REFERENCES components(id));
+CREATE TABLE input_information_parent (id SERIAL UNIQUE, name VARCHAR NOT NULL, "order" INTEGER NOT NULL, template_id INTEGER NOT NULL REFERENCES templates(id));
+CREATE TABLE input_information_child (id SERIAL UNIQUE, name VARCHAR NOT NULL, "order" INTEGER NOT NULL, input_dep VARCHAR, input_dep_field VARCHAR, hide BOOLEAN NOT NULL, parent_id INTEGER NOT NULL REFERENCES input_information_parent(id));

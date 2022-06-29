@@ -12,6 +12,7 @@ final object ArgType extends Enumeration {
 
 import com.github.wchraun.checklist.ArgType.ArgType
 import com.github.wchraun.checklist.ComponentType.ComponentType
+import java.util.Date
 
 final case class StartChecklistArg(templateId: String)
 
@@ -46,3 +47,6 @@ final case class CreateTemplateResponse(
                                          components: Array[Component]
                                        )
 final case class GetDependencyResponse(inputDependencies: Array[DependencyDetails], outputDependencies: Array[DependencyDetails])
+final case class SaveTemplateResponse(templateId: Int)
+final case class TemplateResponse(id: Int, name: String, created: String, updated: String)
+final case class GetTemplatesResponse(templates: Array[TemplateResponse])

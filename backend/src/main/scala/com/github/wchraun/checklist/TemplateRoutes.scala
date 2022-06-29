@@ -20,13 +20,13 @@ class TemplateRoutes(template: ActorRef[Template.Command])(implicit val system: 
 
   def getTemplate(id: String): Future[String] =
     template.ask(GetTemplate(id, _))
-  def getTemplates(): Future[String] =
-    template.ask(GetTemplates)
+  def getTemplates(): Future[GetTemplatesResponse] =
+    template.ask(GetTemplates(_, database))
   def createTemplate(process: Process): Future[CreateTemplateResponse] =
     template.ask(CreateTemplate(process, _, database))
 
-  def saveTemplate(id: String): Future[String] =
-    template.ask(SaveTemplate(id, _))
+  def saveTemplate(temp: CreateTemplateResponse): Future[SaveTemplateResponse] =
+    template.ask(SaveTemplate(temp, _, database))
 
   private val cors = new CORSHandler {}
 
@@ -43,12 +43,21 @@ class TemplateRoutes(template: ActorRef[Template.Command])(implicit val system: 
                 }
               )
             },
-            post {
+            put {
               cors.corsHandler(
                 entity(as[Process]) { process =>
                   onSuccess(createTemplate(process)) { response => {
                     complete(response)
                   }}
+                }
+              )
+            },
+            post {
+              cors.corsHandler(
+                entity(as[CreateTemplateResponse]) {temp =>
+                  onSuccess(saveTemplate(temp)) { response =>
+                    complete(StatusCodes.Accepted, response)
+                  }
                 }
               )
             },
@@ -68,15 +77,15 @@ class TemplateRoutes(template: ActorRef[Template.Command])(implicit val system: 
                 }
               )
             },
-            post {
-              cors.corsHandler(
-                rejectEmptyResponse {
-                  onSuccess(saveTemplate(checklistId)) { response =>
-                    complete(StatusCodes.Accepted, response)
-                  }
-                }
-              )
-            },
+//            post {
+//              cors.corsHandler(
+//                entity(as[CreateTemplateResponse]) {temp =>
+//                  onSuccess(saveTemplate(temp)) { response =>
+//                    complete(StatusCodes.Accepted, response)
+//                  }
+//                }
+//              )
+//            },
             options {
               cors.corsHandler(complete(StatusCodes.OK))
             }
