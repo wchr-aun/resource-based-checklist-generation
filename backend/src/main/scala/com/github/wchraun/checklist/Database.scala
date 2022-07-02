@@ -89,16 +89,38 @@ class Database {
     rs.getInt("id")
   }
 
-  def createInputInformationChildren(children: Array[Details], parentId: Int) = {
-    val sql = "INSERT INTO input_information_child (name, \"order\", input_dep, input_dep_field, hide, parent_id) VALUES(?, ?, ?, ?, ?, ?);" * children.length
+  def createInputInformationChildren(children: Array[InputDetails], parentId: Int) = {
+    val sql = "INSERT INTO input_information_child (name, \"order\", input_dep, input_dep_field, hide, parent_id) VALUES" +
+      "(?, ?, ?, ?, ?, ?)," * (children.length - 1) + "(?, ?, ?, ?, ?, ?)" +
+      "RETURNING id;"
     val preparedStatement = connection.prepareStatement(sql)
+    val noOfColumns = 6
     children.zipWithIndex.foreach{ case(child, i) => {
-      preparedStatement.setString(1 + i * 6, child.name)
-      preparedStatement.setInt(2 + i * 6, child.order)
-      preparedStatement.setString(3 + i * 6, child.inputDependency)
-      preparedStatement.setString(4 + i * 6, child.inputDependencyField)
-      preparedStatement.setBoolean(5 + i * 6, child.hide)
-      preparedStatement.setInt(6 + i * 6, parentId)
+      preparedStatement.setString(1 + i * noOfColumns, child.name)
+      preparedStatement.setInt(2 + i * noOfColumns, child.order)
+      preparedStatement.setString(3 + i * noOfColumns, child.inputDependency)
+      preparedStatement.setString(4 + i * noOfColumns, child.inputDependencyField)
+      preparedStatement.setBoolean(5 + i * noOfColumns, child.hide)
+      preparedStatement.setInt(6 + i * noOfColumns, parentId)
+    }}
+    val rs = preparedStatement.executeQuery()
+    var ids = Array.empty[Int]
+    while(rs.next) {
+      ids = ids :+ rs.getInt("id")
+    }
+    ids
+  }
+
+  def createInputInformationQuery(values: Array[(InputDetails, Int)]): Unit = {
+    val sql = "INSERT INTO input_information_child_query (foreign_key, query_table, query_field, details_id) VALUES" +
+      "(?, ? ,?, ?)," * (values.length - 1) + "(?, ?, ?, ?);"
+    val preparedStatement = connection.prepareStatement(sql)
+    val noOfColumns = 4
+    values.zipWithIndex.foreach{ case((child, id), i) => {
+      preparedStatement.setString(1 + i * noOfColumns, child.inputDependencyField)
+      preparedStatement.setString(2 + i * noOfColumns, child.queryTable)
+      preparedStatement.setString(3 + i * noOfColumns, child.queryField)
+      preparedStatement.setInt(4 + i * noOfColumns, id)
     }}
     preparedStatement.executeUpdate
     ()
@@ -118,4 +140,106 @@ class Database {
     }
     result
   }
+
+  def getForeignTable(table: String, field: String) = {
+    val sql = "SELECT ccu.table_name AS foreign_table_name, ccu.column_name AS foreign_column_name FROM information_schema.table_constraints AS tc JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name AND tc.table_schema = kcu.table_schema JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name AND ccu.table_schema = tc.table_schema JOIN datamodel AS dm ON dm.table = tc.table_name WHERE tc.constraint_type = 'FOREIGN KEY' AND dm.name=? AND kcu.column_name=? LIMIT 1;"
+    val preparedStatement = connection.prepareStatement(sql)
+    preparedStatement.setString(1, table)
+    preparedStatement.setString(2, field)
+    val rs = preparedStatement.executeQuery()
+    var result = ("", "")
+    while (rs.next) {
+      result = (rs.getString("foreign_table_name"), rs.getString("foreign_column_name"))
+    }
+    result
+  }
+
+  def getTableFields(table: String) = {
+    val sql = "SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema='public' AND is_updatable='YES' AND table_name=?;"
+    val preparedStatement = connection.prepareStatement(sql)
+    preparedStatement.setString(1, table)
+    val rs = preparedStatement.executeQuery()
+    var result = Array.empty[String]
+    while (rs.next) {
+      result = result :+ rs.getString("column_name")
+    }
+    result
+  }
+
+  def getInputInformation(id: Int) = {
+    val sql = "SELECT p.name AS parent_name, p.\"order\" AS parent_order, c.name AS child_name, c.\"order\" AS child_order, input_dep, input_dep_field, hide, foreign_key, query_table, query_field  FROM input_information_parent AS p LEFT JOIN input_information_child AS c ON p.id=c.parent_id LEFT JOIN input_information_child_query AS q ON c.id=q.details_id WHERE template_id=?;"
+    val preparedStatement = connection.prepareStatement(sql)
+    preparedStatement.setInt(1, id)
+    val rs = preparedStatement.executeQuery()
+    var result = Array.empty[InputInformation]
+    var children = Array.empty[(Int, InputDetails)]
+    while(rs.next) {
+      result = result :+ InputInformation(
+        rs.getString("parent_name"),
+        rs.getInt("parent_order"),
+        Array.empty[InputDetails]
+      )
+      result = result.distinctBy(_.order)
+      children = children :+ (
+        rs.getInt("parent_order"),
+        InputDetails(
+          rs.getString("child_name"),
+          rs.getInt("child_order"),
+          rs.getString("input_dep"),
+          rs.getString("input_dep_field"),
+          rs.getBoolean("hide"),
+          Option(rs.getString("foreign_key")).nonEmpty,
+          Option(rs.getString("foreign_key")).getOrElse(""),
+          Option(rs.getString("query_table")).getOrElse(""),
+          Option(rs.getString("query_field")).getOrElse("")
+        )
+      )
+    }
+    println(result.mkString(","))
+    result.map(r => InputInformation(r.name, r.order, children.filter(_._1 == r.order).map(_._2).sortBy(_.order))).sortBy(_.order)
+  }
+
+  def getChecklistName(id: Int) = {
+    val sql = "SELECT name FROM templates WHERE id=?"
+    val preparedStatement = connection.prepareStatement(sql)
+    preparedStatement.setInt(1, id)
+    val rs = preparedStatement.executeQuery()
+    var result = ""
+    while (rs.next) {
+      result = rs.getString("name")
+    }
+    result
+  }
+
+  def getComponents(id: Int) = {
+    val sql = "SELECT * FROM components WHERE template_id=?;"
+    val preparedStatement = connection.prepareStatement(sql)
+    preparedStatement.setInt(1, id)
+    val rs = preparedStatement.executeQuery()
+    var result = Array.empty[(Int, Component, Int)]
+    while (rs.next) {
+      result = result :+ (
+        rs.getInt("id"),
+        Component(
+          rs.getInt("order"),
+          rs.getString("name"),
+          "",
+          ComponentType.withNameOpt(rs.getString("type")).getOrElse(ComponentType.HEADER),
+          rs.getBoolean("required"),
+          rs.getBoolean("hide"),
+          rs.getString("validation"),
+          rs.getString("function"),
+          rs.getString("input_dep"),
+          rs.getString("input_dep_field"),
+          rs.getString("output_dep"),
+          rs.getString("output_dep_field"),
+          Array.empty[Component]
+        ),
+        rs.getInt("parent")
+      )
+    }
+    result
+  }
+
+  def reset() = {}
 }

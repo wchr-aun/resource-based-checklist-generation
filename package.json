@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "commit": "cz"
+    "commit": "cz",
+    "db-reset": "python ./database/script.py"
   },
   "dependencies": {
     "commitizen": "^4.2.4"

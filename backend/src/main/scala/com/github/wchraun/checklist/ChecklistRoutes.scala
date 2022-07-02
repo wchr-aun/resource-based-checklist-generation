@@ -11,19 +11,21 @@ import akka.util.Timeout
 import scala.concurrent.Future
 import com.github.wchraun.checklist.Checklist._
 
-class ChecklistRoutes(checklist: ActorRef[Checklist.Command])(implicit val system: ActorSystem[_], implicit val timeout: Timeout) {
+class ChecklistRoutes(checklist: ActorRef[Checklist.Command])(implicit val system: ActorSystem[_], implicit val timeout: Timeout, implicit val database: Database) {
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
   import JsonFormats._
 
-  def getChecklist(id: String): Future[String] =
-    checklist.ask(GetChecklist(id, _))
+  def getChecklist(id: Int): Future[SaveTemplateRequest] =
+    checklist.ask(GetChecklist(id, _, database))
   def getChecklists(): Future[String] =
     checklist.ask(GetChecklists(_))
   def startChecklist(arg: StartChecklistArg): Future[String] =
     checklist.ask(StartChecklist(arg, _))
   def submitChecklist(id: String): Future[String] =
     checklist.ask(SubmitChecklist(id, _))
+
+  private val cors = new CORSHandler {}
 
   val checklistRoutes: Route =
   pathPrefix("checklist") {
@@ -47,9 +49,11 @@ class ChecklistRoutes(checklist: ActorRef[Checklist.Command])(implicit val syste
       path(Segment) { checklistId =>
         concat(
           get {
-            rejectEmptyResponse {
-              onSuccess(getChecklist(checklistId)) { response =>
-                complete(StatusCodes.OK, response)
+            cors.corsHandler {
+              rejectEmptyResponse {
+                onSuccess(getChecklist(checklistId.toInt)) { response =>
+                  complete(StatusCodes.OK, response)
+                }
               }
             }
           },
@@ -59,6 +63,9 @@ class ChecklistRoutes(checklist: ActorRef[Checklist.Command])(implicit val syste
                 complete(StatusCodes.Accepted, response)
               }
             }
+          },
+          options {
+            cors.corsHandler(complete(StatusCodes.OK))
           }
         )
       }

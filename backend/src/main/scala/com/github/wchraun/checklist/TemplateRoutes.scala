@@ -25,7 +25,7 @@ class TemplateRoutes(template: ActorRef[Template.Command])(implicit val system: 
   def createTemplate(process: Process): Future[CreateTemplateResponse] =
     template.ask(CreateTemplate(process, _, database))
 
-  def saveTemplate(temp: CreateTemplateResponse): Future[SaveTemplateResponse] =
+  def saveTemplate(temp: SaveTemplateRequest): Future[SaveTemplateResponse] =
     template.ask(SaveTemplate(temp, _, database))
 
   private val cors = new CORSHandler {}
@@ -54,7 +54,7 @@ class TemplateRoutes(template: ActorRef[Template.Command])(implicit val system: 
             },
             post {
               cors.corsHandler(
-                entity(as[CreateTemplateResponse]) {temp =>
+                entity(as[SaveTemplateRequest]) {temp =>
                   onSuccess(saveTemplate(temp)) { response =>
                     complete(StatusCodes.Accepted, response)
                   }
