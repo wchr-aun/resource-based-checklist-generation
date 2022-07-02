@@ -3,6 +3,7 @@ import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import formReducer from "@features/form/formSlice";
 import processInputReducer from "@features/processInput/processSlice";
 import dependenciesReducer from "@features/form/dependencySlice";
+import foreignTableReducer from "@features/form/foreignTableSlice";
 
 export function makeStore() {
   return configureStore({
@@ -10,6 +11,7 @@ export function makeStore() {
       form: formReducer,
       processInput: processInputReducer,
       dependencies: dependenciesReducer,
+      foreignTable: foreignTableReducer,
     },
   });
 }

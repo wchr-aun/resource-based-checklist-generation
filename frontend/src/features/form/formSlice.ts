@@ -41,7 +41,7 @@ const insertOriginalNames = (component: BaseComponent): Component => {
 };
 
 export const formSlice = createSlice({
-  name: "process",
+  name: "form",
   initialState,
   reducers: {
     setForm: (state, action: PayloadAction<Form>) => {
@@ -77,12 +77,13 @@ export const formSlice = createSlice({
       const node = getNode(prefix, state.components);
       if (!node) return;
       node.children.push({
-        name: "",
+        name: `New Field - (${node.children.length + 1})`,
         componentType: "INPUT",
         css: "",
         editable: true,
         function: "",
         required: false,
+        hide: false,
         inputDependency: "",
         inputDependencyField: "",
         outputDependency: "",
@@ -101,12 +102,13 @@ export const formSlice = createSlice({
       state.components = [
         ...state.components,
         {
-          name: "",
+          name: `New Model - (${state.components.length + 1})`,
           componentType: "HEADER",
           css: "",
           editable: false,
           function: "",
           required: false,
+          hide: false,
           inputDependency: "",
           inputDependencyField: "",
           outputDependency: "",
@@ -194,9 +196,11 @@ export const formSlice = createSlice({
     },
     toggleHideAllInput: (state, action: PayloadAction<number>) => {
       const index = action.payload;
-      const value = state.information[index].details.every((v) => v.hide);
+      const value = state.information[index].details
+        .filter((v) => !v.isQuery)
+        .every((v) => v.hide);
       state.information[index].details = state.information[index].details.map(
-        (v) => ({ ...v, hide: !value })
+        (v) => ({ ...v, hide: !v.isQuery && !value })
       );
     },
     updateInputName: (
@@ -234,6 +238,54 @@ export const formSlice = createSlice({
       node.outputDependency = outputDependency;
       node.outputDependencyField = outputDependencyField;
     },
+    addNewInputDetails: (
+      state,
+      action: PayloadAction<{
+        parentIndex: number;
+        index: number;
+        foreignKey: string;
+        queryTable: string;
+      }>
+    ) => {
+      const { parentIndex, index, foreignKey, queryTable } = action.payload;
+      console.log(index);
+      state.information[parentIndex].details
+        .filter((d) => d.order > index)
+        .forEach((d) => (d.order += 1));
+      state.information[parentIndex].details.splice(index, 0, {
+        ...state.information[parentIndex].details[index],
+        name: "",
+        hide: false,
+        order: index + 1,
+        isQuery: true,
+        foreignKey,
+        queryTable,
+        queryField: "",
+      });
+      state.information[parentIndex].details.sort((a, b) => a.order - b.order);
+    },
+    deletedInputDetails: (
+      state,
+      action: PayloadAction<{ parentIndex: number; index: number }>
+    ) => {
+      const { parentIndex, index } = action.payload;
+      if (!state.information[parentIndex].details[index].isQuery) return;
+      state.information[parentIndex].details.splice(index, 1);
+      state.information[parentIndex].details
+        .filter((d) => d.order > index)
+        .forEach((d) => (d.order += 1));
+    },
+    updateQueryField: (
+      state,
+      action: PayloadAction<{
+        parentIndex: number;
+        index: number;
+        queryField: string;
+      }>
+    ) => {
+      const { parentIndex, index, queryField } = action.payload;
+      state.information[parentIndex].details[index].queryField = queryField;
+    },
     clearComponentChildren: (state, action: PayloadAction<string>) => {
       const prefix = action.payload;
       const node = getNode(prefix, state.components);
@@ -261,6 +313,9 @@ export const {
   toggleHideAllInput,
   updateInputName,
   updateDependencies,
+  addNewInputDetails,
+  deletedInputDetails,
+  updateQueryField,
   clearComponentChildren,
   resetForm,
   reorderComponents,

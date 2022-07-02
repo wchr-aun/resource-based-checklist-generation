@@ -4,14 +4,18 @@ import ChecklistFinished from "@features/checklistFinished/finish";
 import ProcessInput from "@features/processInput/ProcessInput";
 import store from "@app/store";
 import { useAppDispatch } from "@app/hooks";
-import { setForm } from "@features/form/formSlice";
+import { resetForm, setForm } from "@features/form/formSlice";
 import Router from "next/router";
 import { getTemplate, getTemplates } from "api/template";
 import { getDependencies } from "api/dependency";
-import { setDependencies } from "@features/form/dependencySlice";
+import {
+  resetDependencies,
+  setDependencies,
+} from "@features/form/dependencySlice";
 import Modal from "@components/Modal";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Template } from "@models";
+import { resetForeignTable } from "@features/form/foreignTableSlice";
 
 interface Props {
   templates: Template[];
@@ -21,7 +25,7 @@ const Home: NextPage<Props> = (props: Props) => {
   const { templates } = props;
   const openModal = useRef((v: boolean) => {});
   const dispatch = useAppDispatch();
-  const callApi = async () => {
+  const callGenerateApi = async () => {
     const templateResponse = await getTemplate(
       store.getState().processInput.process
     );
@@ -33,6 +37,16 @@ const Home: NextPage<Props> = (props: Props) => {
     Router.push("/canvas");
     openModal.current(false);
   };
+  const callViewApi = async (id: number) => {
+    Router.push(`/checklist/${id}`);
+  };
+
+  useEffect(() => {
+    dispatch(resetForm());
+    dispatch(resetDependencies());
+    dispatch(resetForeignTable());
+    return () => {};
+  }, []);
 
   return (
     <div className="grid grid-cols-1 space-y-5">
@@ -42,12 +56,15 @@ const Home: NextPage<Props> = (props: Props) => {
         />
       </div>
       <div className="pt-8">
-        <ChecklistFinished templates={templates} />
+        <ChecklistFinished
+          templates={templates}
+          onClickStart={(id) => callViewApi(id)}
+        />
       </div>
       <style>{"body { background-color: white; }"}</style>
       <Modal
         openModal={openModal}
-        body={<ProcessInput onClickCreate={() => callApi()} />}
+        body={<ProcessInput onClickCreate={() => callGenerateApi()} />}
       />
     </div>
   );

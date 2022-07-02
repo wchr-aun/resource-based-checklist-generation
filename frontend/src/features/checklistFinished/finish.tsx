@@ -5,10 +5,11 @@ import Divider from "@components/Divider";
 
 interface Props {
   templates: Template[];
+  onClickStart: (id: number) => void;
 }
 
 function ChecklistFinished(props: Props) {
-  const { templates } = props;
+  const { templates, onClickStart } = props;
   return (
     <div>
       <div className="px-5 mb-5 text-indigo-500 text-sm flex">
@@ -26,6 +27,7 @@ function ChecklistFinished(props: Props) {
           name={template.name}
           created={new Date(template.created).toLocaleString()}
           updated={new Date(template.updated).toLocaleString()}
+          onSelectOption={(index) => index === 0 && onClickStart(template.id)}
         />
       ))}
       {templates.length === 0 && (

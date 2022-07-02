@@ -21,7 +21,25 @@ export async function saveTemplate(template: Form) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(template),
+    body: JSON.stringify({
+      processName: template.processName,
+      components: template.components,
+      information: template.information.map((info) => ({
+        name: info.name,
+        order: info.order,
+        details: info.details.map((detail) => ({
+          name: detail.name,
+          order: detail.order,
+          inputDependency: detail.inputDependency,
+          inputDependencyField: detail.inputDependencyField,
+          hide: detail.hide,
+          isQuery: detail.isQuery || false,
+          foreignKey: detail.foreignKey || "",
+          queryTable: detail.queryTable || "",
+          queryField: detail.queryField || "",
+        })),
+      })),
+    }),
   }).catch((error) => {
     console.log(error);
   });

@@ -1,6 +1,6 @@
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Props {
   name: string;
@@ -36,14 +36,19 @@ function Dropdown(props: Props) {
     setShow(!show);
     onUpdateValue(prefix, v, i);
   };
-  document.addEventListener("mousedown", closeOpenMenus);
+  useEffect(() => {
+    document.addEventListener("mousedown", closeOpenMenus);
+    return () => {
+      document.removeEventListener("mousedown", closeOpenMenus);
+    };
+  }, [show]);
 
   return (
     <div className="w-full">
       <div className={`relative inline-block ${className}`} ref={catMenu}>
         <button
           type="button"
-          className={`${className} py-2 px-4 inline-flex text-sm justify-center rounded-md border border-gray-300 shadow-sm bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-gray-100 focus:ring-indigo-500 font-semibold`}
+          className={`${className} py-2 px-4 inline-flex text-sm justify-center rounded-md border-2 border-gray-200 shadow-sm bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-gray-100 focus:ring-indigo-500 font-semibold`}
           onClick={() => setShow(!show)}
         >
           {options.find((v) => v === value) || name}
@@ -55,7 +60,9 @@ function Dropdown(props: Props) {
               {[name].concat(options).map((v, i) => {
                 return (
                   <div
-                    className="text-gray-700 block px-4 py-2 text-sm cursor-pointer hover:bg-gray-200"
+                    className={`text-gray-700 block px-4 py-2 text-sm cursor-pointer hover:bg-gray-200 ${
+                      i === 0 && "text-center -ml-1 italic"
+                    }`}
                     key={`test ${i}`}
                     onClick={() => updateValue(v !== name ? v : "", i)}
                   >

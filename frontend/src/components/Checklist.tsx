@@ -1,4 +1,4 @@
-import { Component, COMPONENT_TYPES } from "@models";
+import { BaseComponent, Component, COMPONENT_TYPES } from "@models";
 import { useState } from "react";
 import Divider from "./Divider";
 import Checkboxes from "./inputs/Checkboxes";
@@ -11,7 +11,7 @@ import Time from "./inputs/Time";
 import Tabs from "./Tabs";
 
 interface Props {
-  checklist: Component[];
+  checklist: BaseComponent[];
 }
 
 function Checklist(props: Props) {
@@ -20,11 +20,11 @@ function Checklist(props: Props) {
   const [tab, setTab] = useState<Record<string, number>>({});
 
   function dfsChecklist(
-    component: Component,
+    component: BaseComponent | Component,
     key: string = "root",
     last: boolean = false
   ) {
-    const prefix = `${key}.${component.name || component.originalName}`;
+    const prefix = `${key}.${component.name}`;
     if (
       component.componentType === COMPONENT_TYPES.TAB &&
       tab[prefix] === undefined
@@ -42,9 +42,7 @@ function Checklist(props: Props) {
         {component.componentType === COMPONENT_TYPES.HEADER && (
           <div className="space-y-2">
             <div className="flex justify-between py-2">
-              <div className="font-bold">
-                {component.name || component.originalName}
-              </div>
+              <div className="font-bold">{component.name}</div>
               <div
                 className="cursor-pointer flex self-center text-sm font-medium"
                 onClick={() =>
@@ -76,9 +74,7 @@ function Checklist(props: Props) {
         {component.componentType === COMPONENT_TYPES.TAB && (
           <div>
             <Tabs
-              tabs={component.children.map(
-                (child) => child.name || child.originalName
-              )}
+              tabs={component.children.map((child) => child.name)}
               currentTab={tab[prefix]}
               onTabChange={(index) => setTab({ ...tab, [prefix]: index })}
             />
@@ -105,7 +101,7 @@ function Checklist(props: Props) {
           component.componentType !== COMPONENT_TYPES.TAB && (
             <div className="flex space-y-1 space-x-2">
               <div className="font-medium w-2/12 flex justify-end self-center">
-                {component.name || component.originalName}
+                {component.name}
                 {component.required ? (
                   <span className="text-red-500 ml-1">*</span>
                 ) : (
@@ -157,10 +153,16 @@ function Checklist(props: Props) {
                 />
               )}
               {component.componentType === COMPONENT_TYPES.TIME && (
-                <Time className="w-10/12" disabled={!component.editable} />
+                <Time
+                  className="w-10/12"
+                  disabled={!!component.inputDependencyField}
+                />
               )}
               {component.componentType === COMPONENT_TYPES.DATE && (
-                <Date className="w-10/12" disabled={!component.editable} />
+                <Date
+                  className="w-10/12"
+                  disabled={!!component.inputDependencyField}
+                />
               )}
             </div>
           )}
