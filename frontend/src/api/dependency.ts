@@ -13,3 +13,16 @@ export async function getDependencies(processInput: string) {
   if (!res) return {};
   return await res.json();
 }
+
+export async function getForeignTable(tableName: string, fieldName: string) {
+  const res = await fetch(
+    `${process.env.BACKEND_URL}/dependency?tableName=${tableName}&fieldName=${fieldName}`,
+    {
+      method: "GET",
+    }
+  ).catch((error) => {
+    console.log(error);
+  });
+  if (!res) return {};
+  return await res.json();
+}

@@ -4,10 +4,16 @@ interface Props {
   size?: string;
   body: JSX.Element;
   openModal: MutableRefObject<(v: boolean) => void>;
+  onClickBackground?: () => void;
 }
 
 function Modal(props: Props) {
-  const { size = "w-2/3", body, openModal } = props;
+  const {
+    size = "w-2/3",
+    body,
+    openModal,
+    onClickBackground = () => {},
+  } = props;
   const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
     if (isOpen) {
@@ -21,10 +27,13 @@ function Modal(props: Props) {
   return (
     <div>
       {isOpen && (
-        <div className="w-full top-0 right-0 fixed flex justify-center items-center h-screen">
+        <div className="w-full top-0 right-0 fixed flex justify-center items-center h-screen z-50">
           <div
             className="fixed bg-opacity-60 bg-slate-400 w-full h-full"
-            onClick={() => setIsOpen(false)}
+            onClick={() => {
+              onClickBackground();
+              setIsOpen(false);
+            }}
           ></div>
           <div
             className={`z-50 relative bg-slate-50 rounded-lg shadow-md p-6 ${size}`}

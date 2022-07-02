@@ -5,15 +5,28 @@ function Header() {
   const router = useRouter();
   return (
     <div>
-      {router.pathname !== "/preview" && (
+      {router.pathname !== "/preview" &&
+        !router.pathname.includes("/checklist") && (
+          <nav className="flex items-center justify-between flex-wrap bg-white p-6 text-indigo-900">
+            <Link href="/">
+              <div className="flex items-center flex-shrink-0 mr-6 cursor-pointer">
+                <span className="font-semibold text-xl">WorkflowFM:</span>
+                <span className="text-lg ml-2 font-extrabold capitalize">
+                  {router.pathname === "/"
+                    ? "Checklist Generation Tool"
+                    : router.pathname.replace("/", "")}
+                </span>
+              </div>
+            </Link>
+          </nav>
+        )}
+      {router.pathname.includes("/checklist") && (
         <nav className="flex items-center justify-between flex-wrap bg-white p-6 text-indigo-900">
           <Link href="/">
             <div className="flex items-center flex-shrink-0 mr-6 cursor-pointer">
               <span className="font-semibold text-xl">WorkflowFM:</span>
               <span className="text-lg ml-2 font-extrabold capitalize">
-                {router.pathname === "/"
-                  ? "Checklist Generation Tool"
-                  : router.pathname.replace("/", "")}
+                Checklist #{router.query.id}
               </span>
             </div>
           </Link>

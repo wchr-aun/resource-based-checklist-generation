@@ -285,6 +285,7 @@ function FormTemplate(props: Props) {
             </div>
           </div>
         }
+        onClickBackground={() => onCloseSuccessModal()}
         openModal={successModal}
       />
     </div>

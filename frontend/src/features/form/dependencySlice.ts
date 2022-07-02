@@ -14,7 +14,7 @@ const initialState: DependenciesState = {
 };
 
 export const dependenciesSlice = createSlice({
-  name: "process",
+  name: "dependencies",
   initialState,
   reducers: {
     setDependencies: (state, action: PayloadAction<Dependencies>) => {

@@ -1,6 +1,5 @@
-import { faClipboardList, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faFile, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Template } from "@models";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -37,18 +36,20 @@ function ChecklistCreate(props: Props) {
           <div className="text-center text-sm">Create a New Template</div>
         </div>
         {recentModels.length > 0 && (
-          <div className="hidden lg:inline-block overflow-auto">
-            <div className="text-sm underline text-gray-700">Recent Models</div>
-            <div className="flex space-x-3">
+          <div className="hidden lg:inline-block overflow-x-auto">
+            <div className="text-sm underline text-gray-700 absolute">
+              Recent Models
+            </div>
+            <div className="flex space-x-3 mt-5">
               {recentModels.map((name, i) => (
                 <div
                   className="flex-col space-y-0 w-min cursor-pointer text-gray-500 hover:underline"
                   key={i}
                 >
                   <FontAwesomeIcon
-                    icon={faClipboardList}
-                    size="7x"
-                    className="hover:border-2 hover:border-solid hover:border-sky-900 border-2 border-transparent py-1 px-4 rounded-lg"
+                    icon={faFile}
+                    size="6x"
+                    className="hover:border-2 hover:border-solid hover:border-sky-900 border-2 border-transparent py-3 px-6 rounded-lg"
                   />
                   <div className="flex justify-center text-sm text-gray-900">
                     {name.length > 17 ? `${name.substring(0, 14)}...` : name}

@@ -10,6 +10,7 @@ export interface BaseComponent {
   outputDependency: string;
   outputDependencyField: string;
   required: boolean;
+  hide: boolean;
   validation: string;
   value: string;
   children: BaseComponent[];
@@ -26,6 +27,10 @@ export interface Details {
   inputDependency: string;
   inputDependencyField: string;
   hide: boolean;
+  isQuery?: boolean;
+  foreignKey?: string;
+  queryTable?: string;
+  queryField?: string;
 }
 
 export interface Information {
