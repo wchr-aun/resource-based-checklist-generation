@@ -23,7 +23,7 @@ function Information(props: Props) {
                         {details.name}
                       </div>
                       <div className="w-10/12 text-left border rounded-md p-2 text-sm">
-                        {details.value || "-"}
+                        -
                       </div>
                     </div>
                   )
