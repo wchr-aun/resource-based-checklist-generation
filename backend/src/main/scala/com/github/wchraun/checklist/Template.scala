@@ -5,12 +5,14 @@ import akka.actor.typed.ActorRef
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
 
+import scala.collection.immutable.HashMap
+
 object Template {
   sealed trait Command
   final case class GetTemplate(id: String, replyTo: ActorRef[String]) extends Command
   final case class GetTemplates(replyTo: ActorRef[GetTemplatesResponse], database: Database) extends Command
   final case class CreateTemplate(process: Process, replyTo: ActorRef[CreateTemplateResponse], database: Database) extends Command
-  final case class SaveTemplate(template: CreateTemplateResponse, replyTo: ActorRef[SaveTemplateResponse], database: Database) extends Command
+  final case class SaveTemplate(template: SaveTemplateRequest, replyTo: ActorRef[SaveTemplateResponse], database: Database) extends Command
 
   def apply(): Behavior[Command] = generator()
 
@@ -32,10 +34,16 @@ object Template {
     }
 
   private def generateTemplate(process: Process, db: Database) = {
+    var tableFieldToModel = new HashMap[String, String]()
     def dfsInputs(child: Arg): Array[Information] = {
       Array(
         Information(child.name, 0, db.getDataModel(child.name).zipWithIndex
-          .map{case((_, field), i) => Details(field, i, "", child.name, field, false)})
+          .map{
+            case((table, field), i) => {
+              tableFieldToModel = tableFieldToModel + (s"${table}_$field" -> child.name)
+              Details(field, i, child.name, field, false)
+            }
+          })
       ) ++ child.args.get.flatMap(v => dfsInputs(v))
     }
 
@@ -60,8 +68,21 @@ object Template {
         Array[Component](
           Component(index, s"${index + 1} - ${child.name}", "", ComponentType.HEADER, false, false, "", "", "", "", "", "",
             db.getDataModel(child.name).zipWithIndex
-              .map{case((_, field), i) =>
-                Component(i, field, "", ComponentType.INPUT, true, true, "", "", "", "", child.name, field, Array.empty[Component])
+              .map{case((table, field), i) =>
+                Component(
+                  i,
+                  field,
+                  "",
+                  ComponentType.INPUT,
+                  true,
+                  tableFieldToModel.contains(s"${table}_$field"),
+                  "",
+                  "",
+                  tableFieldToModel.getOrElse(s"${table}_$field", ""),
+                  if (tableFieldToModel.contains(s"${table}_$field")) field else "",
+                  child.name,
+                  field,
+                  Array.empty[Component])
               }
           )
         )
@@ -80,7 +101,7 @@ object Template {
     )
   }
 
-  private def saveTemplate(process: CreateTemplateResponse, db: Database) = {
+  private def saveTemplate(process: SaveTemplateRequest, db: Database) = {
     val templateId = db.createTemplate(process.processName)
 
     def dfsSQL(component: Component, parentId: Int): Unit = {
@@ -103,7 +124,9 @@ object Template {
 
     process.information.foreach(info => {
       val infoId = db.createInputInformation(info.name, info.order, templateId)
-      db.createInputInformationChildren(info.details, infoId)
+      val childIds = db.createInputInformationChildren(info.details, infoId)
+      val tuples = info.details.zip(childIds).filter(_._1.isQuery)
+      if (tuples.length > 0) db.createInputInformationQuery(tuples)
     })
 
     process.components.foreach(component => dfsSQL(component, -1))

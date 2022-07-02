@@ -3,6 +3,7 @@ package com.github.wchraun.checklist
 object ComponentType extends Enumeration {
   type ComponentType = Value
   val INPUT, PARAGRAPH, DROPDOWN, CHOICES, CHECKBOXES, DATE, TIME, UPLOAD, HEADER, TAB = Value
+  def withNameOpt(s: String): Option[Value] = values.find(_.toString == s)
 }
 
 final object ArgType extends Enumeration {
@@ -20,18 +21,27 @@ final case class Arg(argType: ArgType, name: String, args: Option[Array[Arg]])
 final case class Process(name: String, inputs: Array[Arg], output: Arg)
 final case class Details(name: String,
                          order: Int,
-                         value: String,
                          inputDependency: String,
                          inputDependencyField: String,
                          hide: Boolean)
+final case class InputDetails(name: String,
+                                  order: Int,
+                                  inputDependency: String,
+                                  inputDependencyField: String,
+                                  hide: Boolean,
+                                  isQuery: Boolean,
+                                  foreignKey: String,
+                                  queryTable: String,
+                                  queryField: String)
 final case class Information(name: String, order: Int, details: Array[Details])
+final case class InputInformation(name: String, order: Int, details: Array[InputDetails])
 final case class Component(
                             order: Int,
                             name: String,
                             value: String,
                             componentType: ComponentType,
-                            editable: Boolean,
                             required: Boolean,
+                            hide: Boolean,
                             validation: String,
                             function: String,
                             inputDependency: String,
@@ -50,3 +60,5 @@ final case class GetDependencyResponse(inputDependencies: Array[DependencyDetail
 final case class SaveTemplateResponse(templateId: Int)
 final case class TemplateResponse(id: Int, name: String, created: String, updated: String)
 final case class GetTemplatesResponse(templates: Array[TemplateResponse])
+final case class GetForeignTableResponse(foreignTable: String, fields: Array[String], foreignKey: String)
+final case class SaveTemplateRequest(processName: String, information: Array[InputInformation], components: Array[Component])

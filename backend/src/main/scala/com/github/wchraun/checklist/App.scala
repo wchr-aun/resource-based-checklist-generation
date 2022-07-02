@@ -43,7 +43,7 @@ object App {
 
       val routes = concat(
         new DefaultRoutes().routes,
-        new ChecklistRoutes(checklistActor)(context.system, timeout).checklistRoutes,
+        new ChecklistRoutes(checklistActor)(context.system, timeout, database).checklistRoutes,
         new TemplateRoutes(templateActor)(context.system, timeout, database).templateRoutes,
         new DependencyRoutes(dependencyActor)(context.system, timeout, database).dependencyRoutes
       )
