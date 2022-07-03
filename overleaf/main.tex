@@ -26,14 +26,14 @@
 \begin{document}
 \begin{preliminary}
 
-\title{Implementation of a Resource-based Checklist Generation Tool}
+\title{Design and Implementation of a Resource-based Checklist Generation Tool}
 
 \author{Watcharin 'Aun' Sirinaovakul}
 
 \date{\today}
 
 \abstract{
-\input{chapters/abstraction}
+\input{overleaf/chapters/abstraction}
 }
 
 \maketitle
@@ -43,31 +43,17 @@
    {\end{frontenv}\newpage}
 
 \begin{ethics}
-\textbf{Instructions:} \emph{Agree with your supervisor which
-statement you need to include. Then delete the statement that you are not using,
-and the instructions in italics.\\
-\textbf{Either complete and include this statement:}}\\ % DELETE THESE INSTRUCTIONS
-%
 % IF ETHICS APPROVAL WAS REQUIRED:
 This project obtained approval from the Informatics Research Ethics committee.\\
-Ethics application number: ???\\
-Date when approval was obtained: YYYY-MM-DD\\
-%
-\emph{[If the project required human participants, edit as appropriate, otherwise delete:]}\\ % DELETE THIS LINE
-The participants' information sheet and a consent form are included in the appendix.\\
-%
-% IF ETHICS APPROVAL WAS NOT REQUIRED:
-\textbf{\emph{Or include this statement:}}\\ % DELETE THIS LINE
-This project was planned in accordance with the Informatics Research
-Ethics policy. It did not involve any aspects that required approval
-from the Informatics Research Ethics committee.
+Ethics application number: 486463\\
+Date when approval was obtained: 2022-06-30
 
 \standarddeclaration
 \end{ethics}
 
 
 \begin{acknowledgements}
-\input{chapters/acknowledgements}
+\input{overleaf/chapters/acknowledgements}
 \end{acknowledgements}
 
 
@@ -76,19 +62,30 @@ from the Informatics Research Ethics committee.
 
 
 \chapter{Introduction}
+% objective, users, benefits, scope of work, relevant works, previous works, future works, project background, techniques
 
-\input{chapters/introduction}
+\input{overleaf/chapters/introduction}
 
 \chapter{Background}
 
-\input{chapters/background}
+\input{overleaf/chapters/background}
+
+\chapter{Methodology}
+% overall design, architectural design, interface design, database design
+% implementation - frontend (main, canvas, checklist) and backend (template creation, template storing, 3, 4)
+% user diagram
+\input{overleaf/chapters/methodology}
+
+\chapter{Evaluation}
+% results
+\input{overleaf/chapters/evaluation}
 
 \chapter{Conclusions}
-
-\input{chapters/conclusions}
+% what the work was, what we did, how we evaluated, what the results were, recommendation for future works
+\input{overleaf/chapters/conclusions}
 
 \bibliographystyle{plain}
-\bibliography{mybibfile}
+\bibliography{main}
 
 
 % You may delete everything from \appendix up to \end{document} if you don't need it.
