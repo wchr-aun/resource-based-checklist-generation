@@ -24,7 +24,6 @@ class TemplateRoutes(template: ActorRef[Template.Command])(implicit val system: 
     template.ask(GetTemplates(_, database))
   def createTemplate(process: Process): Future[CreateTemplateResponse] =
     template.ask(CreateTemplate(process, _, database))
-
   def saveTemplate(temp: SaveTemplateRequest): Future[SaveTemplateResponse] =
     template.ask(SaveTemplate(temp, _, database))
 

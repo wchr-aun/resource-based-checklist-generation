@@ -34,6 +34,7 @@ object Template {
     }
 
   private def generateTemplate(process: Process, db: Database) = {
+    val autolink = process.autolink.getOrElse(false)
     var tableFieldToModel = new HashMap[String, String]()
     def dfsInputs(child: Arg): Array[Information] = {
       Array(
@@ -43,7 +44,7 @@ object Template {
               tableFieldToModel = tableFieldToModel + (s"${table}_$field" -> child.name)
               Details(field, i, child.name, field, false)
             }
-          })
+          }, child.name)
       ) ++ child.args.get.flatMap(v => dfsInputs(v))
     }
 
@@ -68,22 +69,34 @@ object Template {
         Array[Component](
           Component(index, s"${index + 1} - ${child.name}", "", ComponentType.HEADER, false, false, "", "", "", "", "", "",
             db.getDataModel(child.name).zipWithIndex
-              .map{case((table, field), i) =>
+              .map{case((table, field), i) => {
+                var inputDep = ""
+                var inputDepField = ""
+                if (autolink) {
+                  inputDep = tableFieldToModel.getOrElse(s"${table}_$field", "")
+                  inputDepField = field
+                  if (!tableFieldToModel.contains(s"${table}_$field")) {
+                    val (recommendedInput, recommendedInputField) = db.getRecommendedDependencies(child.name, field)
+                    inputDep = recommendedInput
+                    inputDepField = recommendedInputField
+                  }
+                }
+                println(inputDep, inputDepField)
                 Component(
                   i,
                   field,
                   "",
                   ComponentType.INPUT,
                   true,
-                  tableFieldToModel.contains(s"${table}_$field"),
+                  if (autolink) tableFieldToModel.contains(s"${table}_$field") else false,
                   "",
                   "",
-                  tableFieldToModel.getOrElse(s"${table}_$field", ""),
-                  if (tableFieldToModel.contains(s"${table}_$field")) field else "",
-                  child.name,
-                  field,
+                  inputDep,
+                  inputDepField,
+                  if (autolink) child.name else "",
+                  if (autolink) field else "",
                   Array.empty[Component])
-              }
+              }}
           )
         )
       }
@@ -94,7 +107,7 @@ object Template {
       process.inputs.flatMap(v => dfsInputs(v))
         .groupBy(_.name).zipWithIndex
         .map{case(v, i) =>
-          Information(v._2.head.name, i, v._2.head.details)
+          Information(v._2.head.name, i, v._2.head.details, v._2.head.inputDependency)
         }.toArray
         .sortBy(_.order),
       dfsOutput(process.output)
@@ -115,6 +128,7 @@ object Template {
         component.name,
         component.componentType,
         component.required,
+        component.hide,
         component.validation,
         component.function,
         parentId
@@ -123,10 +137,10 @@ object Template {
     }
 
     process.information.foreach(info => {
-      val infoId = db.createInputInformation(info.name, info.order, templateId)
+      val infoId = db.createInputInformation(info.name, info.order, templateId, info.inputDependency)
       val childIds = db.createInputInformationChildren(info.details, infoId)
       val tuples = info.details.zip(childIds).filter(_._1.isQuery)
-      if (tuples.length > 0) db.createInputInformationQuery(tuples)
+      if (tuples.length > 0) db.createInputInformationQuery(tuples, info.inputDependency)
     })
 
     process.components.foreach(component => dfsSQL(component, -1))
