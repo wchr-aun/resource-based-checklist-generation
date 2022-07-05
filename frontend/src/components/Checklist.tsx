@@ -98,7 +98,8 @@ function Checklist(props: Props) {
           </div>
         )}
         {component.componentType !== COMPONENT_TYPES.HEADER &&
-          component.componentType !== COMPONENT_TYPES.TAB && (
+          component.componentType !== COMPONENT_TYPES.TAB &&
+          !component.hide && (
             <div className="flex space-y-1 space-x-2">
               <div className="font-medium w-2/12 flex justify-end self-center">
                 {component.name}

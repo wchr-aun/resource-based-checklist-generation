@@ -38,7 +38,7 @@ function More(props: Props) {
         <div className="border rounded-lg px-3 bg-white absolute border-gray-300">
           {options.map((v, i) => (
             <div
-              className="hover:bg-gray-200 -mx-3 px-3 py-2 text-sm cursor-pointer"
+              className="hover:bg-gray-200 -mx-3 px-3 py-2 text-sm cursor-pointer text-center"
               key={i}
               onClick={() => {
                 setShow(false);

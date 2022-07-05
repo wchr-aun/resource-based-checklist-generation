@@ -31,12 +31,14 @@ export interface Details {
   foreignKey?: string;
   queryTable?: string;
   queryField?: string;
+  queryHide: boolean;
 }
 
 export interface Information {
   name: string;
   order: number;
   details: Details[];
+  inputDependency: string;
 }
 
 export interface Form {

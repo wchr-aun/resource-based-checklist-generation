@@ -41,6 +41,7 @@ const FormInputName: NextPage<Props> = (props) => {
         placeholder={node.originalName}
         className="w-7/12"
         value={node.name}
+        error={!node.name}
         onChange={onInputChange}
       />
       <div className="w-2/12">

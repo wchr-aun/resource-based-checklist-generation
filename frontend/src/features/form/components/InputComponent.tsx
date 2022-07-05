@@ -2,6 +2,9 @@ import { Information } from "@models";
 import Divider from "@components/Divider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faAngleUp,
+  faCircleCheck,
+  faCircleXmark,
   faEye,
   faEyeLowVision,
   faEyeSlash,
@@ -12,17 +15,21 @@ import { useAppDispatch, useAppSelector } from "@app/hooks";
 import {
   addNewInputDetails,
   deletedInputDetails,
+  setNewInputDetails,
   toggleHideAllInput,
   toggleHideInput,
+  toggleHideQuery,
   updateInputName,
+  updateInputParentName,
   updateQueryField,
 } from "@features/form/formSlice";
 import More from "@components/More";
 import Dropdown from "@components/inputs/Dropdown";
-import { getForeignTable } from "api/dependency";
-import { useRef, useState } from "react";
+import { getForeignTable, getRecommenedForeign } from "api/dependency";
+import { useEffect, useRef, useState } from "react";
 import Modal from "@components/Modal";
 import { selectForeign, setForeignTable } from "../foreignTableSlice";
+import SuggestedForeignModal from "./SuggestedForeignModal";
 
 interface Props {
   inputs: Information[];
@@ -32,7 +39,41 @@ function InputComponent(props: Props) {
   const { inputs } = props;
   const dispatch = useAppDispatch();
   const noForeignTableModal = useRef((v: boolean) => {});
+  const suggestedForeignModal = useRef((v: boolean) => {});
   const queryOptions = useAppSelector(selectForeign);
+
+  const [suggestedForeigns, setSuggestedForeigns] = useState<{
+    parentIndex: number;
+    index: number;
+    foreigns: {
+      foreignKey: string;
+      queryTable: string;
+      queryField: string;
+    }[];
+  }>({
+    parentIndex: -1,
+    index: -1,
+    foreigns: [],
+  });
+
+  const queryForignTable = async (modelName: string, fieldName: string) => {
+    let foreign = queryOptions[`${modelName}_${fieldName}`] || [];
+    if (!queryOptions[`${modelName}_${fieldName}`]) {
+      const res = await getForeignTable(modelName, fieldName);
+      foreign = res.foreignQueries;
+      dispatch(
+        setForeignTable({
+          key: `${modelName}_${fieldName}`,
+          foreign: res.foreignQueries,
+        })
+      );
+    }
+    if (foreign.length === 0) {
+      noForeignTableModal.current(true);
+      return false;
+    }
+    return foreign;
+  };
 
   const onClickAddNewQuery = async (
     modelName: string,
@@ -40,35 +81,48 @@ function InputComponent(props: Props) {
     parentIndex: number,
     index: number
   ) => {
-    let { foreignKey, queryTable, fields } = queryOptions[
-      `${modelName}_${fieldName}`
-    ] || { foreignKey: "", queryTable: "", fields: [] };
-    if (!queryOptions[`${modelName}_${fieldName}`]) {
-      const res = await getForeignTable(modelName, fieldName);
-      foreignKey = res.foreignKey;
-      queryTable = res.foreignTable;
-      fields = res.fields;
-      dispatch(
-        setForeignTable({
-          key: `${modelName}_${fieldName}`,
-          foreignKey,
-          queryTable,
-          fields,
-        })
-      );
-    }
-    if (fields.length === 0) {
-      noForeignTableModal.current(true);
-      return;
-    }
+    const res = await queryForignTable(modelName, fieldName);
+    if (!res) return;
     dispatch(
       addNewInputDetails({
         parentIndex,
         index,
-        foreignKey,
-        queryTable,
+        queryTable: res.length === 1 ? res[0].queryTable : "",
+        foreignKey: res.length === 1 ? res[0].foreignKey : "",
       })
     );
+  };
+
+  const onClickGetSuggestion = async (
+    modelName: string,
+    fieldName: string,
+    parentIndex: number,
+    index: number
+  ) => {
+    const _res = await queryForignTable(modelName, fieldName);
+    if (!_res) return;
+    const res = await getRecommenedForeign(modelName, fieldName);
+    setSuggestedForeigns({
+      parentIndex,
+      index,
+      foreigns: res.foreign.map(
+        (foreign: {
+          foreignKey: string;
+          queryTable: string;
+          field: string;
+        }) => ({
+          foreignKey: foreign.foreignKey,
+          queryTable: foreign.queryTable,
+          queryField: foreign.field,
+        })
+      ),
+    });
+    suggestedForeignModal.current(true);
+  };
+
+  const onConfirmSetNewInputDetails = () => {
+    dispatch(setNewInputDetails({ ...suggestedForeigns }));
+    suggestedForeignModal.current(false);
   };
 
   return (
@@ -76,7 +130,15 @@ function InputComponent(props: Props) {
       {inputs.map((info, i) => (
         <div className="px-5 py-1" key={i}>
           <div className="font-bold text-lg mb-2 flex justify-between">
-            <span>{info.name}</span>
+            <Input
+              value={info.name}
+              placeholder={info.inputDependency}
+              error={!info.name}
+              onChange={(name) =>
+                dispatch(updateInputParentName({ infoIndex: i, name }))
+              }
+              className="w-1/4"
+            />
             <div
               className="cursor-pointer text-gray-600 flex self-center space-x-2"
               onClick={() => dispatch(toggleHideAllInput(i))}
@@ -97,38 +159,102 @@ function InputComponent(props: Props) {
           </div>
           {info.details.map((details, j) => (
             <div className="ml-5 flex space-x-2" key={j}>
-              <div className="font-semibold w-2/12 flex">
-                <Input
-                  value={details.name}
-                  className={details.hide ? "line-through" : ""}
-                  disabled={details.hide}
-                  placeholder={details.inputDependencyField}
-                  onChange={(name) =>
-                    dispatch(
-                      updateInputName({ name, infoIndex: i, detailsIndex: j })
-                    )
-                  }
-                />
-                {details.isQuery && (
-                  <Dropdown
-                    options={
-                      queryOptions[
-                        `${info.name}_${details.inputDependencyField}`
-                      ]?.fields || [details.queryField]
-                    }
-                    value={details.queryField}
-                    onUpdateValue={(_, queryField) =>
+              <div className="font-semibold w-2/12 flex-col">
+                <div className="flex relative">
+                  <Input
+                    value={details.name}
+                    className={`${details.hide && "line-through"} ${
+                      details.isQuery && "pr-7"
+                    }`}
+                    error={!details.name}
+                    disabled={details.hide}
+                    placeholder={details.inputDependencyField}
+                    onChange={(name) =>
                       dispatch(
-                        updateQueryField({
-                          parentIndex: i,
-                          index: j,
-                          queryField,
-                        })
+                        updateInputName({ name, infoIndex: i, detailsIndex: j })
                       )
                     }
-                    name="Select"
-                    className="w-full"
                   />
+                  {details.isQuery && (
+                    <div
+                      className="absolute right-2 top-1 p-1 cursor-pointer"
+                      onClick={() =>
+                        dispatch(toggleHideQuery({ parentIndex: i, index: j }))
+                      }
+                    >
+                      <FontAwesomeIcon
+                        icon={
+                          details.queryHide
+                            ? details.foreignKey &&
+                              details.queryField &&
+                              details.queryTable
+                              ? faCircleCheck
+                              : faCircleXmark
+                            : faAngleUp
+                        }
+                        className={
+                          !details.queryHide
+                            ? "text-gray-500"
+                            : details.foreignKey &&
+                              details.queryField &&
+                              details.queryTable
+                            ? "text-teal-500"
+                            : "text-rose-400"
+                        }
+                        size="xs"
+                      />
+                    </div>
+                  )}
+                </div>
+                {details.isQuery && !details.queryHide && (
+                  <div className="pl-1 border-l-8 border-gray-300 space-y-1 py-1">
+                    <Dropdown
+                      options={
+                        queryOptions[
+                          `${info.inputDependency}_${details.inputDependencyField}`
+                        ]?.map((v) => v.queryTable) || [details.queryTable]
+                      }
+                      value={details.queryTable}
+                      onUpdateValue={(_, queryTable) =>
+                        dispatch(
+                          updateQueryField({
+                            parentIndex: i,
+                            index: j,
+                            queryTable,
+                            queryField: "",
+                            foreignKey:
+                              queryOptions[
+                                `${info.inputDependency}_${details.inputDependencyField}`
+                              ]?.find((v) => v.queryTable)?.foreignKey || "",
+                          })
+                        )
+                      }
+                      name="Select Table"
+                      className="w-full"
+                    />
+                    <Dropdown
+                      options={
+                        queryOptions[
+                          `${info.inputDependency}_${details.inputDependencyField}`
+                        ]?.find((v) => v.queryTable === details.queryTable)
+                          ?.fields || []
+                      }
+                      value={details.queryField}
+                      onUpdateValue={(_, queryField) =>
+                        dispatch(
+                          updateQueryField({
+                            parentIndex: i,
+                            index: j,
+                            queryField,
+                            queryTable: details.queryTable || "",
+                            foreignKey: details.foreignKey || "",
+                          })
+                        )
+                      }
+                      name="Select Field"
+                      className="w-full"
+                    />
+                  </div>
                 )}
               </div>
               <Input
@@ -136,7 +262,7 @@ function InputComponent(props: Props) {
                 className={`${details.hide ? "line-through" : ""} w-8/12`}
                 placeholder={
                   !details.isQuery
-                    ? `Linked to { ${details.inputDependency} } - { ${details.inputDependencyField} } from the workflow`
+                    ? `Linked to { ${info.inputDependency} } - { ${details.inputDependencyField} } from the workflow`
                     : `Queried from ${`{ ${
                         details.queryTable || "SELECTED_TABLE"
                       } }`} - ${`{ ${
@@ -148,14 +274,24 @@ function InputComponent(props: Props) {
                 <div>
                   {!details.isQuery && (
                     <More
-                      options={["Link to parent table using this field"]}
-                      onSelectOption={() =>
-                        onClickAddNewQuery(
-                          info.name,
-                          details.inputDependencyField,
-                          i,
-                          j
-                        )
+                      options={[
+                        "Link to parent table using this field",
+                        "Get suggested foreign fields",
+                      ]}
+                      onSelectOption={(index) =>
+                        index == 0
+                          ? onClickAddNewQuery(
+                              info.inputDependency,
+                              details.inputDependencyField,
+                              i,
+                              j
+                            )
+                          : onClickGetSuggestion(
+                              info.inputDependency,
+                              details.inputDependencyField,
+                              i,
+                              j
+                            )
                       }
                     />
                   )}
@@ -222,6 +358,26 @@ function InputComponent(props: Props) {
         }
         openModal={noForeignTableModal}
         size="w-1/3"
+      />
+
+      <Modal
+        body={
+          <SuggestedForeignModal
+            suggestedForeigns={suggestedForeigns}
+            onClickCancel={() => suggestedForeignModal.current(false)}
+            onClickOK={() => onConfirmSetNewInputDetails()}
+            onClickDelete={(index) =>
+              setSuggestedForeigns({
+                ...suggestedForeigns,
+                foreigns: suggestedForeigns.foreigns.filter(
+                  (_, i) => i !== index
+                ),
+              })
+            }
+          />
+        }
+        size="w-1/3"
+        openModal={suggestedForeignModal}
       />
     </div>
   );

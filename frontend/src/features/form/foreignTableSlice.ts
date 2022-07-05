@@ -9,7 +9,7 @@ export interface ForeignTableState {
       foreignKey: string;
       queryTable: string;
       fields: string[];
-    };
+    }[];
   };
 }
 
@@ -24,14 +24,20 @@ export const foreignTableSlice = createSlice({
     setForeignTable: (
       state,
       action: PayloadAction<{
-        foreignKey: string;
-        queryTable: string;
-        fields: string[];
+        foreign: {
+          foreignKey: string;
+          queryTable: string;
+          fields: string[];
+        }[];
         key: string;
       }>
     ) => {
-      const { foreignKey, queryTable, fields, key } = action.payload;
-      state.foreign[key] = { foreignKey, queryTable, fields };
+      const { foreign, key } = action.payload;
+      state.foreign[key] = foreign.map((f) => ({
+        foreignKey: f.foreignKey,
+        queryTable: f.queryTable,
+        fields: f.fields,
+      }));
     },
     resetForeignTable: (state) => {
       state.foreign = {};

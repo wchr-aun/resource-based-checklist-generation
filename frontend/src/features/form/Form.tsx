@@ -16,7 +16,7 @@ import {
   updateDependencies,
 } from "@features/form/formSlice";
 import { useAppDispatch, useAppSelector } from "@app/hooks";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Input from "@components/inputs/Input";
 import Divider from "@components/Divider";
 import OutputComponent from "./components/OutputComponent";
@@ -25,6 +25,7 @@ import Link from "next/link";
 import Modal from "@components/Modal";
 import DependencyModal from "./components/DependencyModal";
 import {
+  addQueryDependency,
   selectInputDependencies,
   selectOutputDependencies,
 } from "./dependencySlice";
@@ -55,6 +56,21 @@ function FormTemplate(props: Props) {
   const [selectedNode, setSelectedNode] = useState<Component>({} as Component);
   const [selectedPrefix, setSelectedPrefix] = useState("root");
   const [focusedComponent, setFocusedComponent] = useState(0);
+
+  useEffect(() => {
+    dispatch(
+      addQueryDependency(
+        information.flatMap((v) =>
+          v.details
+            .filter((d) => d.isQuery && d.queryField)
+            .map(
+              (d) =>
+                `${d.inputDependency};${d.inputDependencyField};${d.foreignKey};${d.queryTable};${d.queryField}`
+            )
+        )
+      )
+    );
+  }, [information]);
 
   const submitForm = async () => {
     const res = await saveTemplate({
@@ -118,6 +134,7 @@ function FormTemplate(props: Props) {
       >
         <Input
           autoFocus={true}
+          error={!processName}
           value={processName}
           placeholder={originalProcessName}
           className="text-3xl font-bold"
@@ -199,7 +216,7 @@ function FormTemplate(props: Props) {
             dispatch(
               updateComponent({
                 prefix,
-                field: "editable",
+                field: "hide",
                 value,
               })
             )
@@ -231,8 +248,8 @@ function FormTemplate(props: Props) {
               Preview
             </button>
           </Link>
-          <button className="border border-rose-400 hover:border-rose-500 hover:text-rose-500 hover:bg-rose-50 text-rose-400 font-bold py-2 px-4 rounded mt-5">
-            Check Dependencies
+          <button className="border border-emerald-600 hover:border-emerald-800 hover:text-emerald-800 hover:bg-emerald-50 text-emerald-600 font-bold py-2 px-4 rounded mt-5">
+            Validate Dependencies
           </button>
         </div>
         <div className="space-x-2">

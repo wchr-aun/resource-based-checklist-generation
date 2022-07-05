@@ -61,7 +61,7 @@ export const formSlice = createSlice({
           | "componentType"
           | "validation"
           | "name"
-          | "editable"
+          | "hide"
           | "required"
           | "function";
         value: string | boolean;
@@ -203,6 +203,13 @@ export const formSlice = createSlice({
         (v) => ({ ...v, hide: !v.isQuery && !value })
       );
     },
+    updateInputParentName: (
+      state,
+      action: PayloadAction<{ name: string; infoIndex: number }>
+    ) => {
+      const { name, infoIndex } = action.payload;
+      state.information[infoIndex].name = name;
+    },
     updateInputName: (
       state,
       action: PayloadAction<{
@@ -243,12 +250,11 @@ export const formSlice = createSlice({
       action: PayloadAction<{
         parentIndex: number;
         index: number;
-        foreignKey: string;
         queryTable: string;
+        foreignKey: string;
       }>
     ) => {
-      const { parentIndex, index, foreignKey, queryTable } = action.payload;
-      console.log(index);
+      const { parentIndex, index, queryTable, foreignKey } = action.payload;
       state.information[parentIndex].details
         .filter((d) => d.order > index)
         .forEach((d) => (d.order += 1));
@@ -258,11 +264,65 @@ export const formSlice = createSlice({
         hide: false,
         order: index + 1,
         isQuery: true,
-        foreignKey,
-        queryTable,
+        foreignKey: foreignKey,
+        queryTable: queryTable,
         queryField: "",
       });
       state.information[parentIndex].details.sort((a, b) => a.order - b.order);
+    },
+    setNewInputDetails: (
+      state,
+      action: PayloadAction<{
+        parentIndex: number;
+        index: number;
+        foreigns: {
+          foreignKey: string;
+          queryTable: string;
+          queryField: string;
+        }[];
+      }>
+    ) => {
+      const { parentIndex, index, foreigns } = action.payload;
+      const inputDep =
+        state.information[parentIndex].details[index].inputDependency;
+      const inputDepField =
+        state.information[parentIndex].details[index].inputDependencyField;
+      const n = state.information[parentIndex].details.filter(
+        (d) =>
+          d.inputDependency === inputDep &&
+          d.inputDependencyField === inputDepField &&
+          d.isQuery
+      ).length;
+      state.information[parentIndex].details
+        .filter((d) => d.order > index)
+        .forEach((d) => (d.order += foreigns.length - n));
+      state.information[parentIndex].details.splice(
+        index + 1,
+        n,
+        ...foreigns.map((v, i) => ({
+          ...state.information[parentIndex].details[index],
+          name: "",
+          hide: false,
+          order: index + i + 1,
+          isQuery: true,
+          foreignKey: v.foreignKey,
+          queryTable: v.queryTable,
+          queryField: v.queryField,
+          queryHide: true,
+        }))
+      );
+      state.information[parentIndex].details.sort((a, b) => a.order - b.order);
+    },
+    toggleHideQuery: (
+      state,
+      action: PayloadAction<{
+        parentIndex: number;
+        index: number;
+      }>
+    ) => {
+      const { parentIndex, index } = action.payload;
+      const value = state.information[parentIndex].details[index].queryHide;
+      state.information[parentIndex].details[index].queryHide = !value;
     },
     deletedInputDetails: (
       state,
@@ -280,11 +340,16 @@ export const formSlice = createSlice({
       action: PayloadAction<{
         parentIndex: number;
         index: number;
+        queryTable: string;
         queryField: string;
+        foreignKey: string;
       }>
     ) => {
-      const { parentIndex, index, queryField } = action.payload;
+      const { parentIndex, index, queryTable, queryField, foreignKey } =
+        action.payload;
       state.information[parentIndex].details[index].queryField = queryField;
+      state.information[parentIndex].details[index].queryTable = queryTable;
+      state.information[parentIndex].details[index].foreignKey = foreignKey;
     },
     clearComponentChildren: (state, action: PayloadAction<string>) => {
       const prefix = action.payload;
@@ -311,9 +376,12 @@ export const {
   duplicateComponent,
   toggleHideInput,
   toggleHideAllInput,
+  updateInputParentName,
   updateInputName,
   updateDependencies,
   addNewInputDetails,
+  setNewInputDetails,
+  toggleHideQuery,
   deletedInputDetails,
   updateQueryField,
   clearComponentChildren,

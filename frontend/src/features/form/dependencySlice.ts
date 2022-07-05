@@ -2,6 +2,7 @@ import { Dependencies, DependencyDetails } from "@models";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import type { AppState } from "@app/store";
+import { saveTemplate } from "api/template";
 
 export interface DependenciesState {
   inputDependencies: DependencyDetails[];
@@ -26,10 +27,29 @@ export const dependenciesSlice = createSlice({
       state.inputDependencies = [];
       state.outputDependencies = [];
     },
+    addQueryDependency: (state, action: PayloadAction<string[]>) => {
+      const dependency = action.payload;
+      if (!dependency.length) {
+        state.inputDependencies = state.inputDependencies.filter(
+          (d) => d.name !== "Query Dependencies"
+        );
+        return;
+      }
+      const queryDependencies = state.inputDependencies.find(
+        (v) => v.name === "Query Dependencies"
+      );
+      if (queryDependencies) queryDependencies.children = dependency;
+      else
+        state.inputDependencies.push({
+          name: "Query Dependencies",
+          children: dependency,
+        });
+    },
   },
 });
 
-export const { setDependencies, resetDependencies } = dependenciesSlice.actions;
+export const { setDependencies, resetDependencies, addQueryDependency } =
+  dependenciesSlice.actions;
 
 export const selectInputDependencies = (state: AppState) =>
   state.dependencies.inputDependencies;

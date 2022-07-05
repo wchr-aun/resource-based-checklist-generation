@@ -17,12 +17,14 @@ export const defaultTemplate = {
     name: "OpenContract",
     args: [],
   },
+  autolink: true,
 };
 
-export const jsonValidation = (s: string) => {
+export const jsonValidation = (s: string, autolink?: boolean) => {
   try {
-    JSON.parse(s);
-    return s;
+    const val = JSON.parse(s);
+    val["autolink"] = autolink;
+    return JSON.stringify(val);
   } catch {
     return JSON.stringify(defaultTemplate);
   }

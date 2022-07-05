@@ -1,8 +1,10 @@
 import { healthcareExamples } from "@app/healthcareExamples";
 import { useAppDispatch, useAppSelector } from "@app/hooks";
 import Divider from "@components/Divider";
+import Checkbox from "@components/inputs/Checkbox";
 import Dropdown from "@components/inputs/Dropdown";
 import Paragraph from "@components/inputs/Paragraph";
+import { useState } from "react";
 import {
   selectProcess,
   selectProcessInput,
@@ -19,13 +21,14 @@ const jsonValidation = (s: string) => {
 };
 
 interface Props {
-  onClickCreate: () => void;
+  onClickCreate: (v: boolean) => void;
 }
 
 function ProcessInput(props: Props) {
   const { onClickCreate } = props;
   const dispatch = useAppDispatch();
   const value = useAppSelector(selectProcessInput);
+  const [autolink, setAutolink] = useState(true);
   const onSelectModel = () => {
     const models = window.localStorage.getItem("recentModels") || "";
     const val = healthcareExamples.find(
@@ -41,7 +44,7 @@ function ProcessInput(props: Props) {
           .join(",")
       );
     }
-    onClickCreate();
+    onClickCreate(autolink);
   };
   return (
     <div className="space-y-2">
@@ -61,6 +64,7 @@ function ProcessInput(props: Props) {
         />
       </div>
       <Paragraph
+        disabled={true}
         value={value}
         onChange={(v: string) => dispatch(updateProcessInput(v))}
         rows={Math.max(Math.min(value.split(/\r\n|\r|\n/).length, 25), 5)}
@@ -71,7 +75,14 @@ function ProcessInput(props: Props) {
         }
       />
       <Divider />
-      <div className="flex justify-end">
+      <div className="flex justify-between">
+        <div className="py-2">
+          <Checkbox
+            name="Autolink Dependencies"
+            onChecked={() => setAutolink(!autolink)}
+            checked={autolink}
+          />
+        </div>
         <button
           className="border px-4 py-2 rounded-lg border-orange-400 text-orange-400 hover:border-orange-600 hover:text-orange-600"
           onClick={() => onSelectModel()}

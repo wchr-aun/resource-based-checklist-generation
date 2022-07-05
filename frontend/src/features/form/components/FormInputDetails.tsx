@@ -115,11 +115,11 @@ const FormInputDetails: NextPage<Props> = (props) => {
               checked={node.required}
               onChecked={onRequiredChange}
             />
-            {/* <Checkbox
-              name="Editable"
-              checked={node.editable}
+            <Checkbox
+              name="Hide"
+              checked={node.hide}
               onChecked={onEditableChange}
-            /> */}
+            />
           </div>
         )}
 

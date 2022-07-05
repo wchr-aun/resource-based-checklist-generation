@@ -13,21 +13,24 @@ import {
   setDependencies,
 } from "@features/form/dependencySlice";
 import Modal from "@components/Modal";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Template } from "@models";
 import { resetForeignTable } from "@features/form/foreignTableSlice";
+import { deleteChecklist } from "api/checklist";
 
 interface Props {
-  templates: Template[];
+  temp: Template[];
 }
 
 const Home: NextPage<Props> = (props: Props) => {
-  const { templates } = props;
+  const { temp } = props;
+  const [templates, setTemplates] = useState<Template[]>(temp);
   const openModal = useRef((v: boolean) => {});
   const dispatch = useAppDispatch();
-  const callGenerateApi = async () => {
+  const callGenerateApi = async (autolink: boolean) => {
     const templateResponse = await getTemplate(
-      store.getState().processInput.process
+      store.getState().processInput.process,
+      autolink
     );
     const dependencyResponse = await getDependencies(
       store.getState().processInput.process
@@ -37,8 +40,15 @@ const Home: NextPage<Props> = (props: Props) => {
     Router.push("/canvas");
     openModal.current(false);
   };
+
   const callViewApi = async (id: number) => {
-    Router.push(`/checklist/${id}`);
+    Router.push(`/checklist/view/${id}`);
+  };
+
+  const callDeleteApi = async (id: number) => {
+    await deleteChecklist(id);
+    const res = await getTemplates();
+    setTemplates(res.templates);
   };
 
   useEffect(() => {
@@ -59,12 +69,17 @@ const Home: NextPage<Props> = (props: Props) => {
         <ChecklistFinished
           templates={templates}
           onClickStart={(id) => callViewApi(id)}
+          onClickDelete={(id) => callDeleteApi(id)}
         />
       </div>
       <style>{"body { background-color: white; }"}</style>
       <Modal
         openModal={openModal}
-        body={<ProcessInput onClickCreate={() => callGenerateApi()} />}
+        body={
+          <ProcessInput
+            onClickCreate={(autolink) => callGenerateApi(autolink)}
+          />
+        }
       />
     </div>
   );
@@ -72,7 +87,7 @@ const Home: NextPage<Props> = (props: Props) => {
 
 Home.getInitialProps = async () => {
   const res = await getTemplates();
-  return { templates: res.templates };
+  return { temp: res.templates };
 };
 
 export default Home;
