@@ -4,6 +4,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { AppState } from "@app/store";
 
 export interface FormState {
+  name: string;
   processName: string;
   originalProcessName: string;
   components: Component[];
@@ -11,6 +12,7 @@ export interface FormState {
 }
 
 const initialState: FormState = {
+  name: "",
   processName: "",
   originalProcessName: "",
   components: [],
@@ -46,6 +48,7 @@ export const formSlice = createSlice({
   reducers: {
     setForm: (state, action: PayloadAction<Form>) => {
       const { processName, components, information } = action.payload;
+      state.name = processName;
       state.processName = processName;
       state.originalProcessName = processName;
       state.components = components.flatMap((component) =>

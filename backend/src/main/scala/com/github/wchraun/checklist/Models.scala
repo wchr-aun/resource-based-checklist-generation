@@ -61,7 +61,7 @@ final case class TemplateResponse(id: Int, name: String, created: String, update
 final case class GetTemplatesResponse(templates: Array[TemplateResponse])
 final case class ForeignQueries(queryTable: String, fields: Array[String], foreignKey: String)
 final case class GetForeignTableResponse(foreignQueries: Array[ForeignQueries])
-final case class SaveTemplateRequest(processName: String, information: Array[InputInformation], components: Array[Component])
+final case class SaveTemplateRequest(name: String, processName: String, information: Array[InputInformation], components: Array[Component])
 final case class SuccessResponse(success: Boolean)
 
 final case class Foreign(queryTable: String, field: String, foreignKey: String)

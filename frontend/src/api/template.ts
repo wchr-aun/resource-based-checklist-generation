@@ -22,6 +22,7 @@ export async function saveTemplate(template: Form) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
+      name: template.name,
       processName: template.processName,
       components: template.components,
       information: template.information.map((info) => ({

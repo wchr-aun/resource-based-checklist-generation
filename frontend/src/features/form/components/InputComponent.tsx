@@ -102,7 +102,10 @@ function InputComponent(props: Props) {
   ) => {
     dispatch(setLoading(true));
     const _res = await queryForignTable(modelName, fieldName);
-    if (!_res) return;
+    if (!_res) {
+      dispatch(setLoading(false));
+      return;
+    }
     const res = await getRecommenedForeign(modelName, fieldName);
     dispatch(setLoading(false));
     setSuggestedForeigns({

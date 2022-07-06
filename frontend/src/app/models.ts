@@ -41,6 +41,7 @@ export interface Information {
 }
 
 export interface Form {
+  name: string;
   processName: string;
   components: BaseComponent[];
   information: Information[];
