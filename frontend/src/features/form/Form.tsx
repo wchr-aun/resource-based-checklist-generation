@@ -33,6 +33,7 @@ import { saveTemplate } from "api/template";
 import Router from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import { setLoading } from "@app/loadingSlice";
 
 interface Props {
   originalTemplate: Form;
@@ -48,7 +49,6 @@ function FormTemplate(props: Props) {
   const triggerCollapseAll = useRef(() => {});
   const openModal = useRef((v: boolean) => {});
   const successModal = useRef((v: boolean) => {});
-  const inputDependencies = useAppSelector(selectInputDependencies);
   const outputDependencies = useAppSelector(selectOutputDependencies);
 
   const [savedTemplateId, setSavedTemplateId] = useState(-1);
@@ -57,27 +57,14 @@ function FormTemplate(props: Props) {
   const [selectedPrefix, setSelectedPrefix] = useState("root");
   const [focusedComponent, setFocusedComponent] = useState(0);
 
-  useEffect(() => {
-    dispatch(
-      addQueryDependency(
-        information.flatMap((v) =>
-          v.details
-            .filter((d) => d.isQuery && d.queryField)
-            .map(
-              (d) =>
-                `${d.inputDependency};${d.inputDependencyField};${d.foreignKey};${d.queryTable};${d.queryField}`
-            )
-        )
-      )
-    );
-  }, [information]);
-
   const submitForm = async () => {
+    dispatch(setLoading(true));
     const res = await saveTemplate({
       processName,
       components,
       information,
     });
+    dispatch(setLoading(false));
     successModal.current(true);
     setSavedTemplateId(res.templateId);
   };
@@ -272,7 +259,14 @@ function FormTemplate(props: Props) {
         body={
           <DependencyModal
             node={selectedNode}
-            inputDependencies={inputDependencies}
+            inputDependencies={information.map((input) => ({
+              name: input.inputDependency,
+              children: input.details.map((d) =>
+                !d.isQuery
+                  ? d.inputDependencyField
+                  : `${d.inputDependencyField}.${d.queryField}`
+              ),
+            }))}
             outputDependencies={outputDependencies}
             onClose={() => openModal.current(false)}
             onConfirm={onUpdateDependencies}

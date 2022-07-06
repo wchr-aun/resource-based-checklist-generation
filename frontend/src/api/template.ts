@@ -31,7 +31,6 @@ export async function saveTemplate(template: Form) {
         details: info.details.map((detail) => ({
           name: detail.name,
           order: detail.order,
-          inputDependency: detail.inputDependency,
           inputDependencyField: detail.inputDependencyField,
           hide: detail.hide,
           isQuery: detail.isQuery || false,

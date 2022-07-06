@@ -17,6 +17,7 @@ import { useEffect, useRef, useState } from "react";
 import { Template } from "@models";
 import { resetForeignTable } from "@features/form/foreignTableSlice";
 import { deleteChecklist } from "api/checklist";
+import { setLoading } from "@app/loadingSlice";
 
 interface Props {
   temp: Template[];
@@ -28,6 +29,7 @@ const Home: NextPage<Props> = (props: Props) => {
   const openModal = useRef((v: boolean) => {});
   const dispatch = useAppDispatch();
   const callGenerateApi = async (autolink: boolean) => {
+    dispatch(setLoading(true));
     const templateResponse = await getTemplate(
       store.getState().processInput.process,
       autolink
@@ -35,6 +37,7 @@ const Home: NextPage<Props> = (props: Props) => {
     const dependencyResponse = await getDependencies(
       store.getState().processInput.process
     );
+    dispatch(setLoading(false));
     dispatch(setForm(templateResponse));
     dispatch(setDependencies(dependencyResponse));
     Router.push("/canvas");

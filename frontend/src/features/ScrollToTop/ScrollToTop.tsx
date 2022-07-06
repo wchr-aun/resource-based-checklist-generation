@@ -13,7 +13,7 @@ function ScrollToTop() {
   }, [scrolled]);
   return (
     <div
-      className={`fixed rounded-full px-5 py-4 bg-white origin-bottom-left right-5 bottom-5 shadow-md cursor-pointer ${
+      className={`fixed rounded-full px-5 py-4 bg-indigo-300 text-white origin-bottom-left right-5 bottom-5 shadow-lg cursor-pointer ${
         scrolled ? "" : "hidden"
       }`}
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}

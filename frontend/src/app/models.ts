@@ -24,7 +24,6 @@ export interface Component extends BaseComponent {
 export interface Details {
   name: string;
   order: number;
-  inputDependency: string;
   inputDependencyField: string;
   hide: boolean;
   isQuery?: boolean;

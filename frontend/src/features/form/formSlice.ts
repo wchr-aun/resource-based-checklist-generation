@@ -283,15 +283,11 @@ export const formSlice = createSlice({
       }>
     ) => {
       const { parentIndex, index, foreigns } = action.payload;
-      const inputDep =
-        state.information[parentIndex].details[index].inputDependency;
+      const inputDep = state.information[parentIndex].inputDependency;
       const inputDepField =
         state.information[parentIndex].details[index].inputDependencyField;
       const n = state.information[parentIndex].details.filter(
-        (d) =>
-          d.inputDependency === inputDep &&
-          d.inputDependencyField === inputDepField &&
-          d.isQuery
+        (d) => d.inputDependencyField === inputDepField && d.isQuery
       ).length;
       state.information[parentIndex].details
         .filter((d) => d.order > index)

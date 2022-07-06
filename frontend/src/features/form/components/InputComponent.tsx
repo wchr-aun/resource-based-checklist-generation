@@ -30,6 +30,7 @@ import { useEffect, useRef, useState } from "react";
 import Modal from "@components/Modal";
 import { selectForeign, setForeignTable } from "../foreignTableSlice";
 import SuggestedForeignModal from "./SuggestedForeignModal";
+import { setLoading } from "@app/loadingSlice";
 
 interface Props {
   inputs: Information[];
@@ -99,9 +100,11 @@ function InputComponent(props: Props) {
     parentIndex: number,
     index: number
   ) => {
+    dispatch(setLoading(true));
     const _res = await queryForignTable(modelName, fieldName);
     if (!_res) return;
     const res = await getRecommenedForeign(modelName, fieldName);
+    dispatch(setLoading(false));
     setSuggestedForeigns({
       parentIndex,
       index,
@@ -236,8 +239,14 @@ function InputComponent(props: Props) {
                       options={
                         queryOptions[
                           `${info.inputDependency}_${details.inputDependencyField}`
-                        ]?.find((v) => v.queryTable === details.queryTable)
-                          ?.fields || []
+                        ]
+                          ?.find((v) => v.queryTable === details.queryTable)
+                          ?.fields.filter(
+                            (f) =>
+                              !info.details
+                                .map((i) => i.queryField)
+                                .includes(f) || details.queryField === f
+                          ) || []
                       }
                       value={details.queryField}
                       onUpdateValue={(_, queryField) =>

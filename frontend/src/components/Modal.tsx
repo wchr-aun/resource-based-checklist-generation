@@ -4,6 +4,7 @@ interface Props {
   size?: string;
   body: JSX.Element;
   openModal: MutableRefObject<(v: boolean) => void>;
+  lockBackground?: boolean;
   onClickBackground?: () => void;
 }
 
@@ -12,6 +13,7 @@ function Modal(props: Props) {
     size = "w-2/3",
     body,
     openModal,
+    lockBackground = false,
     onClickBackground = () => {},
   } = props;
   const [isOpen, setIsOpen] = useState(false);
@@ -32,7 +34,7 @@ function Modal(props: Props) {
             className="fixed bg-opacity-60 bg-slate-400 w-full h-full"
             onClick={() => {
               onClickBackground();
-              setIsOpen(false);
+              if (!lockBackground) setIsOpen(false);
             }}
           ></div>
           <div
