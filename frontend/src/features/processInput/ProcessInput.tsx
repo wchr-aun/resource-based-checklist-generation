@@ -84,7 +84,7 @@ function ProcessInput(props: Props) {
           />
         </div>
         <button
-          className="border px-4 py-2 rounded-lg border-orange-400 text-orange-400 hover:border-orange-600 hover:text-orange-600"
+          className="border px-4 py-2 rounded-lg border-indigo-500 text-indigo-500 hover:border-indigo-700 hover:text-indigo-700 hover:bg-indigo-50"
           onClick={() => onSelectModel()}
         >
           Create
