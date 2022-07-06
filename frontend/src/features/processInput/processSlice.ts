@@ -30,11 +30,23 @@ export const processInputSlice = createSlice({
       }
       state.process = JSON.stringify(sampleProcesses[action.payload], null, 2);
     },
+    chooseProcess: (state, action: PayloadAction<string>) => {
+      state.process = JSON.stringify(
+        sampleProcesses.find((p) => p.name === action.payload) ||
+          sampleProcesses[0],
+        null,
+        2
+      );
+    },
   },
 });
 
-export const { updateProcessInput, resetProcessInput, selectProcess } =
-  processInputSlice.actions;
+export const {
+  updateProcessInput,
+  resetProcessInput,
+  selectProcess,
+  chooseProcess,
+} = processInputSlice.actions;
 
 export const selectProcessInput = (state: AppState) =>
   state.processInput.process;

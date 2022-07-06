@@ -24,19 +24,20 @@ export interface Component extends BaseComponent {
 export interface Details {
   name: string;
   order: number;
-  inputDependency: string;
   inputDependencyField: string;
   hide: boolean;
   isQuery?: boolean;
   foreignKey?: string;
   queryTable?: string;
   queryField?: string;
+  queryHide: boolean;
 }
 
 export interface Information {
   name: string;
   order: number;
   details: Details[];
+  inputDependency: string;
 }
 
 export interface Form {

@@ -77,7 +77,7 @@ function OutputComponent(props: Props) {
             key.split(".").length % 2 ? "bg-white" : "bg-gray-50"
           }`}
         >
-          <div className="cursor-pointer flex space-x-1">
+          <div className="flex space-x-1">
             <FormInputName
               node={parent}
               prefix={prefix}
@@ -91,7 +91,7 @@ function OutputComponent(props: Props) {
               onDelete={() => onDelete(key, parent.order)}
             />
             <div
-              className={`w-1/12 flex justify-center items-center border rounded-md text-xs ${
+              className={`w-1/12 flex justify-center items-center border rounded-md text-xs cursor-pointer ${
                 collapsible[prefix]
                   ? "bg-gray-200 border-gray-200 text-gray-500"
                   : "bg-white text-gray-800 border-gray-300 shadow-sm"
@@ -143,7 +143,7 @@ function OutputComponent(props: Props) {
             onAddOption={() => onAddOption(prefix, parent.validation + "|")}
             onValidationChange={(value) => onValidationChange(prefix, value)}
             onRequiredChange={() => onRequiredChange(prefix, !parent.required)}
-            onEditableChange={() => onEditableChange(prefix, !parent.editable)}
+            onEditableChange={() => onEditableChange(prefix, !parent.hide)}
             onSelectFunction={(value) => onSelectFunction(prefix, value)}
             onUpdateChoice={(value) => onUpdateChoice(prefix, value)}
             onClickSetupDependency={(node) =>

@@ -4,6 +4,7 @@ import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
 import store from "../app/store";
 import Head from "next/head";
+import Loading from "@components/Loading";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -16,6 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <div className="lg:px-32 px-8 py-4">
           <Component {...pageProps} />
         </div>
+        <Loading />
       </div>
     </Provider>
   );

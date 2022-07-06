@@ -8,6 +8,7 @@ object Dependency {
   sealed trait Command
   final case class GetDependencies(process: Process, replyTo: ActorRef[GetDependencyResponse], database: Database) extends Command
   final case class GetForeignTable(tableName: String, fieldName: String, replyTo: ActorRef[GetForeignTableResponse], database: Database) extends Command
+  final case class GetRecommendedQueries(tableName: String, fieldName: String, replyTo: ActorRef[GetRecommendedQueriesResponse], database: Database) extends Command
 
   def apply(): Behavior[Command] = generator()
 
@@ -19,6 +20,9 @@ object Dependency {
       case GetForeignTable(tableName, fieldName, replyTo, db) =>
         replyTo ! foreignTable(tableName, fieldName, db)
         Behaviors.same
+      case GetRecommendedQueries(tableName, fieldName, replyTo, db) =>
+        replyTo ! getRecommendedQueries(tableName, fieldName, db)
+        Behaviors.same
     }
 
   private def extractDependencies(process: Process, db: Database) = {
@@ -28,14 +32,20 @@ object Dependency {
       ) ++ child.args.get.flatMap(v => dfsDependencies(v))
     }
     GetDependencyResponse(
-      process.inputs.flatMap(v => dfsDependencies(v)),
-      dfsDependencies(process.output).filter(_.name != "")
+      process.inputs.flatMap(v => dfsDependencies(v)).distinctBy(_.name),
+      dfsDependencies(process.output).filter(_.name != "").distinctBy(_.name)
     )
   }
 
   private def foreignTable(tableName: String, fieldName: String, db: Database) = {
-    val (foreignTable, foreignKey) = db.getForeignTable(tableName, fieldName)
-    GetForeignTableResponse(foreignTable, db.getTableFields(foreignTable), foreignKey)
+    val foreign = db.getForeignTable(tableName, fieldName)
+    GetForeignTableResponse(foreign.map(f => ForeignQueries(f._1, db.getTableFields(f._1), f._2)))
+  }
+
+  private def getRecommendedQueries(tableName: String, fieldName: String, db: Database) = {
+    val foreign = db.getRecommendedQueryFields(tableName, fieldName)
+    val average = foreign.foldLeft((0.0, 1)) ((acc, i) => ((acc._1 + (i._4 - acc._1) / acc._2), acc._2 + 1))._1
+    GetRecommendedQueriesResponse(foreign.filter(_._4 >= average).map(v => Foreign(v._1, v._2, v._3)))
   }
 }
 //#user-registry-actor

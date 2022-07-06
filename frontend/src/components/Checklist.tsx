@@ -39,38 +39,39 @@ function Checklist(props: Props) {
     }
     return (
       <div key={prefix}>
-        {component.componentType === COMPONENT_TYPES.HEADER && (
-          <div className="space-y-2">
-            <div className="flex justify-between py-2">
-              <div className="font-bold">{component.name}</div>
-              <div
-                className="cursor-pointer flex self-center text-sm font-medium"
-                onClick={() =>
-                  setShow({
-                    ...show,
-                    [prefix]: !show[prefix],
-                  })
-                }
-              >
-                {show[prefix] ? "Collapse" : "Expand"}
+        {component.componentType === COMPONENT_TYPES.HEADER &&
+          !component.children.every((c) => c.hide) && (
+            <div className="space-y-2">
+              <div className="flex justify-between py-2">
+                <div className="font-bold">{component.name}</div>
+                <div
+                  className="cursor-pointer flex self-center text-sm font-medium"
+                  onClick={() =>
+                    setShow({
+                      ...show,
+                      [prefix]: !show[prefix],
+                    })
+                  }
+                >
+                  {show[prefix] ? "Collapse" : "Expand"}
+                </div>
               </div>
+              {show[prefix] && (
+                <div className="ml-5">
+                  {[...component.children]
+                    .sort((a, b) => a.order - b.order)
+                    .map((child, i) =>
+                      dfsChecklist(
+                        child,
+                        prefix,
+                        i === component.children.length - 1
+                      )
+                    )}
+                </div>
+              )}
+              {!last && <Divider className="pt-2" />}
             </div>
-            {show[prefix] && (
-              <div className="ml-5">
-                {[...component.children]
-                  .sort((a, b) => a.order - b.order)
-                  .map((child, i) =>
-                    dfsChecklist(
-                      child,
-                      prefix,
-                      i === component.children.length - 1
-                    )
-                  )}
-              </div>
-            )}
-            {!last && <Divider className="pt-2" />}
-          </div>
-        )}
+          )}
         {component.componentType === COMPONENT_TYPES.TAB && (
           <div>
             <Tabs
@@ -78,19 +79,31 @@ function Checklist(props: Props) {
               currentTab={tab[prefix]}
               onTabChange={(index) => setTab({ ...tab, [prefix]: index })}
             />
-            <div className="ml-7">
+            <div className="ml-7 mt-3">
               {[...component.children]
                 .sort((a, b) => a.order - b.order)
                 .flatMap((child, i) =>
                   i === tab[prefix]
-                    ? child.componentType === COMPONENT_TYPES.HEADER
-                      ? child.children.map((c, j) =>
-                          dfsChecklist(
-                            c,
-                            prefix,
-                            j === child.children.length - 1
+                    ? child.componentType === COMPONENT_TYPES.HEADER &&
+                      child.children.every(
+                        (v) => v.componentType === COMPONENT_TYPES.HEADER
+                      ) &&
+                      child.children.every(
+                        (v) => v.componentType === COMPONENT_TYPES.HEADER
+                      )
+                      ? child.children
+                          .filter((v) => !v.children.every((vv) => vv.hide))
+                          .map((c, j) =>
+                            dfsChecklist(
+                              c,
+                              prefix,
+                              j ===
+                                child.children.filter(
+                                  (v) => !v.children.every((vv) => vv.hide)
+                                ).length -
+                                  1
+                            )
                           )
-                        )
                       : dfsChecklist(child, prefix, true)
                     : null
                 )}
@@ -98,7 +111,8 @@ function Checklist(props: Props) {
           </div>
         )}
         {component.componentType !== COMPONENT_TYPES.HEADER &&
-          component.componentType !== COMPONENT_TYPES.TAB && (
+          component.componentType !== COMPONENT_TYPES.TAB &&
+          !component.hide && (
             <div className="flex space-y-1 space-x-2">
               <div className="font-medium w-2/12 flex justify-end self-center">
                 {component.name}

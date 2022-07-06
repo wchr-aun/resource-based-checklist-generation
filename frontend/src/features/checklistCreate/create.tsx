@@ -1,3 +1,5 @@
+import { useAppDispatch } from "@app/hooks";
+import { chooseProcess } from "@features/processInput/processSlice";
 import { faFile, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
@@ -8,8 +10,8 @@ interface Props {
 
 function ChecklistCreate(props: Props) {
   const { onClickCreateTemplate } = props;
-  // const recentModels = window.localStorage.getItem("recentModels")?.split(",") || [];
   const [recentModels, setRecentModels] = useState<string[]>([]);
+  const dispatch = useAppDispatch();
   useEffect(() => {
     setRecentModels(
       window.localStorage
@@ -30,7 +32,7 @@ function ChecklistCreate(props: Props) {
           }`}
           onClick={onClickCreateTemplate}
         >
-          <div className="h-max border-dashed flex justify-center py-9 px-16 rounded-md bg-white text-gray-500 hover:border-solid border-2 hover:border-sky-900 border-gray-400">
+          <div className="h-max border-dashed flex justify-center py-9 px-16 rounded-md bg-white text-sky-700 hover:text-sky-600 hover:bg-sky-50 hover:border-solid border-2 hover:border-sky-700 border-gray-400">
             <FontAwesomeIcon icon={faPlus} size="3x" />
           </div>
           <div className="text-center text-sm">Create a New Template</div>
@@ -43,13 +45,20 @@ function ChecklistCreate(props: Props) {
             <div className="flex space-x-3 mt-5">
               {recentModels.map((name, i) => (
                 <div
-                  className="flex-col space-y-0 w-min cursor-pointer text-gray-500 hover:underline"
+                  className="relative flex-col space-y-0 w-min cursor-pointer hover:underline"
                   key={i}
+                  onClick={() => {
+                    dispatch(chooseProcess(name));
+                    onClickCreateTemplate();
+                  }}
                 >
+                  <span className="absolute text-white text-2xl border-2 py-11 px-10 rounded-lg hover:border-sky-800 border-transparent">
+                    &#60;/&#62;
+                  </span>
                   <FontAwesomeIcon
                     icon={faFile}
                     size="6x"
-                    className="hover:border-2 hover:border-solid hover:border-sky-900 border-2 border-transparent py-3 px-6 rounded-lg"
+                    className="text-sky-900 py-3 px-6"
                   />
                   <div className="flex justify-center text-sm text-gray-900">
                     {name.length > 17 ? `${name.substring(0, 14)}...` : name}

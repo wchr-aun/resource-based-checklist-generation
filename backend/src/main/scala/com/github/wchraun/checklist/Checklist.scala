@@ -11,6 +11,7 @@ object Checklist {
   final case class GetChecklists(replyTo: ActorRef[String]) extends Command
   final case class StartChecklist(arg: StartChecklistArg, replyTo: ActorRef[String]) extends Command
   final case class SubmitChecklist(id: String, replyTo: ActorRef[String]) extends Command
+  final case class DeleteTemplate(id: Int, replyTo: ActorRef[SuccessResponse], database: Database) extends Command
 
   def apply(): Behavior[Command] = generator()
 
@@ -27,6 +28,9 @@ object Checklist {
         Behaviors.same
       case SubmitChecklist(id, replyTo) =>
         replyTo ! s"Submit Checklist ID #$id"
+        Behaviors.same
+      case DeleteTemplate(id, replyTo, db) =>
+        replyTo ! deleteTemplate(id, db)
         Behaviors.same
     }
 
@@ -52,5 +56,10 @@ object Checklist {
       )).sortBy(_.order)
     }
     SaveTemplateRequest(processName, db.getInputInformation(id), dfs(result))
+  }
+
+  private def deleteTemplate(id: Int, db: Database) = {
+    db.deleteTemplate(id)
+    SuccessResponse(true)
   }
 }

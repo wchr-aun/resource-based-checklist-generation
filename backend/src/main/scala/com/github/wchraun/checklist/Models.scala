@@ -18,7 +18,7 @@ import java.util.Date
 final case class StartChecklistArg(templateId: String)
 
 final case class Arg(argType: ArgType, name: String, args: Option[Array[Arg]])
-final case class Process(name: String, inputs: Array[Arg], output: Arg)
+final case class Process(name: String, inputs: Array[Arg], output: Arg, autolink: Option[Boolean])
 final case class Details(name: String,
                          order: Int,
                          inputDependency: String,
@@ -26,15 +26,14 @@ final case class Details(name: String,
                          hide: Boolean)
 final case class InputDetails(name: String,
                                   order: Int,
-                                  inputDependency: String,
                                   inputDependencyField: String,
                                   hide: Boolean,
                                   isQuery: Boolean,
                                   foreignKey: String,
                                   queryTable: String,
                                   queryField: String)
-final case class Information(name: String, order: Int, details: Array[Details])
-final case class InputInformation(name: String, order: Int, details: Array[InputDetails])
+final case class Information(name: String, order: Int, details: Array[Details], inputDependency: String)
+final case class InputInformation(name: String, order: Int, details: Array[InputDetails], inputDependency: String)
 final case class Component(
                             order: Int,
                             name: String,
@@ -60,5 +59,10 @@ final case class GetDependencyResponse(inputDependencies: Array[DependencyDetail
 final case class SaveTemplateResponse(templateId: Int)
 final case class TemplateResponse(id: Int, name: String, created: String, updated: String)
 final case class GetTemplatesResponse(templates: Array[TemplateResponse])
-final case class GetForeignTableResponse(foreignTable: String, fields: Array[String], foreignKey: String)
+final case class ForeignQueries(queryTable: String, fields: Array[String], foreignKey: String)
+final case class GetForeignTableResponse(foreignQueries: Array[ForeignQueries])
 final case class SaveTemplateRequest(processName: String, information: Array[InputInformation], components: Array[Component])
+final case class SuccessResponse(success: Boolean)
+
+final case class Foreign(queryTable: String, field: String, foreignKey: String)
+final case class GetRecommendedQueriesResponse(foreign: Array[Foreign])

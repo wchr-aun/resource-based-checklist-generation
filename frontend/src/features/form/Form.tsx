@@ -16,7 +16,7 @@ import {
   updateDependencies,
 } from "@features/form/formSlice";
 import { useAppDispatch, useAppSelector } from "@app/hooks";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Input from "@components/inputs/Input";
 import Divider from "@components/Divider";
 import OutputComponent from "./components/OutputComponent";
@@ -25,6 +25,7 @@ import Link from "next/link";
 import Modal from "@components/Modal";
 import DependencyModal from "./components/DependencyModal";
 import {
+  addQueryDependency,
   selectInputDependencies,
   selectOutputDependencies,
 } from "./dependencySlice";
@@ -32,6 +33,7 @@ import { saveTemplate } from "api/template";
 import Router from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import { setLoading } from "@app/loadingSlice";
 
 interface Props {
   originalTemplate: Form;
@@ -47,7 +49,6 @@ function FormTemplate(props: Props) {
   const triggerCollapseAll = useRef(() => {});
   const openModal = useRef((v: boolean) => {});
   const successModal = useRef((v: boolean) => {});
-  const inputDependencies = useAppSelector(selectInputDependencies);
   const outputDependencies = useAppSelector(selectOutputDependencies);
 
   const [savedTemplateId, setSavedTemplateId] = useState(-1);
@@ -57,11 +58,13 @@ function FormTemplate(props: Props) {
   const [focusedComponent, setFocusedComponent] = useState(0);
 
   const submitForm = async () => {
+    dispatch(setLoading(true));
     const res = await saveTemplate({
       processName,
       components,
       information,
     });
+    dispatch(setLoading(false));
     successModal.current(true);
     setSavedTemplateId(res.templateId);
   };
@@ -118,6 +121,7 @@ function FormTemplate(props: Props) {
       >
         <Input
           autoFocus={true}
+          error={!processName}
           value={processName}
           placeholder={originalProcessName}
           className="text-3xl font-bold"
@@ -199,7 +203,7 @@ function FormTemplate(props: Props) {
             dispatch(
               updateComponent({
                 prefix,
-                field: "editable",
+                field: "hide",
                 value,
               })
             )
@@ -231,8 +235,8 @@ function FormTemplate(props: Props) {
               Preview
             </button>
           </Link>
-          <button className="border border-rose-400 hover:border-rose-500 hover:text-rose-500 hover:bg-rose-50 text-rose-400 font-bold py-2 px-4 rounded mt-5">
-            Check Dependencies
+          <button className="border border-emerald-600 hover:border-emerald-800 hover:text-emerald-800 hover:bg-emerald-50 text-emerald-600 font-bold py-2 px-4 rounded mt-5">
+            Validate Dependencies
           </button>
         </div>
         <div className="space-x-2">
@@ -255,7 +259,14 @@ function FormTemplate(props: Props) {
         body={
           <DependencyModal
             node={selectedNode}
-            inputDependencies={inputDependencies}
+            inputDependencies={information.map((input) => ({
+              name: input.inputDependency,
+              children: input.details.map((d) =>
+                !d.isQuery
+                  ? d.inputDependencyField
+                  : `${d.inputDependencyField}.${d.queryField}`
+              ),
+            }))}
             outputDependencies={outputDependencies}
             onClose={() => openModal.current(false)}
             onConfirm={onUpdateDependencies}

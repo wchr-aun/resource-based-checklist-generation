@@ -26,3 +26,19 @@ export async function getForeignTable(tableName: string, fieldName: string) {
   if (!res) return {};
   return await res.json();
 }
+
+export async function getRecommenedForeign(
+  tableName: string,
+  fieldName: string
+) {
+  const res = await fetch(
+    `${process.env.BACKEND_URL}/dependency/recommendedQueries?tableName=${tableName}&fieldName=${fieldName}`,
+    {
+      method: "GET",
+    }
+  ).catch((error) => {
+    console.log(error);
+  });
+  if (!res) return {};
+  return await res.json();
+}

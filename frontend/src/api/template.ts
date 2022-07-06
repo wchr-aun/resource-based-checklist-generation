@@ -1,13 +1,13 @@
 import { Form } from "@models";
 import { jsonValidation } from "./util";
 
-export async function getTemplate(processInput: string) {
+export async function getTemplate(processInput: string, autolink: boolean) {
   const res = await fetch(`${process.env.BACKEND_URL}/template`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
-    body: jsonValidation(processInput),
+    body: jsonValidation(processInput, autolink),
   }).catch((error) => {
     console.log(error);
   });
@@ -27,10 +27,10 @@ export async function saveTemplate(template: Form) {
       information: template.information.map((info) => ({
         name: info.name,
         order: info.order,
+        inputDependency: info.inputDependency,
         details: info.details.map((detail) => ({
           name: detail.name,
           order: detail.order,
-          inputDependency: detail.inputDependency,
           inputDependencyField: detail.inputDependencyField,
           hide: detail.hide,
           isQuery: detail.isQuery || false,

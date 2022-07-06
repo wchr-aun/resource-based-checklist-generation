@@ -25,7 +25,6 @@ def connect():
             cur.execute(line)
 
         conn.commit()
-
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)

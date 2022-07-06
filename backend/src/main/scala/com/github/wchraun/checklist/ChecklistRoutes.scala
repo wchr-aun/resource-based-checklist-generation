@@ -24,6 +24,8 @@ class ChecklistRoutes(checklist: ActorRef[Checklist.Command])(implicit val syste
     checklist.ask(StartChecklist(arg, _))
   def submitChecklist(id: String): Future[String] =
     checklist.ask(SubmitChecklist(id, _))
+  def deleteTemplate(id: Int): Future[SuccessResponse] =
+    checklist.ask(DeleteTemplate(id, _, database))
 
   private val cors = new CORSHandler {}
 
@@ -56,6 +58,15 @@ class ChecklistRoutes(checklist: ActorRef[Checklist.Command])(implicit val syste
                 }
               }
             }
+          },
+          delete {
+            cors.corsHandler(
+              rejectEmptyResponse {
+                onSuccess(deleteTemplate(checklistId.toInt)) { response =>
+                  complete(StatusCodes.OK, response)
+                }
+              }
+            )
           },
           post {
             rejectEmptyResponse {
