@@ -145,19 +145,14 @@ class Database {
   }
 
   def getForeignTable(table: String, field: String) = {
-    val sql = "SELECT kcu.table_name AS parent_table_name, kcu.column_name AS parent_column_name, ccu.table_name AS foreign_table_name, ccu.column_name AS foreign_column_name FROM information_schema.table_constraints AS tc JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name AND tc.table_schema = kcu.table_schema JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name AND ccu.table_schema = tc.table_schema JOIN datamodel AS dm ON dm.table=kcu.table_name OR dm.table=ccu.table_name WHERE tc.constraint_type = 'FOREIGN KEY' AND (kcu.column_name=? OR ccu.column_name=?) AND dm.name=? GROUP BY(parent_table_name, parent_column_name, foreign_table_name, foreign_column_name);"
+    val sql = "SELECT ccu.table_name AS foreign_table_name, ccu.column_name AS foreign_column_name FROM information_schema.table_constraints AS tc JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name AND tc.table_schema = kcu.table_schema JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name AND ccu.table_schema = tc.table_schema JOIN datamodel AS dm ON dm.table=tc.table_name WHERE tc.constraint_type = 'FOREIGN KEY' AND kcu.column_name=? AND dm.name=? GROUP BY(foreign_table_name, foreign_column_name);"
     val preparedStatement = connection.prepareStatement(sql)
     preparedStatement.setString(1, field)
-    preparedStatement.setString(2, field)
-    preparedStatement.setString(3, table)
+    preparedStatement.setString(2, table)
     val rs = preparedStatement.executeQuery()
     var result = Array.empty[(String, String)]
     while (rs.next) {
-      result =
-        if (field != rs.getString("foreign_column_name"))
-          result :+ (rs.getString("foreign_table_name"), rs.getString("foreign_column_name"))
-        else
-          result :+ (rs.getString("parent_table_name"), rs.getString("parent_column_name"))
+      result = result :+ (rs.getString("foreign_table_name"), rs.getString("foreign_column_name"))
     }
     result
   }

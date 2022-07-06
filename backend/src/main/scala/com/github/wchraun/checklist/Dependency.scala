@@ -32,8 +32,8 @@ object Dependency {
       ) ++ child.args.get.flatMap(v => dfsDependencies(v))
     }
     GetDependencyResponse(
-      process.inputs.flatMap(v => dfsDependencies(v)),
-      dfsDependencies(process.output).filter(_.name != "")
+      process.inputs.flatMap(v => dfsDependencies(v)).distinctBy(_.name),
+      dfsDependencies(process.output).filter(_.name != "").distinctBy(_.name)
     )
   }
 

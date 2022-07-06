@@ -62,6 +62,14 @@ INSERT INTO models VALUES('Patient', 'description');
 INSERT INTO models VALUES('CheckedHealthcareService', 'description');
 INSERT INTO models VALUES('HealthcareService', 'description');
 INSERT INTO models VALUES('HealthcareActor', 'description');
+INSERT INTO models VALUES('PendingHealthcareService', 'description');
+INSERT INTO models VALUES('Obstacle', 'description');
+INSERT INTO models VALUES('Delegation', 'description');
+INSERT INTO models VALUES('ServiceRequester', 'description');
+INSERT INTO models VALUES('RejectedContract', 'description');
+INSERT INTO models VALUES('RequestedContract', 'description');
+INSERT INTO models VALUES('CompletedHealthcareService', 'description');
+INSERT INTO models VALUES('Assignment', 'description');
 
 CREATE TABLE IF NOT EXISTS datamodel (name VARCHAR NOT NULL REFERENCES models(name), "table" VARCHAR NOT NULL, field VARCHAR NOT NULL, PRIMARY KEY (name, "table", field));
 
@@ -70,6 +78,11 @@ INSERT INTO datamodel VALUES('AcceptedContract', 'contracts', 'reqservid');
 INSERT INTO datamodel VALUES('AcceptedContract', 'contracts', 'providerid');
 INSERT INTO datamodel VALUES('AcceptedContract', 'contracts', 'time_requested');
 INSERT INTO datamodel VALUES('AcceptedContract', 'contracts', 'stateid');
+
+INSERT INTO datamodel VALUES('RequestedContract', 'contracts', 'idcontract');
+INSERT INTO datamodel VALUES('RequestedContract', 'contracts', 'reqservid');
+INSERT INTO datamodel VALUES('RequestedContract', 'contracts', 'time_requested');
+INSERT INTO datamodel VALUES('RequestedContract', 'contracts', 'stateid');
 
 INSERT INTO datamodel VALUES('ServiceProvider', 'providers', 'idprovider');
 INSERT INTO datamodel VALUES('ServiceProvider', 'providers', 'actorid');
@@ -91,6 +104,14 @@ INSERT INTO datamodel VALUES('ClosedContract', 'contracts', 'time_opened');
 INSERT INTO datamodel VALUES('ClosedContract', 'contracts', 'time_closed');
 INSERT INTO datamodel VALUES('ClosedContract', 'contracts', 'stateid');
 
+INSERT INTO datamodel VALUES('RejectedContract', 'contracts', 'idcontract');
+INSERT INTO datamodel VALUES('RejectedContract', 'contracts', 'reqservid');
+INSERT INTO datamodel VALUES('RejectedContract', 'contracts', 'providerid');
+INSERT INTO datamodel VALUES('RejectedContract', 'contracts', 'time_requested');
+INSERT INTO datamodel VALUES('RejectedContract', 'contracts', 'time_opened');
+INSERT INTO datamodel VALUES('RejectedContract', 'contracts', 'time_closed');
+INSERT INTO datamodel VALUES('RejectedContract', 'contracts', 'stateid');
+
 INSERT INTO datamodel VALUES('Patient', 'patients', 'idpatient');
 INSERT INTO datamodel VALUES('Patient', 'patients', 'name');
 INSERT INTO datamodel VALUES('Patient', 'patients', 'surname');
@@ -99,22 +120,62 @@ INSERT INTO datamodel VALUES('Patient', 'patients', 'dob');
 INSERT INTO datamodel VALUES('CheckedHealthcareService', 'services', 'idservice');
 INSERT INTO datamodel VALUES('CheckedHealthcareService', 'services', 'name');
 INSERT INTO datamodel VALUES('CheckedHealthcareService', 'services', 'description');
+INSERT INTO datamodel VALUES('CheckedHealthcareService', 'requestedservices', 'serviceid');
+INSERT INTO datamodel VALUES('CheckedHealthcareService', 'requestedservices', 'patientid');
+INSERT INTO datamodel VALUES('CheckedHealthcareService', 'requestedservices', 'responsibleid');
+INSERT INTO datamodel VALUES('CheckedHealthcareService', 'requestedservices', 'date');
+INSERT INTO datamodel VALUES('CheckedHealthcareService', 'requestedservices', 'type');
+INSERT INTO datamodel VALUES('CheckedHealthcareService', 'requestedservices', 'stateid');
+INSERT INTO datamodel VALUES('CheckedHealthcareService', 'requestedservices', 'notes');
 
-INSERT INTO datamodel VALUES('HealthcareService', 'requestedservices', 'idreqserv');
-INSERT INTO datamodel VALUES('HealthcareService', 'requestedservices', 'requesterid');
-INSERT INTO datamodel VALUES('HealthcareService', 'requestedservices', 'serviceid');
-INSERT INTO datamodel VALUES('HealthcareService', 'requestedservices', 'patientid');
-INSERT INTO datamodel VALUES('HealthcareService', 'requestedservices', 'responsibleid');
-INSERT INTO datamodel VALUES('HealthcareService', 'requestedservices', 'date');
-INSERT INTO datamodel VALUES('HealthcareService', 'requestedservices', 'type');
-INSERT INTO datamodel VALUES('HealthcareService', 'requestedservices', 'stateid');
-INSERT INTO datamodel VALUES('HealthcareService', 'requestedservices', 'notes');
+INSERT INTO datamodel VALUES('HealthcareService', 'services', 'idservice');
+INSERT INTO datamodel VALUES('HealthcareService', 'services', 'name');
+INSERT INTO datamodel VALUES('HealthcareService', 'services', 'description');
+
+INSERT INTO datamodel VALUES('Delegation', 'staff', 'idstaff');
+INSERT INTO datamodel VALUES('Delegation', 'staff', 'name');
+INSERT INTO datamodel VALUES('Delegation', 'staff', 'surname');
+
+INSERT INTO datamodel VALUES('Assignment', 'staff', 'idstaff');
+INSERT INTO datamodel VALUES('Assignment', 'staff', 'name');
+INSERT INTO datamodel VALUES('Assignment', 'staff', 'surname');
 
 INSERT INTO datamodel VALUES('HealthcareActor', 'staff', 'idstaff');
 INSERT INTO datamodel VALUES('HealthcareActor', 'staff', 'name');
 INSERT INTO datamodel VALUES('HealthcareActor', 'staff', 'surname');
 INSERT INTO datamodel VALUES('HealthcareActor', 'staff', 'dob');
 INSERT INTO datamodel VALUES('HealthcareActor', 'staff', 'title');
+
+INSERT INTO datamodel VALUES('ServiceRequester', 'staff', 'idstaff');
+INSERT INTO datamodel VALUES('ServiceRequester', 'staff', 'name');
+INSERT INTO datamodel VALUES('ServiceRequester', 'staff', 'surname');
+INSERT INTO datamodel VALUES('ServiceRequester', 'staff', 'dob');
+INSERT INTO datamodel VALUES('ServiceRequester', 'staff', 'title');
+
+INSERT INTO datamodel VALUES('Obstacle', 'obstacles', 'idobstacle');
+INSERT INTO datamodel VALUES('Obstacle', 'obstacles', 'name');
+INSERT INTO datamodel VALUES('Obstacle', 'obstacles', 'description');
+
+INSERT INTO datamodel VALUES('PendingHealthcareService', 'requestedservices', 'idreqserv');
+INSERT INTO datamodel VALUES('PendingHealthcareService', 'requestedservices', 'requesterid');
+INSERT INTO datamodel VALUES('PendingHealthcareService', 'requestedservices', 'serviceid');
+INSERT INTO datamodel VALUES('PendingHealthcareService', 'requestedservices', 'patientid');
+INSERT INTO datamodel VALUES('PendingHealthcareService', 'requestedservices', 'responsibleid');
+INSERT INTO datamodel VALUES('PendingHealthcareService', 'requestedservices', 'date');
+INSERT INTO datamodel VALUES('PendingHealthcareService', 'requestedservices', 'type');
+INSERT INTO datamodel VALUES('PendingHealthcareService', 'requestedservices', 'stateid');
+INSERT INTO datamodel VALUES('PendingHealthcareService', 'requestedservices', 'notes');
+
+INSERT INTO datamodel VALUES('CompletedHealthcareService', 'requestedservices', 'idreqserv');
+INSERT INTO datamodel VALUES('CompletedHealthcareService', 'requestedservices', 'requesterid');
+INSERT INTO datamodel VALUES('CompletedHealthcareService', 'requestedservices', 'serviceid');
+INSERT INTO datamodel VALUES('CompletedHealthcareService', 'requestedservices', 'patientid');
+INSERT INTO datamodel VALUES('CompletedHealthcareService', 'requestedservices', 'responsibleid');
+INSERT INTO datamodel VALUES('CompletedHealthcareService', 'requestedservices', 'date');
+INSERT INTO datamodel VALUES('CompletedHealthcareService', 'requestedservices', 'type');
+INSERT INTO datamodel VALUES('CompletedHealthcareService', 'requestedservices', 'stateid');
+INSERT INTO datamodel VALUES('CompletedHealthcareService', 'requestedservices', 'notes');
+
 
 CREATE TABLE templates (id SERIAL UNIQUE, name VARCHAR NOT NULL, created TIMESTAMP NOT NULL, updated TIMESTAMP NOT NULL);
 

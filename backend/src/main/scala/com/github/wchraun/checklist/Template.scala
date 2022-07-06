@@ -81,7 +81,6 @@ object Template {
                     inputDepField = recommendedInputField
                   }
                 }
-                println(inputDep, inputDepField)
                 Component(
                   i,
                   field,
