@@ -36,7 +36,7 @@ object Checklist {
 
   private def getChecklist(id: Int, db: Database): SaveTemplateRequest = {
     val processName = db.getChecklistName(id)
-    if (processName == "") return SaveTemplateRequest("", Array.empty[InputInformation], Array.empty[Component])
+    if (processName == "") return SaveTemplateRequest("", "", Array.empty[InputInformation], Array.empty[Component])
     val result = db.getComponents(id)
     def dfs(res: Array[(Int, Component, Int)], parent: Int = 0): Array[Component] = {
       res.filter(_._3 == parent).map(r => Component(
@@ -55,7 +55,7 @@ object Checklist {
         dfs(res, r._1).sortBy(_.order)
       )).sortBy(_.order)
     }
-    SaveTemplateRequest(processName, db.getInputInformation(id), dfs(result))
+    SaveTemplateRequest(processName, processName, db.getInputInformation(id), dfs(result))
   }
 
   private def deleteTemplate(id: Int, db: Database) = {

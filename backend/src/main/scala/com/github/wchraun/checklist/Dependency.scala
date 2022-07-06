@@ -44,8 +44,8 @@ object Dependency {
 
   private def getRecommendedQueries(tableName: String, fieldName: String, db: Database) = {
     val foreign = db.getRecommendedQueryFields(tableName, fieldName)
-    val average = foreign.foldLeft((0.0, 1)) ((acc, i) => ((acc._1 + (i._4 - acc._1) / acc._2), acc._2 + 1))._1
-    GetRecommendedQueriesResponse(foreign.filter(_._4 >= average).map(v => Foreign(v._1, v._2, v._3)))
+    val fields = foreign._1.split(", ").filter(_ != "")
+    GetRecommendedQueriesResponse(fields.map(v => Foreign(foreign._2, v, foreign._3)))
   }
 }
 //#user-registry-actor

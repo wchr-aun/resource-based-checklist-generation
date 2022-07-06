@@ -60,7 +60,8 @@ function FormTemplate(props: Props) {
   const submitForm = async () => {
     dispatch(setLoading(true));
     const res = await saveTemplate({
-      processName,
+      name: processName,
+      processName: originalProcessName,
       components,
       information,
     });

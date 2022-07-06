@@ -36,6 +36,7 @@ object Template {
   private def generateTemplate(process: Process, db: Database) = {
     val autolink = process.autolink.getOrElse(false)
     var tableFieldToModel = new HashMap[String, String]()
+    val recommendations = db.getRecommendedDependencies(process.name)
     def dfsInputs(child: Arg): Array[Information] = {
       Array(
         Information(child.name, 0, db.getDataModel(child.name).zipWithIndex
@@ -73,13 +74,12 @@ object Template {
                 var inputDep = ""
                 var inputDepField = ""
                 if (autolink) {
-                  inputDep = tableFieldToModel.getOrElse(s"${table}_$field", "")
-                  inputDepField = field
-                  if (!tableFieldToModel.contains(s"${table}_$field")) {
-                    val (recommendedInput, recommendedInputField) = db.getRecommendedDependencies(child.name, field)
-                    inputDep = recommendedInput
-                    inputDepField = recommendedInputField
-                  }
+                  inputDep = recommendations.find(_._4 == field).getOrElse(
+                    (tableFieldToModel.getOrElse(s"${table}_$field", ""), "", "", "")
+                  )._1
+                  inputDepField = recommendations.find(_._4 == field).getOrElse(
+                    ("", if (tableFieldToModel.contains(s"${table}_$field")) field else "", "", "")
+                  )._2
                 }
                 Component(
                   i,
@@ -92,8 +92,8 @@ object Template {
                   "",
                   inputDep,
                   inputDepField,
-                  if (autolink) child.name else "",
-                  if (autolink) field else "",
+                  child.name,
+                  field,
                   Array.empty[Component])
               }}
           )
@@ -114,7 +114,7 @@ object Template {
   }
 
   private def saveTemplate(process: SaveTemplateRequest, db: Database) = {
-    val templateId = db.createTemplate(process.processName)
+    val templateId = db.createTemplate(process.name, process.processName)
 
     def dfsSQL(component: Component, parentId: Int): Unit = {
       val componentId = db.createComponents(

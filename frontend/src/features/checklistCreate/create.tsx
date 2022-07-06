@@ -32,7 +32,7 @@ function ChecklistCreate(props: Props) {
           }`}
           onClick={onClickCreateTemplate}
         >
-          <div className="h-max border-dashed flex justify-center py-9 px-16 rounded-md bg-white text-sky-700 hover:text-sky-600 hover:bg-sky-50 hover:border-solid border-2 hover:border-sky-700 border-gray-400">
+          <div className="h-max border-dashed flex justify-center py-9 px-16 rounded-md bg-white text-indigo-800 hover:text-indigo-700 hover:bg-indigo-50 hover:border-solid border-2 hover:border-indigo-800 border-gray-400">
             <FontAwesomeIcon icon={faPlus} size="3x" />
           </div>
           <div className="text-center text-sm">Create a New Template</div>
@@ -52,13 +52,13 @@ function ChecklistCreate(props: Props) {
                     onClickCreateTemplate();
                   }}
                 >
-                  <span className="absolute text-white text-2xl border-2 py-11 px-10 rounded-lg hover:border-sky-800 border-transparent">
+                  <span className="absolute text-white text-2xl border-2 py-11 px-10 rounded-lg hover:border-indigo-900 border-transparent">
                     &#60;/&#62;
                   </span>
                   <FontAwesomeIcon
                     icon={faFile}
                     size="6x"
-                    className="text-sky-900 py-3 px-6"
+                    className="text-indigo-900 py-3 px-6"
                   />
                   <div className="flex justify-center text-sm text-gray-900">
                     {name.length > 17 ? `${name.substring(0, 14)}...` : name}

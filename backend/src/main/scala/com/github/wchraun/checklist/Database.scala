@@ -34,10 +34,11 @@ class Database {
     result
   }
 
-  def createTemplate(name: String) = {
-    val sql = "INSERT INTO templates (name, created, updated) VALUES(?, NOW(), NOW()) RETURNING id;"
+  def createTemplate(name: String, processName: String) = {
+    val sql = "INSERT INTO templates (name, created, updated, process_name) VALUES(?, NOW(), NOW(), ?) RETURNING id;"
     val preparedStatement = connection.prepareStatement(sql)
     preparedStatement.setString(1, name)
+    preparedStatement.setString(2, processName)
     val rs = preparedStatement.executeQuery()
     rs.next
     rs.getInt("id")
@@ -244,18 +245,18 @@ class Database {
   }
 
   def getRecommendedQueryFields(foreignTable: String, foreignKey: String) = {
-    val sql = "SELECT foreign_key, query_table, query_field, COUNT(*) AS count FROM input_information_child_query WHERE foreign_table=? AND foreign_key=? GROUP BY(foreign_table, foreign_key, query_table, query_field) HAVING COUNT(*) > 0;"
+    val sql = "SELECT foreign_key, query_table, agg.string AS string_agg, COUNT(*) as count FROM (SELECT c.parent_id, foreign_key, query_table, STRING_AGG(query_field, ', ' ORDER BY query_field) AS string FROM input_information_child c JOIN input_information_child_query q ON c.id=q.details_id WHERE foreign_table=? AND foreign_key=? GROUP BY(c.parent_id, foreign_table, foreign_key, query_table)) agg GROUP BY(agg.string, foreign_key, query_table) ORDER BY count DESC LIMIT 1;"
     val preparedStatement = connection.prepareStatement(sql)
     preparedStatement.setString(1, foreignTable)
     preparedStatement.setString(2, foreignKey)
     val rs = preparedStatement.executeQuery()
-    var result = Array.empty[(String, String, String, Int)]
+    var result = ("", "", "")
     while (rs.next) {
-      result = result :+ (
+      result = (
+        rs.getString("string_agg"),
         rs.getString("query_table"),
-        rs.getString("query_field"),
-        rs.getString("foreign_key"),
-        rs.getInt("count"))
+        rs.getString("foreign_key")
+      )
     }
     result
   }
@@ -268,15 +269,19 @@ class Database {
     ()
   }
 
-  def getRecommendedDependencies(inputDep: String, inputDepField: String) = {
-    val sql = "SELECT input_dep, input_dep_field, COUNT(*) FROM components WHERE output_dep=? AND output_dep_field=? AND input_dep != '' GROUP BY(input_dep, input_dep_field, output_dep, output_dep_field) HAVING COUNT(*) > 0 ORDER BY COUNT(*) LIMIT 1;"
+  def getRecommendedDependencies(processName: String) = {
+    val sql = "WITH subquery AS ( SELECT input_dep, input_dep_field, output_dep, output_dep_field, COUNT(*) AS count FROM templates t JOIN components c ON t.id=c.template_id WHERE input_dep_field!='' AND output_dep_field!='' AND input_dep_field NOT LIKE '%.%' AND t.process_name=? GROUP BY(input_dep, input_dep_field, output_dep, output_dep_field) ) SELECT a.* FROM subquery a LEFT OUTER JOIN subquery b ON a. output_dep_field =b. output_dep_field AND a.count < b.count WHERE b. output_dep_field IS NULL;"
     val preparedStatement = connection.prepareStatement(sql)
-    preparedStatement.setString(1, inputDep)
-    preparedStatement.setString(2, inputDepField)
+    preparedStatement.setString(1, processName)
     val rs = preparedStatement.executeQuery()
-    var result = ("", "")
+    var result = Array.empty[(String, String, String, String)]
     while (rs.next) {
-      result = (rs.getString("input_dep"), rs.getString("input_dep_field"))
+      result = result :+ (
+        rs.getString("input_dep"),
+        rs.getString("input_dep_field"),
+        rs.getString("output_dep"),
+        rs.getString("output_dep_field")
+      )
     }
     result
   }

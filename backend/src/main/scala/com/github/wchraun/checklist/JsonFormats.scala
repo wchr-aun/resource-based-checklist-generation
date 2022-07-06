@@ -34,7 +34,7 @@ object JsonFormats  {
   implicit val getTemplatesResponseJsonFormat = jsonFormat1(GetTemplatesResponse)
   implicit val foreignQueriesJsonFormat = jsonFormat3(ForeignQueries)
   implicit val getForeignTableResponseJsonFormat = jsonFormat1(GetForeignTableResponse)
-  implicit val saveTemplateRequestJsonFormat = jsonFormat3(SaveTemplateRequest)
+  implicit val saveTemplateRequestJsonFormat = jsonFormat4(SaveTemplateRequest)
   implicit val successResponseJsonFormat = jsonFormat1(SuccessResponse)
 
   implicit val foreignJsonFormat = jsonFormat3(Foreign)
