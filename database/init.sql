@@ -117,9 +117,8 @@ INSERT INTO datamodel VALUES('Patient', 'patients', 'name');
 INSERT INTO datamodel VALUES('Patient', 'patients', 'surname');
 INSERT INTO datamodel VALUES('Patient', 'patients', 'dob');
 
-INSERT INTO datamodel VALUES('CheckedHealthcareService', 'services', 'idservice');
-INSERT INTO datamodel VALUES('CheckedHealthcareService', 'services', 'name');
-INSERT INTO datamodel VALUES('CheckedHealthcareService', 'services', 'description');
+INSERT INTO datamodel VALUES('CheckedHealthcareService', 'requestedservices', 'idreqserv');
+INSERT INTO datamodel VALUES('CheckedHealthcareService', 'requestedservices', 'requesterid');
 INSERT INTO datamodel VALUES('CheckedHealthcareService', 'requestedservices', 'serviceid');
 INSERT INTO datamodel VALUES('CheckedHealthcareService', 'requestedservices', 'patientid');
 INSERT INTO datamodel VALUES('CheckedHealthcareService', 'requestedservices', 'responsibleid');
@@ -128,9 +127,15 @@ INSERT INTO datamodel VALUES('CheckedHealthcareService', 'requestedservices', 't
 INSERT INTO datamodel VALUES('CheckedHealthcareService', 'requestedservices', 'stateid');
 INSERT INTO datamodel VALUES('CheckedHealthcareService', 'requestedservices', 'notes');
 
-INSERT INTO datamodel VALUES('HealthcareService', 'services', 'idservice');
-INSERT INTO datamodel VALUES('HealthcareService', 'services', 'name');
-INSERT INTO datamodel VALUES('HealthcareService', 'services', 'description');
+INSERT INTO datamodel VALUES('HealthcareService', 'requestedservices', 'idreqserv');
+INSERT INTO datamodel VALUES('HealthcareService', 'requestedservices', 'requesterid');
+INSERT INTO datamodel VALUES('HealthcareService', 'requestedservices', 'serviceid');
+INSERT INTO datamodel VALUES('HealthcareService', 'requestedservices', 'patientid');
+INSERT INTO datamodel VALUES('HealthcareService', 'requestedservices', 'responsibleid');
+INSERT INTO datamodel VALUES('HealthcareService', 'requestedservices', 'date');
+INSERT INTO datamodel VALUES('HealthcareService', 'requestedservices', 'type');
+INSERT INTO datamodel VALUES('HealthcareService', 'requestedservices', 'stateid');
+INSERT INTO datamodel VALUES('HealthcareService', 'requestedservices', 'notes');
 
 INSERT INTO datamodel VALUES('Delegation', 'staff', 'idstaff');
 INSERT INTO datamodel VALUES('Delegation', 'staff', 'name');
