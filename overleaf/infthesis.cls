@@ -63,6 +63,7 @@
     xspace,
     eushield}
 
+\usepackage{pdfpages}
 
 %%%% The following packages are also used but are included further on rather
 %%%% than here, either because their options depend on the class options or

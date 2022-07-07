@@ -2,8 +2,11 @@
 % implementation - frontend (main, canvas, checklist) and backend (template creation, template storing, 3, 4)
 % user diagram
 
+% \section{Limitations}
+
 \section{Designs}
 
+\subsection{Software's Structure}
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\textwidth]{overleaf/images/system_structure.png}
@@ -12,6 +15,17 @@
 \end{figure}
 
 \subsection{Architectural Design}
+- choices: React, Vue, Angular, Scala.js
+
+- chose: React, Next.js, TailwindCSS, Redux
+
+- choices: Node.js, Scala, Java
+
+- choices for Scala: akka-http, http4s, play
+
+chose: Scala, Akka-http
+
+- GitHub, GitHub Actions, PostgreSQL, ElephantSQL, Vercel, Heroku
 
 \subsection{Interface Design}
 
@@ -26,19 +40,6 @@
 
 - input\_information\_parent, input\_information\_child, input\_information\_child\_query
 
--
-
-- healthcare
-
-- payment
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=\textwidth]{overleaf/images/chens_healthcare_db_design.png}
-    \caption{Chen's Healthcare Database Design}
-    \label{fig:chens_healthcare_db_design}
-\end{figure}
-
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{overleaf/images/checklist_db_design.png}
@@ -46,17 +47,23 @@
     \label{fig:checklist_db_design}
 \end{figure}
 
+\section{Functional Specification}
+
+
 \section{Implementation}
 \subsection{Frontend}
-- Main screen
 
-- Canvas
+\subsubsection{Main Screen}
 
-- Preview
+\subsubsection{Canvas Screen}
 
-- Checklist
+\subsubsection{Preview Screen}
+
+\subsubsection{Checklist Screen}
 
 \subsection{Backend}
+
+\subsubsection{Application Programming Interfaces}
 - workflow process to checklist template
 
 - get dependencies
@@ -67,11 +74,86 @@
 
 - retrieve finished templates
 
-\section{User Diagrams}
 
-\begin{figure}[ht]
+\subsection{Naive Suggestion}
+\subsubsection{Naive Queryable Field Suggestion}
+\subsubsection{Naive Dependency Suggestion}
+
+\section{Diagrams}
+\subsection{Use Case Diagram}
+\begin{figure}[ht!]
     \centering
     \includegraphics[width=\textwidth]{overleaf/images/use_case_diagram.png}
     \caption{Use Case Diagram}
     \label{fig:use_case_diagram}
 \end{figure}
+
+\subsection{Sequence Diagrams}
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\textwidth]{overleaf/images/create_template.png}
+    \caption{Sequence Diagram of Create Template Scenario}
+    \label{fig:create_template}
+\end{figure}
+
+\noindent
+\textbf{Scenario \#1:} Figure \ref{fig:create_template} \\
+\textbf{Goal:} \\
+\textbf{Preconditions:} \\
+\textbf{Breakdown:} \\
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\textwidth]{overleaf/images/add_new_information_query.png}
+    \caption{Sequence Diagram of Add New Information Query Scenario}
+    \label{fig:add_new_information_query}
+\end{figure}
+
+\noindent
+\textbf{Scenario \#2:} Figure \ref{fig:add_new_information_query} \\
+\textbf{Goal:} \\
+\textbf{Preconditions:} \\
+\textbf{Breakdown:} \\
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.4\textwidth]{overleaf/images/show_preview.png}
+    \caption{Sequence Diagram of Show Preview Scenario}
+    \label{fig:show_preview}
+\end{figure}
+
+\noindent
+\textbf{Scenario \#3:} Figure \ref{fig:show_preview} \\
+\textbf{Goal:} \\
+\textbf{Preconditions:} \\
+\textbf{Breakdown:} \\
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\textwidth]{overleaf/images/save_template.png}
+    \caption{Sequence Diagram of Save Template Scenario}
+    \label{fig:save_template}
+\end{figure}
+
+\noindent
+\textbf{Scenario \#4:} Figure \ref{fig:save_template} \\
+\textbf{Goal:} \\
+\textbf{Preconditions:} \\
+\textbf{Breakdown:} \\
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\textwidth]{overleaf/images/view_template.png}
+    \caption{Sequence Diagram of View Template Scenario}
+    \label{fig:view_template}
+\end{figure}
+
+\noindent
+\textbf{Scenario \#5:} Figure \ref{fig:view_template} \\
+\textbf{Goal:} \\
+\textbf{Preconditions:} \\
+\textbf{Breakdown:} \\
+
+\section{Challenges}
+
+tree structure of workflowfm's processes, doing all suggestions within sql queries, design challenges (queryable input fields)
