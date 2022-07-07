@@ -87,7 +87,7 @@ object Template {
                   "",
                   ComponentType.INPUT,
                   true,
-                  if (autolink) tableFieldToModel.contains(s"${table}_$field") else false,
+                  autolink && !inputDepField.isEmpty,
                   "",
                   "",
                   inputDep,
