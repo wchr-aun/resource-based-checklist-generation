@@ -39,7 +39,7 @@ object Dependency {
 
   private def foreignTable(tableName: String, fieldName: String, db: Database) = {
     val foreign = db.getForeignTable(tableName, fieldName)
-    GetForeignTableResponse(foreign.map(f => ForeignQueries(f._1, db.getTableFields(f._1), f._2)))
+    GetForeignTableResponse(foreign.map(f => ForeignQueries(f._1, db.getTableFields(f._1), f._2, f._3)))
   }
 
   private def getRecommendedQueries(tableName: String, fieldName: String, db: Database) = {
