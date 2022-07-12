@@ -1,5 +1,10 @@
 export const paymentExamples = [
   {
+    name: "NewTransaction",
+    inputs: [{ argType: "VARR", name: "Order", args: [] }],
+    output: { argType: "VARR", name: "NewTransaction", args: [] },
+  },
+  {
     name: "ConfirmPayment",
     inputs: [{ argType: "VARR", name: "Order", args: [] }],
     output: {
@@ -34,10 +39,5 @@ export const paymentExamples = [
         { argType: "VARR", name: "CanceledOrder", args: [] },
       ],
     },
-  },
-  {
-    name: "test",
-    inputs: [{ argType: "VARR", name: "Order", args: [] }],
-    output: { argType: "VARR", name: "Order", args: [] },
   },
 ];

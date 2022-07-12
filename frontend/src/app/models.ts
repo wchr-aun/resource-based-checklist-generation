@@ -50,6 +50,7 @@ export interface Form {
 
 export const COMPONENT_TYPE_LIST = [
   "HEADER",
+  "TAB",
   "INPUT",
   "PARAGRAPH",
   "DROPDOWN",
@@ -57,7 +58,7 @@ export const COMPONENT_TYPE_LIST = [
   "CHECKBOXES",
   "DATE",
   "TIME",
-  "TAB",
+  "CONSTANT",
 ];
 
 export enum COMPONENT_TYPES {
@@ -70,6 +71,7 @@ export enum COMPONENT_TYPES {
   DATE = "DATE",
   TIME = "TIME",
   TAB = "TAB",
+  CONSTANT = "CONSTANT",
 }
 
 export interface DependencyDetails {
