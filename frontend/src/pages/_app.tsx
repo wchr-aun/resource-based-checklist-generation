@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import store from "../app/store";
 import Head from "next/head";
 import Loading from "@components/Loading";
+import RouteGuard from "@features/routeGuard/RouteGuard";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -15,7 +16,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <div className="select-none">
         <Header />
         <div className="lg:px-32 px-8 py-4">
-          <Component {...pageProps} />
+          <RouteGuard>
+            <Component {...pageProps} />
+          </RouteGuard>
         </div>
         <Loading />
       </div>

@@ -30,7 +30,7 @@ const FormInputName: NextPage<Props> = (props) => {
   } = props;
   return (
     <div className="flex space-x-1 w-full">
-      <div className="w-2/12">
+      <div className="w-1/12">
         <Reorder
           order={node.order}
           childrenNo={childrenNo}
@@ -39,7 +39,7 @@ const FormInputName: NextPage<Props> = (props) => {
       </div>
       <Input
         placeholder={node.originalName}
-        className="w-7/12"
+        className="w-8/12"
         value={node.name}
         error={!node.name}
         onChange={onInputChange}
