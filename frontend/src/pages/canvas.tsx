@@ -6,6 +6,9 @@ import ScrollToTop from "@features/ScrollToTop/ScrollToTop";
 
 const CreateATemplate: NextPage = () => {
   const form = store.getState().form;
+  if (form.processName === "" && form.components.length === 0) {
+    return <div>Nothing to Preview</div>;
+  }
   return (
     <div>
       <ScrollToTop />

@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from "@app/hooks";
 import {
   addNewInputDetails,
   deletedInputDetails,
+  reorderInformationDetails,
   setNewInputDetails,
   toggleHideAllInput,
   toggleHideInput,
@@ -31,6 +32,7 @@ import Modal from "@components/Modal";
 import { selectForeign, setForeignTable } from "../foreignTableSlice";
 import SuggestedForeignModal from "./SuggestedForeignModal";
 import { setLoading } from "@app/loadingSlice";
+import Reorder from "./Reorder";
 
 interface Props {
   inputs: Information[];
@@ -164,9 +166,24 @@ function InputComponent(props: Props) {
             </div>
           </div>
           {info.details.map((details, j) => (
-            <div className="ml-5 flex space-x-2" key={j}>
-              <div className="font-semibold w-2/12 flex-col">
+            <div className="ml-3 flex space-x-2" key={j}>
+              <div className="font-semibold w-3/12 flex-col">
                 <div className="flex relative">
+                  <div className="w-1/3">
+                    <Reorder
+                      order={details.order}
+                      childrenNo={info.details.length - 1}
+                      onClick={(direction) =>
+                        dispatch(
+                          reorderInformationDetails({
+                            parentIndex: i,
+                            index: j,
+                            direction,
+                          })
+                        )
+                      }
+                    />
+                  </div>
                   <Input
                     value={details.name}
                     className={`${details.hide && "line-through"} ${
@@ -213,59 +230,65 @@ function InputComponent(props: Props) {
                   )}
                 </div>
                 {details.isQuery && !details.queryHide && (
-                  <div className="pl-1 border-l-8 border-gray-300 space-y-1 py-1">
-                    <Dropdown
-                      options={
-                        queryOptions[
-                          `${info.inputDependency}_${details.inputDependencyField}`
-                        ]?.map((v) => v.queryTable) || [details.queryTable]
-                      }
-                      value={details.queryTable}
-                      onUpdateValue={(_, queryTable) =>
-                        dispatch(
-                          updateQueryField({
-                            parentIndex: i,
-                            index: j,
-                            queryTable,
-                            queryField: "",
-                            foreignKey:
-                              queryOptions[
-                                `${info.inputDependency}_${details.inputDependencyField}`
-                              ]?.find((v) => v.queryTable)?.foreignKey || "",
-                          })
-                        )
-                      }
-                      name="Select Table"
-                      className="w-full"
-                    />
-                    <Dropdown
-                      options={
-                        queryOptions[
-                          `${info.inputDependency}_${details.inputDependencyField}`
-                        ]
-                          ?.find((v) => v.queryTable === details.queryTable)
-                          ?.fields.filter(
-                            (f) =>
-                              !info.details
-                                .map((i) => i.queryField)
-                                .includes(f) || details.queryField === f
-                          ) || []
-                      }
-                      value={details.queryField}
-                      onUpdateValue={(_, queryField) =>
-                        dispatch(
-                          updateQueryField({
-                            parentIndex: i,
-                            index: j,
-                            queryField,
-                            queryTable: details.queryTable || "",
-                            foreignKey: details.foreignKey || "",
-                          })
-                        )
-                      }
-                      name="Select Field"
-                      className="w-full"
-                    />
+                  <div className="flex py-1">
+                    <div className="w-1/3"></div>
+                    <div className="w-2/3">
+                      <div className="border-l-8 border-gray-300 space-y-1">
+                        <Dropdown
+                          options={
+                            queryOptions[
+                              `${info.inputDependency}_${details.inputDependencyField}`
+                            ]?.map((v) => v.queryTable) || [details.queryTable]
+                          }
+                          value={details.queryTable}
+                          onUpdateValue={(_, queryTable) =>
+                            dispatch(
+                              updateQueryField({
+                                parentIndex: i,
+                                index: j,
+                                queryTable,
+                                queryField: "",
+                                foreignKey:
+                                  queryOptions[
+                                    `${info.inputDependency}_${details.inputDependencyField}`
+                                  ]?.find((v) => v.queryTable)?.foreignKey ||
+                                  "",
+                              })
+                            )
+                          }
+                          name="Select Table"
+                          className="w-full"
+                        />
+                        <Dropdown
+                          options={
+                            queryOptions[
+                              `${info.inputDependency}_${details.inputDependencyField}`
+                            ]
+                              ?.find((v) => v.queryTable === details.queryTable)
+                              ?.fields.filter(
+                                (f) =>
+                                  !info.details
+                                    .map((i) => i.queryField)
+                                    .includes(f) || details.queryField === f
+                              ) || []
+                          }
+                          value={details.queryField}
+                          onUpdateValue={(_, queryField) =>
+                            dispatch(
+                              updateQueryField({
+                                parentIndex: i,
+                                index: j,
+                                queryField,
+                                queryTable: details.queryTable || "",
+                                foreignKey: details.foreignKey || "",
+                              })
+                            )
+                          }
+                          name="Select Field"
+                          className="w-full"
+                        />
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>

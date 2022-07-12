@@ -79,8 +79,15 @@ export const formSlice = createSlice({
       const prefix = action.payload;
       const node = getNode(prefix, state.components);
       if (!node) return;
+      const newNumber = node.children
+        .filter((n) => n.originalName.includes("New Field - ("))
+        .sort((a, b) => (a.originalName < b.originalName ? 1 : -1))[0]
+        ?.originalName.match(/\d+/);
+      const newName = `New Field - (${
+        newNumber ? parseInt(newNumber[0]) + 1 : 1
+      })`;
       node.children.push({
-        name: `New Field - (${node.children.length + 1})`,
+        name: newName,
         componentType: "INPUT",
         css: "",
         editable: true,
@@ -98,14 +105,21 @@ export const formSlice = createSlice({
             ? node.children.reduce((p, c) => Math.max(p, c.order), 0) + 1
             : 0,
         children: [],
-        originalName: `New Field - (${node.children.length + 1})`,
+        originalName: newName,
       });
     },
     addNewModel: (state) => {
+      const newNumber = state.components
+        .filter((n) => n.originalName.includes("New Model - ("))
+        .sort((a, b) => (a.originalName < b.originalName ? 1 : -1))[0]
+        ?.originalName.match(/\d+/);
+      const newName = `New Model - (${
+        newNumber ? parseInt(newNumber[0]) + 1 : 1
+      })`;
       state.components = [
         ...state.components,
         {
-          name: `New Model - (${state.components.length + 1})`,
+          name: newName,
           componentType: "HEADER",
           css: "",
           editable: false,
@@ -123,7 +137,7 @@ export const formSlice = createSlice({
               ? state.components.reduce((p, c) => Math.max(p, c.order), 0) + 1
               : 0,
           children: [],
-          originalName: `New Model - (${state.components.length + 1})`,
+          originalName: newName,
         },
       ];
     },
@@ -332,7 +346,7 @@ export const formSlice = createSlice({
       state.information[parentIndex].details.splice(index, 1);
       state.information[parentIndex].details
         .filter((d) => d.order > index)
-        .forEach((d) => (d.order += 1));
+        .forEach((d) => (d.order -= 1));
     },
     updateQueryField: (
       state,
@@ -362,6 +376,23 @@ export const formSlice = createSlice({
       state.processName = "";
       state.originalProcessName = "";
     },
+    reorderInformationDetails: (
+      state,
+      action: PayloadAction<{
+        parentIndex: number;
+        index: number;
+        direction: "UP" | "DOWN";
+      }>
+    ) => {
+      const { parentIndex, index, direction } = action.payload;
+      const details = state.information[parentIndex].details;
+      const detail = details[index];
+      const targetIndex = direction === "UP" ? index - 1 : index + 1;
+      details[index] = details[targetIndex];
+      details[targetIndex] = detail;
+      details[index].order = index;
+      details[targetIndex].order = targetIndex;
+    },
   },
 });
 
@@ -386,6 +417,7 @@ export const {
   clearComponentChildren,
   resetForm,
   reorderComponents,
+  reorderInformationDetails,
 } = formSlice.actions;
 
 export const selectProcessName = (state: AppState) => state.form.processName;

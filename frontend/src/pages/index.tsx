@@ -19,13 +19,8 @@ import { resetForeignTable } from "@features/form/foreignTableSlice";
 import { deleteChecklist } from "api/checklist";
 import { setLoading } from "@app/loadingSlice";
 
-interface Props {
-  temp: Template[];
-}
-
-const Home: NextPage<Props> = (props: Props) => {
-  const { temp } = props;
-  const [templates, setTemplates] = useState<Template[]>(temp);
+const Home: NextPage = () => {
+  const [templates, setTemplates] = useState<Template[]>([]);
   const openModal = useRef((v: boolean) => {});
   const dispatch = useAppDispatch();
   const callGenerateApi = async (autolink: boolean) => {
@@ -55,6 +50,11 @@ const Home: NextPage<Props> = (props: Props) => {
   };
 
   useEffect(() => {
+    dispatch(setLoading(true));
+    getTemplates().then((res) => {
+      setTemplates(res.templates);
+      dispatch(setLoading(false));
+    });
     dispatch(resetForm());
     dispatch(resetDependencies());
     dispatch(resetForeignTable());
@@ -86,11 +86,6 @@ const Home: NextPage<Props> = (props: Props) => {
       />
     </div>
   );
-};
-
-Home.getInitialProps = async () => {
-  const res = await getTemplates();
-  return { temp: res.templates };
 };
 
 export default Home;
