@@ -1,10 +1,12 @@
+import { selectEnv } from "@app/envSlice";
 import { healthcareExamples } from "@app/healthcareExamples";
 import { useAppDispatch, useAppSelector } from "@app/hooks";
+import { paymentExamples } from "@app/paymentExamples";
 import Divider from "@components/Divider";
 import Checkbox from "@components/inputs/Checkbox";
 import Dropdown from "@components/inputs/Dropdown";
 import Paragraph from "@components/inputs/Paragraph";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   selectProcess,
   selectProcessInput,
@@ -29,14 +31,19 @@ function ProcessInput(props: Props) {
   const dispatch = useAppDispatch();
   const value = useAppSelector(selectProcessInput);
   const [autolink, setAutolink] = useState(true);
+  const [examples, setExamples] = useState(healthcareExamples);
+  const env = useAppSelector(selectEnv);
+  useEffect(() => {
+    setExamples(env === "healthcare" ? healthcareExamples : paymentExamples);
+  }, [env]);
   const onSelectModel = () => {
     const models = window.localStorage.getItem("recentModels") || "";
-    const val = healthcareExamples.find(
+    const val = examples.find(
       (example) => JSON.stringify(example, null, 2) === value
     )?.name;
     if (val) {
       window.localStorage.setItem(
-        "recentModels",
+        `recent${env}Models`,
         [val]
           .concat(models.split(","))
           .filter((value, index, self) => self.indexOf(value) === index)
@@ -53,11 +60,13 @@ function ProcessInput(props: Props) {
           Process Input:
         </div>
         <Dropdown
-          options={healthcareExamples.map((example) => example.name)}
+          options={examples.map((example) => example.name)}
           name="Select Example"
-          onUpdateValue={(_1, value, i) => dispatch(selectProcess(i - 1))}
+          onUpdateValue={(_1, _, i) =>
+            dispatch(selectProcess(JSON.stringify(examples[i - 1], null, 2)))
+          }
           value={
-            healthcareExamples.find(
+            examples.find(
               (example) => JSON.stringify(example, null, 2) === value
             )?.name
           }
@@ -84,8 +93,13 @@ function ProcessInput(props: Props) {
           />
         </div>
         <button
-          className="border px-4 py-2 rounded-lg border-indigo-500 text-indigo-500 hover:border-indigo-700 hover:text-indigo-700 hover:bg-indigo-50"
+          className={`${
+            value
+              ? "border-indigo-500 text-indigo-500 hover:border-indigo-700 hover:text-indigo-700 hover:bg-indigo-50"
+              : "text-gray-400"
+          } border px-4 py-2 rounded-lg`}
           onClick={() => onSelectModel()}
+          disabled={!jsonValidation(value)}
         >
           Create
         </button>

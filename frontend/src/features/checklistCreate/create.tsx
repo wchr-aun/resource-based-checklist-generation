@@ -1,4 +1,5 @@
-import { useAppDispatch } from "@app/hooks";
+import { selectEnv } from "@app/envSlice";
+import { useAppDispatch, useAppSelector } from "@app/hooks";
 import { chooseProcess } from "@features/processInput/processSlice";
 import { faFile, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,11 +12,12 @@ interface Props {
 function ChecklistCreate(props: Props) {
   const { onClickCreateTemplate } = props;
   const [recentModels, setRecentModels] = useState<string[]>([]);
+  const env = useAppSelector(selectEnv);
   const dispatch = useAppDispatch();
   useEffect(() => {
     setRecentModels(
       window.localStorage
-        .getItem("recentModels")
+        .getItem(`recent${env}Models`)
         ?.split(",")
         .filter((v) => v) || []
     );
@@ -48,7 +50,7 @@ function ChecklistCreate(props: Props) {
                   className="relative flex-col space-y-0 w-min cursor-pointer hover:underline"
                   key={i}
                   onClick={() => {
-                    dispatch(chooseProcess(name));
+                    dispatch(chooseProcess({ name, env }));
                     onClickCreateTemplate();
                   }}
                 >

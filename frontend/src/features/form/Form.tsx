@@ -24,16 +24,13 @@ import InputComponent from "./components/InputComponent";
 import Link from "next/link";
 import Modal from "@components/Modal";
 import DependencyModal from "./components/DependencyModal";
-import {
-  addQueryDependency,
-  selectInputDependencies,
-  selectOutputDependencies,
-} from "./dependencySlice";
+import { selectOutputDependencies } from "./dependencySlice";
 import { saveTemplate } from "api/template";
 import Router from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "@app/loadingSlice";
+import { selectEnv } from "@app/envSlice";
 
 interface Props {
   originalTemplate: Form;
@@ -50,6 +47,7 @@ function FormTemplate(props: Props) {
   const openModal = useRef((v: boolean) => {});
   const successModal = useRef((v: boolean) => {});
   const outputDependencies = useAppSelector(selectOutputDependencies);
+  const env = useAppSelector(selectEnv);
 
   const [savedTemplateId, setSavedTemplateId] = useState(-1);
 
@@ -59,12 +57,15 @@ function FormTemplate(props: Props) {
 
   const submitForm = async () => {
     dispatch(setLoading(true));
-    const res = await saveTemplate({
-      name: processName,
-      processName: originalProcessName,
-      components,
-      information,
-    });
+    const res = await saveTemplate(
+      {
+        name: processName,
+        processName: originalProcessName,
+        components,
+        information,
+      },
+      env
+    );
     dispatch(setLoading(false));
     successModal.current(true);
     setSavedTemplateId(res.templateId);

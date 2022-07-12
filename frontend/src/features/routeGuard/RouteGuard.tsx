@@ -1,4 +1,5 @@
-import { useAppSelector } from "@app/hooks";
+import { setEnv } from "@app/envSlice";
+import { useAppDispatch, useAppSelector } from "@app/hooks";
 import { selectProcessName } from "@features/form/formSlice";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
@@ -12,10 +13,10 @@ function RouteGuard(props: Props) {
   const router = useRouter();
   const isSet = useAppSelector(selectProcessName);
   const [authorized, setAuthorized] = useState(false);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     // on initial load - run auth check
-    console.log(isSet, ": test");
     authCheck(router.asPath);
 
     // on route change start - hide page content by setting authorized to false
@@ -36,7 +37,12 @@ function RouteGuard(props: Props) {
 
   function authCheck(url: string) {
     // redirect to login page if accessing a private page and not logged in
-    const path = url.split("?")[0];
+    const split = url.split("?");
+    const path = split[0];
+    const env = split.filter((v) => v.includes("env="))[0]?.replace("env=", "");
+
+    if (env) dispatch(setEnv(env as "healthcare" | "payment"));
+
     if (!isSet && path !== "/" && !path.includes("/checklist/view")) {
       setAuthorized(false);
       router.push({

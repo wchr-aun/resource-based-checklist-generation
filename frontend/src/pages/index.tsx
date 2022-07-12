@@ -3,7 +3,7 @@ import ChecklistCreate from "@features/checklistCreate/create";
 import ChecklistFinished from "@features/checklistFinished/finish";
 import ProcessInput from "@features/processInput/ProcessInput";
 import store from "@app/store";
-import { useAppDispatch } from "@app/hooks";
+import { useAppDispatch, useAppSelector } from "@app/hooks";
 import { resetForm, setForm } from "@features/form/formSlice";
 import Router from "next/router";
 import { getTemplate, getTemplates } from "api/template";
@@ -18,19 +18,24 @@ import { Template } from "@models";
 import { resetForeignTable } from "@features/form/foreignTableSlice";
 import { deleteChecklist } from "api/checklist";
 import { setLoading } from "@app/loadingSlice";
+import { selectEnv } from "@app/envSlice";
+import { selectProcess } from "@features/processInput/processSlice";
 
 const Home: NextPage = () => {
   const [templates, setTemplates] = useState<Template[]>([]);
   const openModal = useRef((v: boolean) => {});
+  const env = useAppSelector(selectEnv);
   const dispatch = useAppDispatch();
   const callGenerateApi = async (autolink: boolean) => {
     dispatch(setLoading(true));
     const templateResponse = await getTemplate(
       store.getState().processInput.process,
-      autolink
+      autolink,
+      env
     );
     const dependencyResponse = await getDependencies(
-      store.getState().processInput.process
+      store.getState().processInput.process,
+      env
     );
     dispatch(setLoading(false));
     dispatch(setForm(templateResponse));
@@ -44,17 +49,22 @@ const Home: NextPage = () => {
   };
 
   const callDeleteApi = async (id: number) => {
-    await deleteChecklist(id);
-    const res = await getTemplates();
+    await deleteChecklist(id, env);
+    const res = await getTemplates(env);
     setTemplates(res.templates);
   };
 
   useEffect(() => {
     dispatch(setLoading(true));
-    getTemplates().then((res) => {
+    getTemplates(env).then((res) => {
       setTemplates(res.templates);
       dispatch(setLoading(false));
     });
+    dispatch(selectProcess(""));
+    return () => {};
+  }, [env]);
+
+  useEffect(() => {
     dispatch(resetForm());
     dispatch(resetDependencies());
     dispatch(resetForeignTable());

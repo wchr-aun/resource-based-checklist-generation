@@ -1,14 +1,15 @@
 import psycopg2
 import os
+import sys
 from config import config
 
 
-def connect():
+def connect(db):
     """ Connect to the PostgreSQL database server """
     conn = None
-    params = config()
+    params = config(db)
 
-    fd = open(os.path.dirname(__file__) + '/init.sql', 'r')
+    fd = open(os.path.dirname(__file__) + f'/{db}.sql', 'r')
     sqlFile = fd.read()
     fd.close()
 
@@ -35,4 +36,9 @@ def connect():
 
 
 if __name__ == '__main__':
-    connect()
+    if len(sys.argv) == 1:
+        connect('healthcare')
+    db = sys.argv[1] or 'healthcare'
+    if db != 'healthcare' and db != 'payment':
+        exit(0)
+    connect(db)

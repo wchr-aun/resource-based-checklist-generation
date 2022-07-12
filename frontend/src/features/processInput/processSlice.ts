@@ -1,4 +1,5 @@
 import { healthcareExamples } from "@app/healthcareExamples";
+import { paymentExamples } from "@app/paymentExamples";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import type { AppState } from "../../app/store";
@@ -7,10 +8,8 @@ export interface ProcessInputState {
   process: string;
 }
 
-const sampleProcesses = healthcareExamples;
-
 const initialState: ProcessInputState = {
-  process: JSON.stringify(sampleProcesses[0], null, 2),
+  process: "",
 };
 
 export const processInputSlice = createSlice({
@@ -23,20 +22,22 @@ export const processInputSlice = createSlice({
     resetProcessInput: (state) => {
       state = initialState;
     },
-    selectProcess: (state, action: PayloadAction<number>) => {
-      if (action.payload < 0) {
+    selectProcess: (state, action: PayloadAction<string>) => {
+      if (!action.payload) {
         state.process = "";
         return;
       }
-      state.process = JSON.stringify(sampleProcesses[action.payload], null, 2);
+      state.process = action.payload;
     },
-    chooseProcess: (state, action: PayloadAction<string>) => {
-      state.process = JSON.stringify(
-        sampleProcesses.find((p) => p.name === action.payload) ||
-          sampleProcesses[0],
-        null,
-        2
-      );
+    chooseProcess: (
+      state,
+      action: PayloadAction<{ env: "healthcare" | "payment"; name: string }>
+    ) => {
+      const { env, name } = action.payload;
+      const sampleProcesses =
+        env === "healthcare" ? healthcareExamples : paymentExamples;
+      const process = sampleProcesses.find((p) => p.name === name);
+      state.process = process ? JSON.stringify(process, null, 2) : "";
     },
   },
 });
