@@ -133,6 +133,13 @@ function Checklist(props: Props) {
                   }
                 />
               )}
+              {component.componentType === COMPONENT_TYPES.CONSTANT && (
+                <Input
+                  className="w-10/12"
+                  disabled={true}
+                  placeholder={`Constant ${component.validation} to { ${component.outputDependency} - ${component.outputDependencyField} }`}
+                />
+              )}
               {component.componentType === COMPONENT_TYPES.PARAGRAPH && (
                 <Paragraph
                   className="w-10/12"

@@ -2,7 +2,7 @@ package com.github.wchraun.checklist
 
 object ComponentType extends Enumeration {
   type ComponentType = Value
-  val INPUT, PARAGRAPH, DROPDOWN, CHOICES, CHECKBOXES, DATE, TIME, UPLOAD, HEADER, TAB = Value
+  val INPUT, PARAGRAPH, DROPDOWN, CHOICES, CHECKBOXES, DATE, TIME, UPLOAD, HEADER, TAB, CONSTANT = Value
   def withNameOpt(s: String): Option[Value] = values.find(_.toString == s)
 }
 

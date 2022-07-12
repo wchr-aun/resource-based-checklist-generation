@@ -34,7 +34,7 @@ function ItemList(props: Props) {
       <div className="lg:w-3/12 hidden lg:inline-block">{updated}</div>
       <div className="text-right hidden lg:inline-block cursor-pointer">
         <More
-          options={["View", "Delete"]}
+          options={["View"]}
           onSelectOption={(index) => onSelectOption(index)}
         />
       </div>

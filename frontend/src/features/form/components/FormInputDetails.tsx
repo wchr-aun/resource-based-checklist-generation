@@ -41,17 +41,24 @@ const FormInputDetails: NextPage<Props> = (props) => {
   } = props;
   return (
     <div className="flex-col space-y-1 w-full">
-      {node.componentType === "INPUT" && (
+      {node.componentType === COMPONENT_TYPES.CONSTANT && (
+        <Input
+          placeholder="Constant value"
+          value={node.value}
+          onChange={onValidationChange}
+        />
+      )}
+      {node.componentType === COMPONENT_TYPES.INPUT && (
         <Input disabled={true} placeholder="Short answer text" />
       )}
-      {node.componentType === "PARAGRAPH" && (
+      {node.componentType === COMPONENT_TYPES.PARAGRAPH && (
         <Paragraph
           disabled={true}
           className="resize-none"
           placeholder="Long answer text"
         />
       )}
-      {node.componentType === "DATE" && (
+      {node.componentType === COMPONENT_TYPES.DATE && (
         <div className="flex space-x-1">
           <div className="w-4/5">
             <Date disabled={true} />
@@ -67,7 +74,7 @@ const FormInputDetails: NextPage<Props> = (props) => {
           </div>
         </div>
       )}
-      {node.componentType === "TIME" && (
+      {node.componentType === COMPONENT_TYPES.TIME && (
         <div className="flex space-x-1">
           <div className="w-4/5">
             <Time disabled={true} />
@@ -103,7 +110,8 @@ const FormInputDetails: NextPage<Props> = (props) => {
       {node.componentType !== COMPONENT_TYPES.HEADER &&
         node.componentType !== COMPONENT_TYPES.CHECKBOXES &&
         node.componentType !== COMPONENT_TYPES.CHOICES &&
-        node.componentType !== COMPONENT_TYPES.DROPDOWN && (
+        node.componentType !== COMPONENT_TYPES.DROPDOWN &&
+        node.componentType !== COMPONENT_TYPES.CONSTANT && (
           <div className="text-xs flex space-x-3">
             <Input
               value={node.validation}

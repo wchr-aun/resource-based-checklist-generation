@@ -10,10 +10,10 @@ import java.text.SimpleDateFormat
 import scala.util.Properties
 
 class Database {
-  val url = Properties.envOrElse("DB_URL", "jdbc:postgresql://localhost:5432/db")
+  val url = Properties.envOrElse("DB_URLs", "jdbc:postgresql://manny.db.elephantsql.com/twuepmqt")
   val driver = "org.postgresql.Driver"
-  val username = Properties.envOrElse("DB_USERNAME", "username")
-  val password = Properties.envOrElse("DB_PASSWORD", "password")
+  val username = Properties.envOrElse("DB_USERNAMEs", "twuepmqt")
+  val password = Properties.envOrElse("DB_PASSWORDs", "BnQHBLoqHpY7ZehDqDTU2KA7lFxyXpDD")
   var connection: Connection = _
   try {
     Class.forName(driver)
