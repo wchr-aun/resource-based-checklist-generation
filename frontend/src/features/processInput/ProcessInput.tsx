@@ -37,7 +37,7 @@ function ProcessInput(props: Props) {
     setExamples(env === "healthcare" ? healthcareExamples : paymentExamples);
   }, [env]);
   const onSelectModel = () => {
-    const models = window.localStorage.getItem("recentModels") || "";
+    const models = window.localStorage.getItem(`recent${env}Models`) || "";
     const val = examples.find(
       (example) => JSON.stringify(example, null, 2) === value
     )?.name;

@@ -27,7 +27,7 @@ import {
 import More from "@components/More";
 import Dropdown from "@components/inputs/Dropdown";
 import { getForeignTable, getRecommenedForeign } from "api/dependency";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Modal from "@components/Modal";
 import { selectForeign, setForeignTable } from "../foreignTableSlice";
 import SuggestedForeignModal from "./SuggestedForeignModal";
@@ -173,6 +173,7 @@ function InputComponent(props: Props) {
                 <div className="flex relative">
                   <div className="w-1/3">
                     <Reorder
+                      array={details.array}
                       order={details.order}
                       childrenNo={info.details.length - 1}
                       onClick={(direction) =>
@@ -255,6 +256,10 @@ function InputComponent(props: Props) {
                                     `${info.inputDependency}_${details.inputDependencyField}`
                                   ]?.find((v) => v.queryTable)?.foreignKey ||
                                   "",
+                                array:
+                                  queryOptions[
+                                    `${info.inputDependency}_${details.inputDependencyField}`
+                                  ]?.find((v) => v.queryTable)?.array || false,
                               })
                             )
                           }
@@ -283,6 +288,7 @@ function InputComponent(props: Props) {
                                 queryField,
                                 queryTable: details.queryTable || "",
                                 foreignKey: details.foreignKey || "",
+                                array: details.array || false,
                               })
                             )
                           }

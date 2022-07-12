@@ -356,13 +356,15 @@ export const formSlice = createSlice({
         queryTable: string;
         queryField: string;
         foreignKey: string;
+        array: boolean;
       }>
     ) => {
-      const { parentIndex, index, queryTable, queryField, foreignKey } =
+      const { parentIndex, index, queryTable, queryField, foreignKey, array } =
         action.payload;
       state.information[parentIndex].details[index].queryField = queryField;
       state.information[parentIndex].details[index].queryTable = queryTable;
       state.information[parentIndex].details[index].foreignKey = foreignKey;
+      state.information[parentIndex].details[index].array = array;
     },
     clearComponentChildren: (state, action: PayloadAction<string>) => {
       const prefix = action.payload;
