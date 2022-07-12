@@ -9,6 +9,7 @@ export interface ForeignTableState {
       foreignKey: string;
       queryTable: string;
       fields: string[];
+      array: boolean;
     }[];
   };
 }
@@ -28,6 +29,7 @@ export const foreignTableSlice = createSlice({
           foreignKey: string;
           queryTable: string;
           fields: string[];
+          array: boolean;
         }[];
         key: string;
       }>
@@ -37,6 +39,7 @@ export const foreignTableSlice = createSlice({
         foreignKey: f.foreignKey,
         queryTable: f.queryTable,
         fields: f.fields,
+        array: f.array,
       }));
     },
     resetForeignTable: (state) => {

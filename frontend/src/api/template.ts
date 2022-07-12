@@ -55,6 +55,7 @@ export async function saveTemplate(template: Form, env: string) {
             foreignKey: detail.foreignKey || "",
             queryTable: detail.queryTable || "",
             queryField: detail.queryField || "",
+            array: detail.array || false,
           })),
         })),
       }),

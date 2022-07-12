@@ -9,8 +9,12 @@ def connect(db):
     conn = None
     params = config(db)
 
-    fd = open(os.path.dirname(__file__) + f'/{db}.sql', 'r')
+    fd = open(os.path.dirname(__file__) + f'/init.sql', 'r')
     sqlFile = fd.read()
+    fd.close()
+
+    fd = open(os.path.dirname(__file__) + f'/{db}.sql', 'r')
+    contextSqlFile = fd.read()
     fd.close()
 
     try:
@@ -21,6 +25,11 @@ def connect(db):
         cur = conn.cursor()
 
         for line in sqlFile.split(';'):
+            if not line:
+                continue
+            cur.execute(line)
+
+        for line in contextSqlFile.split(';'):
             if not line:
                 continue
             cur.execute(line)
@@ -38,6 +47,7 @@ def connect(db):
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         connect('healthcare')
+        exit(0)
     db = sys.argv[1] or 'healthcare'
     if db != 'healthcare' and db != 'payment':
         exit(0)

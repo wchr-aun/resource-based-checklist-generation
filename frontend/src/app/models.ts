@@ -31,6 +31,7 @@ export interface Details {
   queryTable?: string;
   queryField?: string;
   queryHide: boolean;
+  array: boolean;
 }
 
 export interface Information {

@@ -28,6 +28,7 @@ final case class InputDetails(name: String,
                                   order: Int,
                                   inputDependencyField: String,
                                   hide: Boolean,
+                                  array: Boolean,
                                   isQuery: Boolean,
                                   foreignKey: String,
                                   queryTable: String,
@@ -59,7 +60,7 @@ final case class GetDependencyResponse(inputDependencies: Array[DependencyDetail
 final case class SaveTemplateResponse(templateId: Int)
 final case class TemplateResponse(id: Int, name: String, created: String, updated: String)
 final case class GetTemplatesResponse(templates: Array[TemplateResponse])
-final case class ForeignQueries(queryTable: String, fields: Array[String], foreignKey: String)
+final case class ForeignQueries(queryTable: String, fields: Array[String], foreignKey: String, array: Boolean)
 final case class GetForeignTableResponse(foreignQueries: Array[ForeignQueries])
 final case class SaveTemplateRequest(name: String, processName: String, information: Array[InputInformation], components: Array[Component])
 final case class SuccessResponse(success: Boolean)

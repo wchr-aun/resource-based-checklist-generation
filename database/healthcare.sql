@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS datamodel, models, input_information_child_query, input_information_child, input_information_parent, components, templates, contracts, obstaclealerts, requestedservices, providers, patients, services, obstacles, staff, states;
+DROP TABLE IF EXISTS contracts, obstaclealerts, requestedservices, providers, patients, services, obstacles, staff, states;
 
 CREATE TABLE IF NOT EXISTS states (idstate SERIAL UNIQUE, state VARCHAR NOT NULL, final INTEGER NOT NULL DEFAULT 0);
 INSERT INTO states VALUES(0,'requested',0);
@@ -52,8 +52,6 @@ INSERT INTO contracts VALUES(24,21,2,'22/11/2012 11:09:35','22/11/2012 12:03:53'
 INSERT INTO contracts VALUES(25,22,2,'12/12/2012 16:18:24','12/12/2012 16:19:16','12/12/2012 16:19:52',5);
 INSERT INTO contracts VALUES(26,23,2,'12/12/2012 17:19:52','12/12/2012 17:24:43',NULL,3);
 
-CREATE TABLE IF NOT EXISTS models (name VARCHAR UNIQUE NOT NULL, "desc" VARCHAR NOT NULL);
-
 INSERT INTO models VALUES('AcceptedContract', 'description');
 INSERT INTO models VALUES('ServiceProvider', 'description');
 INSERT INTO models VALUES('OpenContract', 'description');
@@ -70,8 +68,6 @@ INSERT INTO models VALUES('RejectedContract', 'description');
 INSERT INTO models VALUES('RequestedContract', 'description');
 INSERT INTO models VALUES('CompletedHealthcareService', 'description');
 INSERT INTO models VALUES('Assignment', 'description');
-
-CREATE TABLE IF NOT EXISTS datamodel (name VARCHAR NOT NULL REFERENCES models(name), "table" VARCHAR NOT NULL, field VARCHAR NOT NULL, PRIMARY KEY (name, "table", field));
 
 INSERT INTO datamodel VALUES('AcceptedContract', 'contracts', 'idcontract');
 INSERT INTO datamodel VALUES('AcceptedContract', 'contracts', 'reqservid');
@@ -180,14 +176,3 @@ INSERT INTO datamodel VALUES('CompletedHealthcareService', 'requestedservices', 
 INSERT INTO datamodel VALUES('CompletedHealthcareService', 'requestedservices', 'type');
 INSERT INTO datamodel VALUES('CompletedHealthcareService', 'requestedservices', 'stateid');
 INSERT INTO datamodel VALUES('CompletedHealthcareService', 'requestedservices', 'notes');
-
-
-CREATE TABLE templates (id SERIAL UNIQUE, name VARCHAR NOT NULL, created TIMESTAMP NOT NULL, updated TIMESTAMP NOT NULL, process_name VARCHAR NOT NULL);
-
-CREATE TABLE components (id SERIAL UNIQUE, template_id INTEGER REFERENCES templates(id) ON DELETE CASCADE NOT NULL, input_dep VARCHAR, input_dep_field VARCHAR, output_dep VARCHAR, output_dep_field VARCHAR, "order" INTEGER NOT NULL, "name" VARCHAR NOT NULL, type VARCHAR NOT NULL, required BOOLEAN DEFAULT true, hide BOOLEAN DEFAULT false, validation VARCHAR, function VARCHAR, parent INTEGER REFERENCES components(id) ON DELETE CASCADE);
-
-CREATE TABLE input_information_parent (id SERIAL UNIQUE, name VARCHAR NOT NULL, "order" INTEGER NOT NULL, input_dep VARCHAR REFERENCES models(name), template_id INTEGER NOT NULL REFERENCES templates(id) ON DELETE CASCADE);
-
-CREATE TABLE input_information_child (id SERIAL UNIQUE, name VARCHAR NOT NULL, "order" INTEGER NOT NULL, input_dep_field VARCHAR, hide BOOLEAN DEFAULT false, parent_id INTEGER NOT NULL REFERENCES input_information_parent(id) ON DELETE CASCADE);
-
-CREATE TABLE input_information_child_query (id SERIAL UNIQUE, foreign_table VARCHAR NOT NULL, foreign_key VARCHAR NOT NULL, query_table VARCHAR NOT NULL, query_field VARCHAR NOT NULL, details_id INTEGER NOT NULL REFERENCES input_information_child(id) ON DELETE CASCADE);

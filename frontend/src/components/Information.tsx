@@ -20,7 +20,9 @@ function Information(props: Props) {
                   !details.hide && (
                     <div className="flex space-x-2 mb-3" key={j}>
                       <div className="font-semibold w-2/12 flex justify-end self-center">
+                        {details.array && "["}
                         {details.name}
+                        {details.array && "]"}
                       </div>
                       <div className="w-10/12 text-left border rounded-md p-2 text-sm">
                         -

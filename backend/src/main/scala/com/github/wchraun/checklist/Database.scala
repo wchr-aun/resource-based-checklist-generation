@@ -115,16 +115,17 @@ class Database {
   }
 
   def createInputInformationQuery(values: Array[(InputDetails, Int)], inputDependency: String): Unit = {
-    val sql = "INSERT INTO input_information_child_query (foreign_table, foreign_key, query_table, query_field, details_id) VALUES" +
-      "(?, ?, ? ,?, ?)," * (values.length - 1) + "(?, ?, ?, ?, ?);"
+    val sql = "INSERT INTO input_information_child_query (foreign_table, foreign_key, query_table, query_field, is_array, details_id) VALUES" +
+      "(?, ?, ? ,?, ?, ?)," * (values.length - 1) + "(?, ?, ?, ?, ?, ?);"
     val preparedStatement = connection.prepareStatement(sql)
-    val noOfColumns = 5
+    val noOfColumns = 6
     values.zipWithIndex.foreach{ case((child, id), i) => {
       preparedStatement.setString(1 + i * noOfColumns, inputDependency)
       preparedStatement.setString(2 + i * noOfColumns, child.inputDependencyField)
       preparedStatement.setString(3 + i * noOfColumns, child.queryTable)
       preparedStatement.setString(4 + i * noOfColumns, child.queryField)
-      preparedStatement.setInt(5 + i * noOfColumns, id)
+      preparedStatement.setBoolean(5 + i * noOfColumns, child.array)
+      preparedStatement.setInt(6 + i * noOfColumns, id)
     }}
     preparedStatement.executeUpdate
     ()
@@ -146,14 +147,19 @@ class Database {
   }
 
   def getForeignTable(table: String, field: String) = {
-    val sql = "SELECT ccu.table_name AS foreign_table_name, ccu.column_name AS foreign_column_name FROM information_schema.table_constraints AS tc JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name AND tc.table_schema = kcu.table_schema JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name AND ccu.table_schema = tc.table_schema JOIN datamodel AS dm ON dm.table=tc.table_name WHERE tc.constraint_type = 'FOREIGN KEY' AND kcu.column_name=? AND dm.name=? GROUP BY(foreign_table_name, foreign_column_name);"
+    val sql = "SELECT parent_table, parent_column, foreign_table, foreign_column, STRING_AGG(ref, '') AS ref FROM ( SELECT dm.name AS ref, kcu.table_name AS parent_table, kcu.column_name AS parent_column, ccu.table_name AS foreign_table, ccu.column_name AS foreign_column FROM information_schema.table_constraints AS tc JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name AND tc.table_schema = kcu.table_schema JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name AND ccu.table_schema = tc.table_schema LEFT JOIN datamodel AS dm ON dm.table=tc.table_name LEFT JOIN datamodel AS dmm ON dmm.table=ccu.table_name WHERE tc.constraint_type = 'FOREIGN KEY' AND ((dm.name=? AND kcu.column_name=?) OR (dmm.name=? AND ccu.column_name=?)) GROUP BY(parent_table, parent_column, foreign_table, foreign_column, ref) ) a GROUP BY(parent_table, parent_column, foreign_table, foreign_column);"
     val preparedStatement = connection.prepareStatement(sql)
-    preparedStatement.setString(1, field)
-    preparedStatement.setString(2, table)
+    preparedStatement.setString(1, table)
+    preparedStatement.setString(2, field)
+    preparedStatement.setString(3, table)
+    preparedStatement.setString(4, field)
     val rs = preparedStatement.executeQuery()
-    var result = Array.empty[(String, String)]
+    var result = Array.empty[(String, String, Boolean)]
     while (rs.next) {
-      result = result :+ (rs.getString("foreign_table_name"), rs.getString("foreign_column_name"))
+      val ref = rs.getString("ref")
+      val ntable = if (ref != table) rs.getString("parent_table") else rs.getString("foreign_table")
+      val nfield = if (ref != table) rs.getString("parent_column") else rs.getString("foreign_column")
+      result = result :+ (ntable, nfield, ref != table)
     }
     result
   }
@@ -171,7 +177,7 @@ class Database {
   }
 
   def getInputInformation(id: Int) = {
-    val sql = "SELECT p.name AS parent_name, p.\"order\" AS parent_order, p.input_dep AS input_dep, c.name AS child_name, c.\"order\" AS child_order, input_dep_field, hide, foreign_key, query_table, query_field  FROM input_information_parent AS p LEFT JOIN input_information_child AS c ON p.id=c.parent_id LEFT JOIN input_information_child_query AS q ON c.id=q.details_id WHERE template_id=?;"
+    val sql = "SELECT p.name AS parent_name, p.\"order\" AS parent_order, p.input_dep AS input_dep, c.name AS child_name, c.\"order\" AS child_order, is_array, input_dep_field, hide, foreign_key, query_table, query_field  FROM input_information_parent AS p LEFT JOIN input_information_child AS c ON p.id=c.parent_id LEFT JOIN input_information_child_query AS q ON c.id=q.details_id WHERE template_id=?;"
     val preparedStatement = connection.prepareStatement(sql)
     preparedStatement.setInt(1, id)
     val rs = preparedStatement.executeQuery()
@@ -192,6 +198,7 @@ class Database {
           rs.getInt("child_order"),
           rs.getString("input_dep_field"),
           rs.getBoolean("hide"),
+          rs.getBoolean("is_array"),
           Option(rs.getString("foreign_key")).nonEmpty,
           Option(rs.getString("foreign_key")).getOrElse(""),
           Option(rs.getString("query_table")).getOrElse(""),
