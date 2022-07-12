@@ -5,6 +5,7 @@ import processInputReducer from "@features/processInput/processSlice";
 import dependenciesReducer from "@features/form/dependencySlice";
 import foreignTableReducer from "@features/form/foreignTableSlice";
 import loadingReducer from "@app/loadingSlice";
+import envReducer from "@app/envSlice";
 
 export function makeStore() {
   return configureStore({
@@ -14,6 +15,7 @@ export function makeStore() {
       dependencies: dependenciesReducer,
       foreignTable: foreignTableReducer,
       loading: loadingReducer,
+      env: envReducer,
     },
   });
 }

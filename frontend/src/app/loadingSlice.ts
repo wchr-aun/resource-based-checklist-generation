@@ -1,4 +1,3 @@
-import { healthcareExamples } from "@app/healthcareExamples";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { AppState } from "@app/store";
 

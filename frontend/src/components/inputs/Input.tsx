@@ -31,6 +31,7 @@ function Input(props: Props) {
       placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
       value={value}
+      onFocus={(e) => value === placeholder && e.target.select()}
     />
   );
 }

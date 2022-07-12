@@ -11,11 +11,14 @@ module.exports = (phase) => {
   const isProd = phase === PHASE_PRODUCTION_BUILD;
 
   const env = {
-    BACKEND_URL: (() => {
+    HEALTH_BACKEND_URL: (() => {
       if (isDev) return "http://localhost:8080";
       if (isProd) {
         return "https://msc-checklist-generation.herokuapp.com";
       }
+    })(),
+    PAYMENT_BACKEND_URL: (() => {
+      return "https://msc-payment-checklist.herokuapp.com";
     })(),
   };
 

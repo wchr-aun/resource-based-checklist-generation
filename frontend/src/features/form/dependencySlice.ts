@@ -2,7 +2,6 @@ import { Dependencies, DependencyDetails } from "@models";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import type { AppState } from "@app/store";
-import { saveTemplate } from "api/template";
 
 export interface DependenciesState {
   inputDependencies: DependencyDetails[];

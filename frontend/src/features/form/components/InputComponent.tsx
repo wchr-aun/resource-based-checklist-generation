@@ -33,6 +33,7 @@ import { selectForeign, setForeignTable } from "../foreignTableSlice";
 import SuggestedForeignModal from "./SuggestedForeignModal";
 import { setLoading } from "@app/loadingSlice";
 import Reorder from "./Reorder";
+import { selectEnv } from "@app/envSlice";
 
 interface Props {
   inputs: Information[];
@@ -44,6 +45,7 @@ function InputComponent(props: Props) {
   const noForeignTableModal = useRef((v: boolean) => {});
   const suggestedForeignModal = useRef((v: boolean) => {});
   const queryOptions = useAppSelector(selectForeign);
+  const env = useAppSelector(selectEnv);
 
   const [suggestedForeigns, setSuggestedForeigns] = useState<{
     parentIndex: number;
@@ -62,7 +64,7 @@ function InputComponent(props: Props) {
   const queryForignTable = async (modelName: string, fieldName: string) => {
     let foreign = queryOptions[`${modelName}_${fieldName}`] || [];
     if (!queryOptions[`${modelName}_${fieldName}`]) {
-      const res = await getForeignTable(modelName, fieldName);
+      const res = await getForeignTable(modelName, fieldName, env);
       foreign = res.foreignQueries;
       dispatch(
         setForeignTable({
@@ -108,7 +110,7 @@ function InputComponent(props: Props) {
       dispatch(setLoading(false));
       return;
     }
-    const res = await getRecommenedForeign(modelName, fieldName);
+    const res = await getRecommenedForeign(modelName, fieldName, env);
     dispatch(setLoading(false));
     setSuggestedForeigns({
       parentIndex,
