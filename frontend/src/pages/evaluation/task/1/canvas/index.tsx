@@ -4,7 +4,7 @@ import Head from "next/head";
 import Hint from "@features/hint/Hint";
 import ScrollToTop from "@features/ScrollToTop/ScrollToTop";
 import { Form } from "@models";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { useAppDispatch, useAppSelector } from "@app/hooks";
 import { setLoading } from "@app/loadingSlice";
 import { resetDependencies } from "@features/form/dependencySlice";
@@ -15,6 +15,7 @@ import { selectEvalId } from "@app/envSlice";
 const Task1Canvas: NextPage = () => {
   const evalId = useAppSelector(selectEvalId);
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const onSubmit = async (f: Form) => {
     dispatch(setLoading(true));
 
@@ -28,7 +29,7 @@ const Task1Canvas: NextPage = () => {
     dispatch(resetForm);
 
     dispatch(setLoading(false));
-    Router.push("/evaluation/task/1/follow-up");
+    router.push("/evaluation/task/1/follow-up");
   };
 
   return (

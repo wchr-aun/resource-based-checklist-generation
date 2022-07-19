@@ -2,11 +2,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { AppState } from "@app/store";
 
 export interface ProcessInputState {
-  loading: boolean;
+  loading: number;
 }
 
 const initialState: ProcessInputState = {
-  loading: false,
+  loading: 0,
 };
 
 export const loadingSlice = createSlice({
@@ -14,7 +14,7 @@ export const loadingSlice = createSlice({
   initialState,
   reducers: {
     setLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
+      state.loading = action.payload ? state.loading++ : state.loading--;
     },
   },
 });

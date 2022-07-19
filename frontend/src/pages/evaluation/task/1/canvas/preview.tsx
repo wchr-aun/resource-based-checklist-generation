@@ -6,7 +6,7 @@ import ScrollToTop from "@features/ScrollToTop/ScrollToTop";
 import type { NextPage } from "next";
 import Head from "next/head";
 
-const Preview: NextPage = () => {
+const Task1Preview: NextPage = () => {
   const form = store.getState().form;
   if (form.processName === "" && form.components.length === 0) {
     return <div>Nothing to Preview</div>;
@@ -41,4 +41,4 @@ const Preview: NextPage = () => {
   );
 };
 
-export default Preview;
+export default Task1Preview;

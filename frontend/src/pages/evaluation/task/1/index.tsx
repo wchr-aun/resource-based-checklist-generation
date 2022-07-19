@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import Head from "next/head";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { useAppDispatch } from "@app/hooks";
 import { setLoading } from "@app/loadingSlice";
 import { healthcareExamples } from "@app/healthcareExamples";
@@ -12,6 +12,7 @@ import { getTemplate } from "api/template";
 
 const Task1: NextPage = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const callGenerateApi = async () => {
     dispatch(setLoading(true));
     const templateResponse = await getTemplate(
@@ -26,7 +27,7 @@ const Task1: NextPage = () => {
     dispatch(setLoading(false));
     dispatch(setForm(templateResponse));
     dispatch(setDependencies(dependencyResponse));
-    Router.push("/evaluation/task/1/canvas");
+    router.push("/evaluation/task/1/canvas");
   };
 
   return (

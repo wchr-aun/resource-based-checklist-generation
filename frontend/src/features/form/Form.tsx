@@ -25,7 +25,7 @@ import Modal from "@components/Modal";
 import DependencyModal from "./components/DependencyModal";
 import { selectOutputDependencies } from "./dependencySlice";
 import { saveTemplate } from "api/template";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "@app/loadingSlice";
@@ -50,6 +50,7 @@ function FormTemplate(props: Props) {
   const manageDependModal = useRef((v: boolean) => {});
   const outputDependencies = useAppSelector(selectOutputDependencies);
   const env = useAppSelector(selectEnv);
+  const router = useRouter();
 
   const [savedTemplateId, setSavedTemplateId] = useState(-1);
 
@@ -83,7 +84,7 @@ function FormTemplate(props: Props) {
   };
 
   const onCloseSuccessModal = () => {
-    Router.push("/");
+    router.push("/");
     successModal.current(false);
   };
 
@@ -265,7 +266,7 @@ function FormTemplate(props: Props) {
       )}
       <div className="flex justify-between bg-white border mt-2 px-5 pb-5">
         <div className="space-x-2">
-          <Link href={`${Router.asPath}/preview`}>
+          <Link href={`${router.asPath}/preview`}>
             <button className="border border-orange-400 hover:border-orange-500 hover:text-orange-500 hover:bg-red-50 text-orange-400 font-bold py-2 px-4 rounded mt-5">
               Preview
             </button>

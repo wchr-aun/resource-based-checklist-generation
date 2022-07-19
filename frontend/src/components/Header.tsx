@@ -1,7 +1,7 @@
 import { selectEnv, selectEvalId, setEnv } from "@app/envSlice";
 import { useAppDispatch, useAppSelector } from "@app/hooks";
 import Link from "next/link";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import Dropdown from "./inputs/Dropdown";
 
 function Header() {
@@ -24,7 +24,7 @@ function Header() {
             <div
               className="flex items-center flex-shrink-0 mr-6 cursor-pointer"
               onClick={() =>
-                !router.pathname.includes("/evaluation/") && Router.push("/")
+                !router.pathname.includes("/evaluation/") && router.push("/")
               }
             >
               <span className="font-semibold text-xl">WorkflowFM:</span>
@@ -46,7 +46,7 @@ function Header() {
           </Link>
         )}
         {router.pathname.includes("/preview") && (
-          <Link href={Router.asPath.replace("/preview", "")}>
+          <Link href={router.asPath.replace("/preview", "")}>
             <div className="flex items-center flex-shrink-0 mr-6 cursor-pointer">
               <span className="font-semibold text-xl">WorkflowFM:</span>
               <span className="text-lg ml-2 font-extrabold capitalize">
