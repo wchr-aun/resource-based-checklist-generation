@@ -255,7 +255,7 @@ class Database {
   }
 
   def getRecommendedQueryFields(foreignTable: String, foreignKey: String) = {
-    val sql = "SELECT foreign_key, query_table, agg.string AS string_agg, COUNT(*) as count FROM (SELECT c.parent_id, foreign_key, query_table, STRING_AGG(query_field, ', ' ORDER BY query_field) AS string FROM input_information_child c JOIN input_information_child_query q ON c.id=q.details_id WHERE foreign_table=? AND foreign_key=? GROUP BY(c.parent_id, foreign_table, foreign_key, query_table)) agg GROUP BY(agg.string, foreign_key, query_table) ORDER BY count DESC LIMIT 1;"
+    val sql = "SELECT foreign_key, agg.string2 AS query_tables, agg.string AS query_fields, COUNT(*) as count FROM (SELECT c.parent_id, foreign_key, STRING_AGG(query_table, ', ' ORDER BY query_field) as string2, STRING_AGG(query_field, ', ' ORDER BY query_field) AS string FROM input_information_child c JOIN input_information_child_query q ON c.id=q.details_id WHERE foreign_table=? AND foreign_key=? GROUP BY(c.parent_id, foreign_table, foreign_key)) agg GROUP BY(agg.string, foreign_key, agg.string2) ORDER BY count DESC LIMIT 1;"
     val preparedStatement = connection.prepareStatement(sql)
     preparedStatement.setString(1, foreignTable)
     preparedStatement.setString(2, foreignKey)
@@ -263,8 +263,8 @@ class Database {
     var result = ("", "", "")
     while (rs.next) {
       result = (
-        rs.getString("string_agg"),
-        rs.getString("query_table"),
+        rs.getString("query_fields"),
+        rs.getString("query_tables"),
         rs.getString("foreign_key")
       )
     }
@@ -280,7 +280,7 @@ class Database {
   }
 
   def getRecommendedDependencies(processName: String) = {
-    val sql = "WITH subquery AS ( SELECT input_dep, input_dep_field, output_dep, output_dep_field, COUNT(*) AS count FROM templates t JOIN components c ON t.id=c.template_id WHERE input_dep_field!='' AND output_dep_field!='' AND input_dep_field NOT LIKE '%.%' AND t.process_name=? GROUP BY(input_dep, input_dep_field, output_dep, output_dep_field) ) SELECT a.* FROM subquery a LEFT OUTER JOIN subquery b ON a. output_dep_field =b. output_dep_field AND a.count < b.count WHERE b. output_dep_field IS NULL;"
+    val sql = "WITH subquery AS ( SELECT input_dep, input_dep_field, output_dep, output_dep_field, COUNT(*) AS count FROM templates t JOIN components c ON t.id=c.template_id WHERE input_dep_field!='' AND output_dep_field!='' AND input_dep_field NOT LIKE '%.%' AND t.process_name=? GROUP BY(input_dep, input_dep_field, output_dep, output_dep_field) ) SELECT a.* FROM subquery a LEFT OUTER JOIN subquery b ON a. output_dep_field=b.output_dep_field AND a.count < b.count WHERE b.output_dep_field IS NULL;"
     val preparedStatement = connection.prepareStatement(sql)
     preparedStatement.setString(1, processName)
     val rs = preparedStatement.executeQuery()

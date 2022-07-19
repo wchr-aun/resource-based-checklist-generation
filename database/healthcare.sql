@@ -174,3 +174,89 @@ INSERT INTO datamodel VALUES('CompletedHealthcareService', 'requestedservices', 
 INSERT INTO datamodel VALUES('CompletedHealthcareService', 'requestedservices', 'type');
 INSERT INTO datamodel VALUES('CompletedHealthcareService', 'requestedservices', 'stateid');
 INSERT INTO datamodel VALUES('CompletedHealthcareService', 'requestedservices', 'notes');
+
+INSERT INTO templates ("name",created,updated,process_name) VALUES
+	 ('AwardContract','2022-07-19 08:20:32.757513','2022-07-19 08:20:32.757513','AwardContract'),
+	 ('ProvideService','2022-07-19 14:14:06.838553','2022-07-19 14:14:06.838553','ProvideService');
+
+INSERT INTO components (template_id,input_dep,input_dep_field,output_dep,output_dep_field,"order","name","type",required,hide,validation,"function",parent) VALUES
+	 (1,'','','','',0,'1 - OpenContract','HEADER',false,false,'','',NULL),
+	 (1,'AcceptedContract','idcontract','OpenContract','idcontract',0,'idcontract','INPUT',true,true,'','',1),
+	 (1,'AcceptedContract','reqservid','OpenContract','reqservid',1,'reqservid','INPUT',true,true,'','',1),
+	 (1,'AcceptedContract','providerid','OpenContract','providerid',2,'providerid','INPUT',true,true,'','',1),
+	 (1,'AcceptedContract','time_requested','OpenContract','time_requested',3,'time_requested','INPUT',true,true,'','',1),
+	 (1,'','','OpenContract','time_opened',4,'time_opened','INPUT',true,false,'','',1),
+	 (1,'AcceptedContract','stateid','OpenContract','stateid',5,'stateid','INPUT',true,true,'','',1),
+	 (2,'','','','',0,'PLUS(CompletedHealthcareService, )','TAB',false,false,'','',NULL),
+	 (2,'','','','',0,'1 - CompletedHealthcareService','HEADER',false,false,'','',8),
+	 (2,'PendingHealthcareService','idreqserv','CompletedHealthcareService','idreqserv',0,'idreqserv','INPUT',true,true,'','',9);
+INSERT INTO components (template_id,input_dep,input_dep_field,output_dep,output_dep_field,"order","name","type",required,hide,validation,"function",parent) VALUES
+	 (2,'PendingHealthcareService','requesterid','CompletedHealthcareService','requesterid',1,'requesterid','INPUT',true,true,'','',9),
+	 (2,'PendingHealthcareService','serviceid','CompletedHealthcareService','serviceid',2,'serviceid','INPUT',true,true,'','',9),
+	 (2,'PendingHealthcareService','patientid','CompletedHealthcareService','patientid',3,'patientid','INPUT',true,true,'','',9),
+	 (2,'PendingHealthcareService','responsibleid','CompletedHealthcareService','responsibleid',4,'responsibleid','INPUT',true,true,'','',9),
+	 (2,'PendingHealthcareService','date','CompletedHealthcareService','date',5,'date','INPUT',true,true,'','',9),
+	 (2,'PendingHealthcareService','type','CompletedHealthcareService','type',6,'type','INPUT',true,true,'','',9),
+	 (2,'PendingHealthcareService','stateid','CompletedHealthcareService','stateid',7,'stateid','INPUT',true,true,'','',9),
+	 (2,'PendingHealthcareService','notes','CompletedHealthcareService','notes',8,'notes','INPUT',true,true,'','',9),
+	 (2,'','','','',1,'TIMES(Obstacle, PendingHealthcareService)','HEADER',false,false,'','',8),
+	 (2,'','','','',0,'1 - Obstacle','HEADER',false,false,'','',19);
+INSERT INTO components (template_id,input_dep,input_dep_field,output_dep,output_dep_field,"order","name","type",required,hide,validation,"function",parent) VALUES
+	 (2,'','','Obstacle','name',0,'name','INPUT',true,false,'','',20),
+	 (2,'','','','',1,'2 - PendingHealthcareService','HEADER',false,false,'','',19),
+	 (2,'PendingHealthcareService','idreqserv','PendingHealthcareService','idreqserv',0,'idreqserv','INPUT',true,true,'','',22),
+	 (2,'PendingHealthcareService','requesterid','PendingHealthcareService','requesterid',1,'requesterid','INPUT',true,true,'','',22),
+	 (2,'PendingHealthcareService','serviceid','PendingHealthcareService','serviceid',2,'serviceid','INPUT',true,true,'','',22),
+	 (2,'PendingHealthcareService','patientid','PendingHealthcareService','patientid',3,'patientid','INPUT',true,true,'','',22),
+	 (2,'PendingHealthcareService','responsibleid','PendingHealthcareService','responsibleid',4,'responsibleid','INPUT',true,true,'','',22),
+	 (2,'PendingHealthcareService','date','PendingHealthcareService','date',5,'date','INPUT',true,true,'','',22),
+	 (2,'PendingHealthcareService','type','PendingHealthcareService','type',6,'type','INPUT',true,true,'','',22),
+	 (2,'PendingHealthcareService','stateid','PendingHealthcareService','stateid',7,'stateid','INPUT',true,true,'','',22);
+INSERT INTO components (template_id,input_dep,input_dep_field,output_dep,output_dep_field,"order","name","type",required,hide,validation,"function",parent) VALUES
+	 (2,'PendingHealthcareService','notes','PendingHealthcareService','notes',8,'notes','INPUT',true,true,'','',22);
+
+INSERT INTO input_information_parent ("name","order",input_dep,template_id) VALUES
+	 ('ServiceProvider',0,'ServiceProvider',1),
+	 ('AcceptedContract',1,'AcceptedContract',1),
+	 ('Healthcare Service',0,'PendingHealthcareService',2),
+	 ('OpenContract',1,'OpenContract',2);
+
+INSERT INTO input_information_child ("name","order",input_dep_field,hide,parent_id) VALUES
+	 ('idprovider',0,'idprovider',false,1),
+	 ('actorid',1,'actorid',false,1),
+	 ('name',2,'actorid',false,1),
+	 ('surname',3,'actorid',false,1),
+	 ('serviceid',4,'serviceid',false,1),
+	 ('level',5,'level',false,1),
+	 ('idcontract',0,'idcontract',false,2),
+	 ('reqservid',1,'reqservid',false,2),
+	 ('providerid',2,'providerid',false,2),
+	 ('time_requested',3,'time_requested',false,2);
+INSERT INTO input_information_child ("name","order",input_dep_field,hide,parent_id) VALUES
+	 ('stateid',4,'stateid',false,2),
+	 ('idreqserv',0,'idreqserv',true,3),
+	 ('requesterid',1,'requesterid',true,3),
+	 ('serviceid',2,'serviceid',true,3),
+	 ('Service Name',3,'serviceid',false,3),
+	 ('patientid',4,'patientid',true,3),
+	 ('Patient Name',5,'patientid',false,3),
+	 ('Patient Surname',6,'patientid',false,3),
+	 ('responsibleid',7,'responsibleid',true,3),
+	 ('date',8,'date',true,3);
+INSERT INTO input_information_child ("name","order",input_dep_field,hide,parent_id) VALUES
+	 ('type',9,'type',true,3),
+	 ('stateid',10,'stateid',true,3),
+	 ('notes',11,'notes',false,3),
+	 ('idcontract',0,'idcontract',true,4),
+	 ('reqservid',1,'reqservid',true,4),
+	 ('providerid',2,'providerid',true,4),
+	 ('time_requested',3,'time_requested',true,4),
+	 ('time_opened',4,'time_opened',true,4),
+	 ('stateid',5,'stateid',true,4);
+
+INSERT INTO input_information_child_query (foreign_table,foreign_key,query_table,query_field,is_array,details_id) VALUES
+	 ('ServiceProvider','actorid','staff','name',false,3),
+	 ('ServiceProvider','actorid','staff','surname',false,4),
+	 ('PendingHealthcareService','serviceid','services','name',false,15),
+	 ('PendingHealthcareService','patientid','patients','name',false,17),
+	 ('PendingHealthcareService','patientid','patients','surname',false,18);

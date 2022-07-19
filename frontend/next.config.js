@@ -18,7 +18,8 @@ module.exports = (phase) => {
       }
     })(),
     PAYMENT_BACKEND_URL: (() => {
-      return "https://msc-payment-checklist.herokuapp.com";
+      if (isDev) return "http://localhost:8081";
+      if (isProd) return "https://msc-payment-checklist.herokuapp.com";
     })(),
   };
 

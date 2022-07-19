@@ -1,6 +1,4 @@
-DROP TABLE IF EXISTS evaluation, datamodel, models, input_information_child_query, input_information_child, input_information_parent, components, templates;
-
-CREATE TABLE IF NOT EXISTS evaluation (id VARCHAR NOT NULL, result JSON NOT NULL, task VARCHAR NOT NULL, time TIMESTAMP NOT NULL, PRIMARY KEY (id, task));
+DROP TABLE IF EXISTS datamodel, models, input_information_child_query, input_information_child, input_information_parent, components, templates;
 
 CREATE TABLE IF NOT EXISTS models (name VARCHAR UNIQUE NOT NULL, "desc" VARCHAR NOT NULL);
 

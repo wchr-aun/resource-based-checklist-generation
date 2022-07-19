@@ -257,10 +257,12 @@ export const formSlice = createSlice({
       } = action.payload;
       const node = getNode(prefix, state.components);
       if (!node) return;
-      node.inputDependency = inputDependency;
+      node.inputDependency = inputDependencyField !== "" ? inputDependency : "";
       node.inputDependencyField = inputDependencyField;
-      node.outputDependency = outputDependency;
+      node.outputDependency =
+        outputDependencyField !== "" ? outputDependency : "";
       node.outputDependencyField = outputDependencyField;
+      if (inputDependencyField === "") node.hide = false;
     },
     addNewInputDetails: (
       state,

@@ -24,7 +24,7 @@ INSERT INTO transactions (order_id, payment_date, shipping_date, payment_amount,
 
 INSERT INTO models VALUES('Item', 'description');
 INSERT INTO models VALUES('Customer', 'description');
-INSERT INTO models VALUES('Order', 'description');
+INSERT INTO models VALUES('OrderTransaction', 'description');
 INSERT INTO models VALUES('NewTransaction', 'description');
 INSERT INTO models VALUES('PaidTransaction', 'description');
 INSERT INTO models VALUES('Transaction', 'description');
@@ -42,14 +42,35 @@ INSERT INTO datamodel VALUES('Customer', 'customers', 'name');
 INSERT INTO datamodel VALUES('Customer', 'customers', 'surname');
 INSERT INTO datamodel VALUES('Customer', 'customers', 'address');
 
-INSERT INTO datamodel VALUES('Order', 'orders', 'id');
-INSERT INTO datamodel VALUES('Order', 'orders', 'customer_id');
-INSERT INTO datamodel VALUES('Order', 'orders', 'total_price');
-
-INSERT INTO datamodel VALUES('Transaction', 'transactions', 'id');
-INSERT INTO datamodel VALUES('Transaction', 'transactions', 'order_id');
-INSERT INTO datamodel VALUES('Transaction', 'transaction', 'payment_amount');
+INSERT INTO datamodel VALUES('OrderTransaction', 'orders', 'id');
+INSERT INTO datamodel VALUES('OrderTransaction', 'orders', 'customer_id');
+INSERT INTO datamodel VALUES('OrderTransaction', 'orders', 'total_price');
 
 INSERT INTO datamodel VALUES('CardDetails', 'transactions', 'card_no');
 INSERT INTO datamodel VALUES('CardDetails', 'transactions', 'expire');
 INSERT INTO datamodel VALUES('CardDetails', 'transactions', 'code');
+
+INSERT INTO templates (name,created,updated,process_name) VALUES ('CardInput','2022-07-19 11:24:13.100664','2022-07-19 11:24:13.100664','CardInput');
+
+INSERT INTO components (template_id,input_dep,input_dep_field,output_dep,output_dep_field,"order",name,"type",required,hide,validation,"function",parent) VALUES
+	 (1,'','','','',0,'1 - CardDetails','HEADER',false,false,'','',NULL),
+	 (1,'','','CardDetails','card_no',0,'card_no','INPUT',true,false,'','',1),
+	 (1,'','','CardDetails','expire',1,'expire','INPUT',true,false,'','',1),
+	 (1,'','','CardDetails','code',2,'code','INPUT',true,false,'','',1);
+
+INSERT INTO input_information_parent (name,"order",input_dep,template_id) VALUES ('OrderTransaction',0,'OrderTransaction',1);
+
+INSERT INTO input_information_child (name,"order",input_dep_field,hide,parent_id) VALUES
+	 ('id',0,'id',true,1),
+	 ('transaction id',1,'id',false,1),
+	 ('item id',2,'id',false,1),
+	 ('price',3,'id',false,1),
+	 ('quantity',4,'id',false,1),
+	 ('customer_id',5,'customer_id',true,1),
+	 ('total_price',6,'total_price',false,1);
+
+INSERT INTO input_information_child_query (foreign_table,foreign_key,query_table,query_field,is_array,details_id) VALUES
+	 ('OrderTransaction','id','transactions','id',true,2),
+	 ('OrderTransaction','id','item_list','item_id',true,3),
+	 ('OrderTransaction','id','item_list','price',true,4),
+	 ('OrderTransaction','id','item_list','quantity',true,5);

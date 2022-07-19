@@ -37,12 +37,12 @@ function Header() {
           )}
         {router.pathname.includes("/checklist") && (
           <Link href="/">
-            <div className="flex items-center flex-shrink-0 mr-6 cursor-pointer">
+            <a className="flex items-center flex-shrink-0 mr-6 cursor-pointer">
               <span className="font-semibold text-xl">WorkflowFM:</span>
               <span className="text-lg ml-2 font-extrabold capitalize">
                 Checklist #{router.query.id}
               </span>
-            </div>
+            </a>
           </Link>
         )}
         {router.pathname.includes("/preview") && (
@@ -58,9 +58,9 @@ function Header() {
         {router.pathname === "/" ? (
           <div className="flex space-x-3">
             <Link href="/evaluation">
-              <div className="flex self-center w-full cursor-pointer">
-                Go to Evaluation
-              </div>
+              <a className="flex self-center w-full cursor-pointer">
+                User Evaluation
+              </a>
             </Link>
             <Dropdown
               className="uppercase"
