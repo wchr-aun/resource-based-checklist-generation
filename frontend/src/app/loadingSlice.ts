@@ -14,7 +14,7 @@ export const loadingSlice = createSlice({
   initialState,
   reducers: {
     setLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload ? state.loading++ : state.loading--;
+      state.loading = action.payload ? state.loading + 1 : state.loading - 1;
     },
   },
 });

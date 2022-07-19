@@ -34,7 +34,7 @@ function PingServer() {
           <div className="text-xl text-bold text-rose-500">
             Please try again later
           </div>
-          <Divider />
+          <Divider className="-mx-6" />
           Servers are currently down. Please try again later.
           <br />
           Or contact us via{" "}
@@ -44,7 +44,7 @@ function PingServer() {
           >
             s2223223@ed.ac.uk
           </a>
-          <Divider />
+          <Divider className="-mx-6" />
           <div className="flex justify-center">
             <button
               className="border border-transparent rounded-lg border-rose-500 text-rose-500 px-5 py-2 hover:bg-rose-50 hover:border-rose-600 hover:text-rose-600"

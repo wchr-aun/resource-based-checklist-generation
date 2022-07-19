@@ -1,28 +1,92 @@
+import { useAppDispatch } from "@app/hooks";
 import Divider from "@components/Divider";
 import Dropdown from "@components/inputs/Dropdown";
+import Modal from "@components/Modal";
 import { DependencyDetails, LeafComponent } from "@models";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { updateDependencies } from "../formSlice";
 
 interface Props {
   inputDependencies: DependencyDetails[];
   outputDependencies: DependencyDetails[];
   leafComponents: LeafComponent[];
+  onClose: () => void;
+  onSubmit: () => void;
 }
 
 function DependenciesModal(props: Props) {
-  const { inputDependencies, outputDependencies, leafComponents } = props;
+  const {
+    inputDependencies,
+    outputDependencies,
+    leafComponents,
+    onClose,
+    onSubmit,
+  } = props;
+
+  const [
+    originalInputDependency,
+    originalOutputDependency,
+    originalInputDependencyField,
+    originalOutputDependencyField,
+  ] = [
+    leafComponents.map((c) => c.inputDependency),
+    leafComponents.map((c) => c.outputDependency),
+    leafComponents.map((c) => c.inputDependencyField),
+    leafComponents.map((c) => c.outputDependencyField),
+  ];
   const [leafInputDependency, setLeafInputDependency] = useState(
-    leafComponents.map((c) => c.inputDependency)
+    originalInputDependency
   );
   const [leafOutputDependency, setLeafOutputDependency] = useState(
-    leafComponents.map((c) => c.outputDependency)
+    originalOutputDependency
   );
   const [leafInputDependencyField, setLeafInputDependencyField] = useState(
-    leafComponents.map((c) => c.inputDependencyField)
+    originalInputDependencyField
   );
   const [leafOutputDependencyField, setLeafOutputDependencyField] = useState(
-    leafComponents.map((c) => c.outputDependencyField)
+    originalOutputDependencyField
   );
+  const dispatch = useAppDispatch();
+  const confirmCancel = useRef((v: boolean) => {});
+
+  const onClickConfirm = () => {
+    leafComponents.forEach((c, i) => {
+      if (
+        originalInputDependency[i] !== leafInputDependency[i] ||
+        originalOutputDependency[i] !== leafOutputDependency[i] ||
+        originalInputDependencyField[i] !== leafInputDependencyField[i] ||
+        originalOutputDependencyField[i] !== leafOutputDependencyField[i]
+      ) {
+        dispatch(
+          updateDependencies({
+            prefix: `${c.parent}.${c.originalName}` || "root",
+            inputDependency: leafInputDependency[i],
+            inputDependencyField: leafInputDependencyField[i],
+            outputDependency: leafOutputDependency[i],
+            outputDependencyField: leafOutputDependencyField[i],
+          })
+        );
+      }
+    });
+    onSubmit();
+  };
+
+  const onClickClose = () => {
+    if (
+      JSON.stringify(originalInputDependency) !==
+        JSON.stringify(leafInputDependency) ||
+      JSON.stringify(originalOutputDependency) !==
+        JSON.stringify(leafOutputDependency) ||
+      JSON.stringify(originalInputDependencyField) !==
+        JSON.stringify(leafInputDependencyField) ||
+      JSON.stringify(originalOutputDependencyField) !==
+        JSON.stringify(leafOutputDependencyField)
+    ) {
+      confirmCancel.current(true);
+      return;
+    }
+    onClose();
+  };
 
   return (
     <div>
@@ -145,7 +209,7 @@ function DependenciesModal(props: Props) {
       <div className="flex justify-end space-x-2">
         <button
           className="border py-2 px-4 rounded-lg border-rose-500 text-rose-500 hover:text-rose-600 hover:border-rose-600 hover:bg-rose-50"
-          onClick={() => {}}
+          onClick={() => onClickClose()}
         >
           Cancel
         </button>
@@ -155,12 +219,47 @@ function DependenciesModal(props: Props) {
               ? "border-gray-400 text-gray-400"
               : "border-indigo-500 text-indigo-500 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-700"
           }`}
-          onClick={() => {}}
+          onClick={() => onClickConfirm()}
           disabled={leafComponents.length === 0}
         >
           Confirm
         </button>
       </div>
+      <Modal
+        openModal={confirmCancel}
+        size="w-1/4"
+        body={
+          <div>
+            <div className="text-xl font-bold">Are you sure?</div>
+            <Divider className="-mx-6" />
+            <div>
+              All the changes will be lost.
+              <br />
+              Do you still want to proceed?
+            </div>
+            <Divider className="-mx-6" />
+            <div className="flex justify-end space-x-3">
+              <button
+                className="border py-2 px-4 rounded-lg border-rose-500 text-rose-500 hover:text-rose-600 hover:border-rose-600 hover:bg-rose-50"
+                onClick={() => {
+                  confirmCancel.current(false);
+                  onClose();
+                }}
+              >
+                Yes
+              </button>
+              <button
+                className="border py-2 px-4 rounded-lg border-indigo-500 text-indigo-500 hover:text-indigo-600 hover:border-indigo-600 hover:bg-indigo-50"
+                onClick={() => {
+                  confirmCancel.current(false);
+                }}
+              >
+                No
+              </button>
+            </div>
+          </div>
+        }
+      />
     </div>
   );
 }

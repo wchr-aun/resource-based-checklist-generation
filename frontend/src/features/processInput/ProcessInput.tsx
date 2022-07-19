@@ -137,7 +137,7 @@ function ProcessInput(props: Props) {
             <div className="text-xl">
               Do you want to auto-generate the template?
             </div>
-            <Divider />
+            <Divider className="-mx-6" />
             <div className="flex justify-end space-x-2">
               <button
                 className={`${

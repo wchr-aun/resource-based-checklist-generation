@@ -140,7 +140,7 @@ function FormTemplate(props: Props) {
           }
         : extractLeafComponents(
             c.children,
-            `${parent}/${c.originalName}`,
+            `${parent}.${c.originalName}`,
             `${parentName}/${c.name}`
           )
     );
@@ -353,6 +353,8 @@ function FormTemplate(props: Props) {
             }))}
             outputDependencies={outputDependencies}
             leafComponents={extractLeafComponents(components)}
+            onClose={() => manageDependModal.current(false)}
+            onSubmit={() => manageDependModal.current(false)}
           />
         }
       />
