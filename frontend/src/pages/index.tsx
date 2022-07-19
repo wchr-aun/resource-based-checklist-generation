@@ -18,7 +18,7 @@ import { Template } from "@models";
 import { resetForeignTable } from "@features/form/foreignTableSlice";
 import { deleteChecklist } from "api/checklist";
 import { setLoading } from "@app/loadingSlice";
-import { selectEnv } from "@app/envSlice";
+import { resetEval, selectEnv } from "@app/envSlice";
 import { selectProcess } from "@features/processInput/processSlice";
 
 const Home: NextPage = () => {
@@ -68,6 +68,7 @@ const Home: NextPage = () => {
     dispatch(resetForm());
     dispatch(resetDependencies());
     dispatch(resetForeignTable());
+    dispatch(resetEval());
     return () => {};
   }, []);
 

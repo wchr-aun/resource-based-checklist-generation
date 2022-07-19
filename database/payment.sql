@@ -31,6 +31,7 @@ INSERT INTO models VALUES('Transaction', 'description');
 INSERT INTO models VALUES('ShippingTransaction', 'description');
 INSERT INTO models VALUES('CanceledTransaction', 'description');
 INSERT INTO models VALUES('FullfilledTransaction', 'description');
+INSERT INTO models VALUES('CardDetails', 'description');
 
 INSERT INTO datamodel VALUES('Item', 'items', 'id');
 INSERT INTO datamodel VALUES('Item', 'items', 'name');
@@ -45,34 +46,10 @@ INSERT INTO datamodel VALUES('Order', 'orders', 'id');
 INSERT INTO datamodel VALUES('Order', 'orders', 'customer_id');
 INSERT INTO datamodel VALUES('Order', 'orders', 'total_price');
 
-INSERT INTO datamodel VALUES('NewTransaction', 'transaction', 'order_id');
-INSERT INTO datamodel VALUES('NewTransaction', 'transaction', 'payment_amount');
-INSERT INTO datamodel VALUES('NewTransaction', 'transaction', 'card_no');
-INSERT INTO datamodel VALUES('NewTransaction', 'transaction', 'status');
+INSERT INTO datamodel VALUES('Transaction', 'transactions', 'id');
+INSERT INTO datamodel VALUES('Transaction', 'transactions', 'order_id');
+INSERT INTO datamodel VALUES('Transaction', 'transaction', 'payment_amount');
 
-INSERT INTO datamodel VALUES('PaidTransaction', 'transaction', 'id');
-INSERT INTO datamodel VALUES('PaidTransaction', 'transaction', 'order_id');
-INSERT INTO datamodel VALUES('PaidTransaction', 'transaction', 'payment_date');
-INSERT INTO datamodel VALUES('PaidTransaction', 'transaction', 'payment_amount');
-INSERT INTO datamodel VALUES('PaidTransaction', 'transaction', 'card_no');
-INSERT INTO datamodel VALUES('PaidTransaction', 'transaction', 'status');
-
-INSERT INTO datamodel VALUES('ShippingTransaction', 'transaction', 'id');
-INSERT INTO datamodel VALUES('ShippingTransaction', 'transaction', 'order_id');
-INSERT INTO datamodel VALUES('ShippingTransaction', 'transaction', 'payment_date');
-INSERT INTO datamodel VALUES('ShippingTransaction', 'transaction', 'payment_amount');
-INSERT INTO datamodel VALUES('ShippingTransaction', 'transaction', 'shipping_date');
-INSERT INTO datamodel VALUES('ShippingTransaction', 'transaction', 'card_no');
-INSERT INTO datamodel VALUES('ShippingTransaction', 'transaction', 'status');
-
-INSERT INTO datamodel VALUES('CanceledTransaction', 'transaction', 'id');
-INSERT INTO datamodel VALUES('CanceledTransaction', 'transaction', 'order_id');
-INSERT INTO datamodel VALUES('CanceledTransaction', 'transaction', 'status');
-
-INSERT INTO datamodel VALUES('FullfilledTransaction', 'transaction', 'id');
-INSERT INTO datamodel VALUES('FullfilledTransaction', 'transaction', 'order_id');
-INSERT INTO datamodel VALUES('FullfilledTransaction', 'transaction', 'payment_date');
-INSERT INTO datamodel VALUES('FullfilledTransaction', 'transaction', 'payment_amount');
-INSERT INTO datamodel VALUES('FullfilledTransaction', 'transaction', 'shipping_date');
-INSERT INTO datamodel VALUES('FullfilledTransaction', 'transaction', 'card_no');
-INSERT INTO datamodel VALUES('FullfilledTransaction', 'transaction', 'status');
+INSERT INTO datamodel VALUES('CardDetails', 'transactions', 'card_no');
+INSERT INTO datamodel VALUES('CardDetails', 'transactions', 'expire');
+INSERT INTO datamodel VALUES('CardDetails', 'transactions', 'code');

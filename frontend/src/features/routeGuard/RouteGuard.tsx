@@ -1,4 +1,4 @@
-import { setEnv } from "@app/envSlice";
+import { selectIsEval, setEnv } from "@app/envSlice";
 import { useAppDispatch, useAppSelector } from "@app/hooks";
 import { selectProcessName } from "@features/form/formSlice";
 import { useRouter } from "next/router";
@@ -12,6 +12,7 @@ function RouteGuard(props: Props) {
   const { children } = props;
   const router = useRouter();
   const isSet = useAppSelector(selectProcessName);
+  const isEval = useAppSelector(selectIsEval);
   const [authorized, setAuthorized] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -33,7 +34,7 @@ function RouteGuard(props: Props) {
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSet]);
+  }, [isSet, isEval]);
 
   function authCheck(url: string) {
     // redirect to login page if accessing a private page and not logged in
@@ -43,13 +44,26 @@ function RouteGuard(props: Props) {
 
     if (env) dispatch(setEnv(env as "healthcare" | "payment"));
 
-    if (!isSet && path !== "/" && !path.includes("/checklist/view")) {
+    const publicPath = ["/checklist"];
+
+    if (
+      path === "/" ||
+      path === "/evaluation" ||
+      isSet ||
+      isEval ||
+      publicPath.some((p) => path.includes(p))
+    ) {
+      setAuthorized(true);
+    } else if (path.includes("/evaluation") && !isEval) {
+      setAuthorized(false);
+      router.push({
+        pathname: "/evaluation",
+      });
+    } else {
       setAuthorized(false);
       router.push({
         pathname: "/",
       });
-    } else {
-      setAuthorized(true);
     }
   }
 

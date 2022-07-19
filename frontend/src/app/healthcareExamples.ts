@@ -150,18 +150,6 @@ export const healthcareExamples = [
     },
   },
   {
-    name: "Copy_OpenContract_2",
-    inputs: [{ argType: "VARR", name: "OpenContract", args: [] }],
-    output: {
-      argType: "TIMES",
-      name: "",
-      args: [
-        { argType: "VARR", name: "OpenContract", args: [] },
-        { argType: "VARR", name: "OpenContract", args: [] },
-      ],
-    },
-  },
-  {
     name: "AssignHealthcareService",
     inputs: [
       { argType: "VARR", name: "Patient", args: [] },
@@ -239,17 +227,5 @@ export const healthcareExamples = [
       { argType: "VARR", name: "ServiceRequester", args: [] },
     ],
     output: { argType: "VARR", name: "HealthcareActor", args: [] },
-  },
-  {
-    name: "Copy_ServiceProvider_2",
-    inputs: [{ argType: "VARR", name: "ServiceProvider", args: [] }],
-    output: {
-      argType: "TIMES",
-      name: "",
-      args: [
-        { argType: "VARR", name: "ServiceProvider", args: [] },
-        { argType: "VARR", name: "ServiceProvider", args: [] },
-      ],
-    },
   },
 ];

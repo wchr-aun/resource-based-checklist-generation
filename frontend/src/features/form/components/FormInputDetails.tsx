@@ -112,41 +112,43 @@ const FormInputDetails: NextPage<Props> = (props) => {
         node.componentType !== COMPONENT_TYPES.CHOICES &&
         node.componentType !== COMPONENT_TYPES.DROPDOWN &&
         node.componentType !== COMPONENT_TYPES.CONSTANT && (
-          <div className="text-xs flex space-x-3">
-            <Input
+          <div className="text-xs flex justify-between px-2">
+            {/* <Input
               value={node.validation}
               placeholder="Validation"
               onChange={onValidationChange}
-            />
-            <Checkbox
-              name="Required"
-              checked={node.required}
-              onChecked={onRequiredChange}
-            />
-            <Checkbox
-              name="Hide"
-              checked={node.hide}
-              onChecked={onEditableChange}
-            />
+            /> */}
+            <div className="text-sm justify-end font-bold text-gray-700 flex">
+              <div
+                className="cursor-pointer flex space-x-1"
+                onClick={() => onClickSetupDependency(node)}
+              >
+                <div>Dependency Setup</div>
+                <FontAwesomeIcon
+                  icon={
+                    node.inputDependencyField && node.outputDependencyField
+                      ? faLink
+                      : faUnlink
+                  }
+                  className="mt-1"
+                />
+              </div>
+            </div>
+
+            <div className="flex space-x-3">
+              <Checkbox
+                name="Required"
+                checked={node.required}
+                onChecked={onRequiredChange}
+              />
+              <Checkbox
+                name="Hide"
+                checked={node.hide}
+                onChecked={onEditableChange}
+              />
+            </div>
           </div>
         )}
-
-      <div className="text-sm justify-end font-bold text-gray-700 flex">
-        <div
-          className="cursor-pointer flex space-x-1"
-          onClick={() => onClickSetupDependency(node)}
-        >
-          <div>Dependency Setup</div>
-          <FontAwesomeIcon
-            icon={
-              node.inputDependencyField && node.outputDependencyField
-                ? faLink
-                : faUnlink
-            }
-            className="mt-1"
-          />
-        </div>
-      </div>
     </div>
   );
 };
