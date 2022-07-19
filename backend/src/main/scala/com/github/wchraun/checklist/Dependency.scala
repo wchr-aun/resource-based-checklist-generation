@@ -45,7 +45,8 @@ object Dependency {
   private def getRecommendedQueries(tableName: String, fieldName: String, db: Database) = {
     val foreign = db.getRecommendedQueryFields(tableName, fieldName)
     val fields = foreign._1.split(", ").filter(_ != "")
-    GetRecommendedQueriesResponse(fields.map(v => Foreign(foreign._2, v, foreign._3)))
+    val tables = foreign._2.split(", ").filter(_ != "")
+    GetRecommendedQueriesResponse(tables.zip(fields).map{case(t, f) => Foreign(t, f, foreign._3)})
   }
 }
 //#user-registry-actor

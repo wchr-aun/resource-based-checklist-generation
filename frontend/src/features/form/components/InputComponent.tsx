@@ -275,6 +275,10 @@ function InputComponent(props: Props) {
                               ?.fields.filter(
                                 (f) =>
                                   !info.details
+                                    .filter(
+                                      (vv) =>
+                                        vv.queryTable === details.queryTable
+                                    )
                                     .map((i) => i.queryField)
                                     .includes(f) || details.queryField === f
                               ) || []
@@ -318,8 +322,8 @@ function InputComponent(props: Props) {
                   {!details.isQuery && (
                     <More
                       options={[
-                        "Link to parent table using this field",
-                        "Get suggested foreign fields",
+                        "Query more information using this field",
+                        "Get suggested query input information",
                       ]}
                       onSelectOption={(index) =>
                         index == 0

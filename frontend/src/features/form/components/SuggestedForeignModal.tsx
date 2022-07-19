@@ -26,7 +26,7 @@ function suggestedForeignModal(props: Props) {
   const { suggestedForeigns, onClickOK, onClickCancel, onClickDelete } = props;
   return (
     <div>
-      <div className="text-xl font-bold">Suggested Foreign Fields</div>
+      <div className="text-xl font-bold">Suggested Fields</div>
       <Divider className="-mx-6" />
       {suggestedForeigns.foreigns.length > 0 ? (
         <div className="px-1">
