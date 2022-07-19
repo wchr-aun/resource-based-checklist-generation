@@ -9,7 +9,7 @@ function Loading() {
   const isLoading = useAppSelector(selectLoading);
 
   useEffect(() => {
-    loadingModal.current(isLoading);
+    loadingModal.current(!!isLoading);
   }, [isLoading]);
 
   return (

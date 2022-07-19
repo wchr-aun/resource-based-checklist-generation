@@ -37,6 +37,8 @@ object JsonFormats  {
   implicit val saveTemplateRequestJsonFormat = jsonFormat4(SaveTemplateRequest)
   implicit val successResponseJsonFormat = jsonFormat1(SuccessResponse)
 
+  implicit val saveEvaluationRequestJsonFormat = jsonFormat3(SaveEvaluationRequest)
+
   implicit val foreignJsonFormat = jsonFormat3(Foreign)
   implicit val getRecommendedQueriesResponseJsonFormat = jsonFormat1(GetRecommendedQueriesResponse)
 

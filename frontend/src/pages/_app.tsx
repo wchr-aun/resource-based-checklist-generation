@@ -6,6 +6,7 @@ import store from "../app/store";
 import Head from "next/head";
 import Loading from "@components/Loading";
 import RouteGuard from "@features/routeGuard/RouteGuard";
+import PingServer from "@features/pingServer/PingServer";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -20,6 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Component {...pageProps} />
           </RouteGuard>
         </div>
+        <PingServer />
         <Loading />
       </div>
     </Provider>

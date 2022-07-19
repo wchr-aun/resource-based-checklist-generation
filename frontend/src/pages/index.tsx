@@ -5,7 +5,7 @@ import ProcessInput from "@features/processInput/ProcessInput";
 import store from "@app/store";
 import { useAppDispatch, useAppSelector } from "@app/hooks";
 import { resetForm, setForm } from "@features/form/formSlice";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { getTemplate, getTemplates } from "api/template";
 import { getDependencies } from "api/dependency";
 import {
@@ -18,11 +18,12 @@ import { Template } from "@models";
 import { resetForeignTable } from "@features/form/foreignTableSlice";
 import { deleteChecklist } from "api/checklist";
 import { setLoading } from "@app/loadingSlice";
-import { selectEnv } from "@app/envSlice";
+import { resetEval, selectEnv } from "@app/envSlice";
 import { selectProcess } from "@features/processInput/processSlice";
 
 const Home: NextPage = () => {
   const [templates, setTemplates] = useState<Template[]>([]);
+  const router = useRouter();
   const openModal = useRef((v: boolean) => {});
   const env = useAppSelector(selectEnv);
   const dispatch = useAppDispatch();
@@ -40,12 +41,12 @@ const Home: NextPage = () => {
     dispatch(setLoading(false));
     dispatch(setForm(templateResponse));
     dispatch(setDependencies(dependencyResponse));
-    Router.push("/canvas");
+    router.push("/canvas");
     openModal.current(false);
   };
 
   const callViewApi = async (id: number) => {
-    Router.push(`/checklist/view/${id}`);
+    router.push(`/checklist/view/${id}`);
   };
 
   const callDeleteApi = async (id: number) => {
@@ -68,6 +69,7 @@ const Home: NextPage = () => {
     dispatch(resetForm());
     dispatch(resetDependencies());
     dispatch(resetForeignTable());
+    dispatch(resetEval());
     return () => {};
   }, []);
 

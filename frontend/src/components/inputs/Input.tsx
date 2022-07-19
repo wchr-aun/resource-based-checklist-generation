@@ -26,7 +26,7 @@ function Input(props: Props) {
       disabled={disabled}
       className={`${className} ${
         error && "border-red-400"
-      } appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-indigo-500`}
+      } appearance-none border-2 border-gray-200 w-full rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-indigo-500`}
       type="text"
       placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}

@@ -8,6 +8,9 @@ import java.sql.{Connection, DriverManager}
 import java.sql.Types.INTEGER
 import java.text.SimpleDateFormat
 import scala.util.Properties
+import org.postgresql.util.PGobject
+import spray.json.enrichAny
+import JsonFormats._
 
 class Database {
   val url = Properties.envOrElse("DB_URL", "jdbc:postgresql://localhost:5432/db")
@@ -289,6 +292,39 @@ class Database {
         rs.getString("output_dep"),
         rs.getString("output_dep_field")
       )
+    }
+    result
+  }
+
+  def saveEvaluation(id: String, result: SaveTemplateRequest, task: String) = {
+    val jsonObj = new PGobject()
+    jsonObj.setType("json")
+    jsonObj.setValue(result.toJson.toString)
+
+    val sql = "INSERT INTO evaluation (id, result, task, time) VALUES(?, ?, ?, NOW()) ON CONFLICT (id, task) DO UPDATE SET result = excluded.result, time = excluded.time;"
+    val preparedStatement = connection.prepareStatement(sql)
+    preparedStatement.setString(1, id)
+    preparedStatement.setObject(2, jsonObj)
+    preparedStatement.setString(3, task)
+    preparedStatement.executeUpdate()
+    ()
+  }
+
+  def bookEvaluationId(id: String) = {
+    val jsonObj = new PGobject()
+    jsonObj.setType("json")
+    jsonObj.setValue(SuccessResponse(true).toJson.toString)
+
+    val sql = "INSERT INTO evaluation (id, result, task, time) VALUES(?, ?, ?, NOW())"
+    val preparedStatement = connection.prepareStatement(sql)
+    preparedStatement.setString(1, id)
+    preparedStatement.setObject(2, jsonObj)
+    preparedStatement.setString(3, "booking")
+    var result = true
+    try {
+      preparedStatement.executeUpdate()
+    } catch {
+      case _: Throwable => result = false
     }
     result
   }

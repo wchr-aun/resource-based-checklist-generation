@@ -3,10 +3,14 @@ import type { AppState } from "@app/store";
 
 export interface ProcessInputState {
   env: "healthcare" | "payment";
+  isEvaluating: boolean;
+  evalId: string;
 }
 
 const initialState: ProcessInputState = {
   env: "healthcare",
+  isEvaluating: false,
+  evalId: "-",
 };
 
 export const envSlice = createSlice({
@@ -16,11 +20,21 @@ export const envSlice = createSlice({
     setEnv: (state, action: PayloadAction<"healthcare" | "payment">) => {
       state.env = action.payload;
     },
+    setEvalId: (state, action: PayloadAction<string>) => {
+      state.evalId = action.payload;
+      state.isEvaluating = true;
+    },
+    resetEval: (state) => {
+      state.isEvaluating = false;
+      state.evalId = "-";
+    },
   },
 });
 
-export const { setEnv } = envSlice.actions;
+export const { setEnv, setEvalId, resetEval } = envSlice.actions;
 
 export const selectEnv = (state: AppState) => state.env.env;
+export const selectIsEval = (state: AppState) => state.env.isEvaluating;
+export const selectEvalId = (state: AppState) => state.env.evalId;
 
 export default envSlice.reducer;

@@ -65,5 +65,7 @@ final case class GetForeignTableResponse(foreignQueries: Array[ForeignQueries])
 final case class SaveTemplateRequest(name: String, processName: String, information: Array[InputInformation], components: Array[Component])
 final case class SuccessResponse(success: Boolean)
 
+final case class SaveEvaluationRequest(id: String, result: SaveTemplateRequest, task: String)
+
 final case class Foreign(queryTable: String, field: String, foreignKey: String)
 final case class GetRecommendedQueriesResponse(foreign: Array[Foreign])

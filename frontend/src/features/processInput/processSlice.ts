@@ -20,7 +20,7 @@ export const processInputSlice = createSlice({
       state.process = action.payload;
     },
     resetProcessInput: (state) => {
-      state = initialState;
+      state.process = "";
     },
     selectProcess: (state, action: PayloadAction<string>) => {
       if (!action.payload) {

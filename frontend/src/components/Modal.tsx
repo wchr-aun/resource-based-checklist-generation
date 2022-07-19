@@ -25,7 +25,7 @@ function Modal(props: Props) {
     return () => {
       document.body.style.overflow = "auto";
     };
-  });
+  }, [isOpen]);
   return (
     <div>
       {isOpen && (

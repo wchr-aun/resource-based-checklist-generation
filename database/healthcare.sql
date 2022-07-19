@@ -153,9 +153,7 @@ INSERT INTO datamodel VALUES('ServiceRequester', 'staff', 'surname');
 INSERT INTO datamodel VALUES('ServiceRequester', 'staff', 'dob');
 INSERT INTO datamodel VALUES('ServiceRequester', 'staff', 'title');
 
-INSERT INTO datamodel VALUES('Obstacle', 'obstacles', 'idobstacle');
 INSERT INTO datamodel VALUES('Obstacle', 'obstacles', 'name');
-INSERT INTO datamodel VALUES('Obstacle', 'obstacles', 'description');
 
 INSERT INTO datamodel VALUES('PendingHealthcareService', 'requestedservices', 'idreqserv');
 INSERT INTO datamodel VALUES('PendingHealthcareService', 'requestedservices', 'requesterid');

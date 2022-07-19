@@ -73,21 +73,19 @@ object Template {
               .map{case((table, field), i) => {
                 var inputDep = ""
                 var inputDepField = ""
-                if (autolink) {
                   inputDep = recommendations.find(_._4 == field).getOrElse(
                     (tableFieldToModel.getOrElse(s"${table}_$field", ""), "", "", "")
                   )._1
                   inputDepField = recommendations.find(_._4 == field).getOrElse(
                     ("", if (tableFieldToModel.contains(s"${table}_$field")) field else "", "", "")
                   )._2
-                }
                 Component(
                   i,
                   field,
                   "",
                   ComponentType.INPUT,
                   true,
-                  autolink && !inputDepField.isEmpty,
+                  !inputDepField.isEmpty,
                   "",
                   "",
                   inputDep,
@@ -109,7 +107,7 @@ object Template {
           Information(v._2.head.name, i, v._2.head.details, v._2.head.inputDependency)
         }.toArray
         .sortBy(_.order),
-      dfsOutput(process.output)
+      if (autolink) dfsOutput(process.output) else Array.empty[Component]
     )
   }
 

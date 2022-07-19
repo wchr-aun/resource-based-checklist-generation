@@ -90,3 +90,9 @@ export interface Template {
   created: Date;
   updated: Date;
 }
+
+export interface LeafComponent extends Component {
+  children: LeafComponent[];
+  parent?: string;
+  parentName?: string;
+}

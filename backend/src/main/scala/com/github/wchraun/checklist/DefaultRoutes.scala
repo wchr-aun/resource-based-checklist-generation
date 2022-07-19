@@ -8,8 +8,10 @@ import akka.http.scaladsl.server.Route
 import scala.concurrent.{ExecutionContext, Future}
 
 class DefaultRoutes() {
+  private val cors = new CORSHandler {}
+
   val routes: Route = concat(
     path("") { complete(StatusCodes.OK, "Welcome to Resource-based Checklist Generation BACKEND") },
-    path("ping") { complete(StatusCodes.OK, "pong!") }
+    path("ping") { cors.corsHandler(complete(StatusCodes.OK, "pong!")) }
   )
 }
