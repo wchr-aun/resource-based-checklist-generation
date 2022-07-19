@@ -48,6 +48,9 @@ function DependenciesModal(props: Props) {
   );
   const dispatch = useAppDispatch();
   const confirmCancel = useRef((v: boolean) => {});
+  const [firstOpen, setFirstOpen] = useState(true);
+  const [validateResult, setValidateResult] = useState(false);
+  const [validateMessage, setValidateMessage] = useState("");
 
   const onClickConfirm = () => {
     leafComponents.forEach((c, i) => {
@@ -71,6 +74,22 @@ function DependenciesModal(props: Props) {
     onSubmit();
   };
 
+  const onClickValidate = () => {
+    setFirstOpen(false);
+    const required = outputDependencies.flatMap((d) =>
+      d.children.map((c) => `${d.name} - ${c}`)
+    );
+    const values = leafOutputDependency.map(
+      (p, i) => `${p} - ${leafOutputDependencyField[i]}`
+    );
+    const missing = required.filter((r) => !values.includes(r));
+
+    setValidateMessage(
+      missing.length > 0 ? "Missing:\n- " + missing.join("\n- ") : ""
+    );
+    setValidateResult(missing.length === 0);
+  };
+
   const onClickClose = () => {
     if (
       JSON.stringify(originalInputDependency) !==
@@ -91,10 +110,18 @@ function DependenciesModal(props: Props) {
   return (
     <div>
       <div className="text-xl font-bold">Manage Dependencies</div>
-      <Divider />
+      <Divider className="-mx-6" />
+      {validateMessage && (
+        <div>
+          <div className="whitespace-pre text-rose-500 border border-rose-500 rounded-md p-5 max-h-64 overflow-y-auto">
+            {validateMessage}
+          </div>
+          <Divider className="-mx-6" />
+        </div>
+      )}
       <div
         className="overflow-y-auto space-y-2 py-3 px-5"
-        style={{ maxHeight: "70vh" }}
+        style={{ maxHeight: validateMessage ? "40vh" : "70vh" }}
       >
         {leafComponents.length > 0 ? (
           leafComponents.map((c, i) => [
@@ -205,25 +232,51 @@ function DependenciesModal(props: Props) {
           <div className="text-center">No components found.</div>
         )}
       </div>
-      <Divider />
-      <div className="flex justify-end space-x-2">
-        <button
-          className="border py-2 px-4 rounded-lg border-rose-500 text-rose-500 hover:text-rose-600 hover:border-rose-600 hover:bg-rose-50"
-          onClick={() => onClickClose()}
-        >
-          Cancel
-        </button>
-        <button
-          className={`border py-2 px-4 rounded-lg ${
-            leafComponents.length === 0
-              ? "border-gray-400 text-gray-400"
-              : "border-indigo-500 text-indigo-500 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-700"
-          }`}
-          onClick={() => onClickConfirm()}
-          disabled={leafComponents.length === 0}
-        >
-          Confirm
-        </button>
+      <Divider className="-mx-6" />
+      <div className="flex justify-between">
+        <div className="flex space-x-2">
+          <button
+            className={`border py-2 px-4 rounded-lg ${
+              leafComponents.length === 0
+                ? "border-gray-400 text-gray-400"
+                : "border-orange-500 text-orange-500 hover:bg-orange-50 hover:text-orange-700 hover:border-orange-700"
+            }`}
+            disabled={leafComponents.length === 0}
+            onClick={() => onClickValidate()}
+          >
+            Validate
+          </button>
+          <div className="flex items-center">
+            {!firstOpen && (
+              <div>
+                {validateResult ? (
+                  <div className="text-teal-600">Passed!</div>
+                ) : (
+                  <div className="text-rose-500">Error found!</div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="flex space-x-2">
+          <button
+            className="border py-2 px-4 rounded-lg border-rose-500 text-rose-500 hover:text-rose-600 hover:border-rose-600 hover:bg-rose-50"
+            onClick={() => onClickClose()}
+          >
+            Cancel
+          </button>
+          <button
+            className={`border py-2 px-4 rounded-lg ${
+              leafComponents.length === 0
+                ? "border-gray-400 text-gray-400"
+                : "border-indigo-500 text-indigo-500 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-700"
+            }`}
+            onClick={() => onClickConfirm()}
+            disabled={leafComponents.length === 0}
+          >
+            Confirm
+          </button>
+        </div>
       </div>
       <Modal
         openModal={confirmCancel}

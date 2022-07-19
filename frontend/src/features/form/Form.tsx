@@ -341,6 +341,7 @@ function FormTemplate(props: Props) {
 
       <Modal
         openModal={manageDependModal}
+        lockBackground={true}
         body={
           <DependenciesModal
             inputDependencies={information.map((input) => ({
