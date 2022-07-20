@@ -7,6 +7,7 @@ import Head from "next/head";
 import Loading from "@components/Loading";
 import RouteGuard from "@features/routeGuard/RouteGuard";
 import PingServer from "@features/pingServer/PingServer";
+import AppVersion from "@components/AppVersion";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -16,6 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <div className="select-none">
         <Header />
+        <AppVersion />
         <div className="lg:px-32 px-8 py-4">
           <RouteGuard>
             <Component {...pageProps} />

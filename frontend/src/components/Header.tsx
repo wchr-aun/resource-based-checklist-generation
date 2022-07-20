@@ -11,7 +11,7 @@ function Header() {
   const dispatch = useAppDispatch();
 
   const onChangeEnv = (env: string) => {
-    dispatch(setEnv(env as "healthcare" | "payment"));
+    dispatch(setEnv((env as "healthcare" | "payment") || "healthcare"));
     router.query.env = env;
     router.push(router);
   };

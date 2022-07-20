@@ -31,7 +31,7 @@ const Task2FollowUp: NextPage = () => {
     dispatch(setLoading(false));
     dispatch(setForm(templateResponse));
     dispatch(setDependencies(dependencyResponse));
-    Router.push("/evaluation/task/2/follow-up/canvas");
+    Router.push("/evaluation/task/4/canvas");
   };
 
   useEffect(() => {
@@ -42,29 +42,32 @@ const Task2FollowUp: NextPage = () => {
   return (
     <div className="space-y-2 mb-8">
       <Head>
-        <title>Task 2 Follow-up - Resource-based Checklist Generation</title>
+        <title>Task 4 - Resource-based Checklist Generation</title>
       </Head>
       <div className="border border-transparent rounded-lg bg-white py-8 px-16 text-center space-y-5">
-        <div className="text-bold text-3xl underline">Task 2 Follow-up</div>
+        <div className="text-bold text-3xl underline">Task 4</div>
         <div className="text-left">
-          In this follow up task, the scenario is still the same as Task 2.
+          In this follow up task, the scenario is still the same as Task 3.
           However, instead of manually creating the form, you will select the
           auto-generation option.
           <br />
           <br />
-          Read more details in the Google Forms.
+          More details are provided in the Google Forms.
         </div>
         <button
           className="border rounded-lg px-5 py-3 border-indigo-500 text-indigo-500 hover:bg-indigo-50 hover:border-indigo-700 hover:text-indigo-700"
           onClick={() => openModal.current(true)}
         >
-          Start Task 2 Follow-up
+          Start Task 4
         </button>
       </div>
       <Modal
         openModal={openModal}
         body={
-          <ProcessInput onClickCreate={(autogen) => callGenerateApi(autogen)} />
+          <ProcessInput
+            onClickCreate={(autogen) => callGenerateApi(autogen)}
+            blockNoAutoGen={true}
+          />
         }
       />
     </div>

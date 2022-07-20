@@ -39,14 +39,20 @@ const Task1: NextPage = () => {
         <div className="text-bold text-3xl underline">Task 1</div>
         <div className="text-left">
           <span className="font-bold text-lg mr-1">Scenario:</span>
-          You are a checklist designer of a healthcare workflow. A doctor asks
-          you to create a checklist template from "AwardContract" process.
-          AwardContract is the process which the doctor who is assigned to the
-          contract decides to change the status of the contract from `assigned`
-          to `open`. The process contains two useful input information including
-          "ServiceProvider" and "AcceptedContract" models. ServiceProvider is
-          the information of the doctor who is assigned to the contract, while
-          AcceptedContract is the contract itself.
+          You are a checklist designer for a healthcare workflow. A doctor asks
+          you to create a checklist template for an AwardContract process. In
+          this process, a clinician agrees to another member of clinical staff,
+          (the ServiceProvider) to provide a medical service on their behalf
+          (ie. delegating the task to someone else). The process contains two
+          useful pieces of input information: the ServiceProvider that contains
+          information on the doctor who is assigned to the contract, and
+          AcceptedContract that contains information about the contract itself
+          (i.e. the nature of the clinical task, details about the patient,
+          etc). You need to create a checklist template based on the scenario
+          above. The template must include ONLY the following input information:
+          doctor's name, doctor's surname, and service name. All other input
+          information must be HIDDEN. You may find the instruction below helpful
+          for this task.
           <br />
           <br />
           You need to create a checklist template based on the scenario above.
@@ -55,7 +61,7 @@ const Task1: NextPage = () => {
           information must be HIDDEN.
           <br />
           <br />
-          Read more details in the Google Forms.
+          More details are provided in the Google Forms.
         </div>
         <button
           className="border rounded-lg px-5 py-3 border-indigo-500 text-indigo-500 hover:bg-indigo-50 hover:border-indigo-700 hover:text-indigo-700"

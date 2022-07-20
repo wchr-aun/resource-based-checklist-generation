@@ -1,19 +1,18 @@
 import { NextPage } from "next";
 import FormTemplate from "@features/form/Form";
+import Head from "next/head";
 import Hint from "@features/hint/Hint";
 import ScrollToTop from "@features/ScrollToTop/ScrollToTop";
+import { Form } from "@models";
+import Router from "next/router";
 import { useAppDispatch, useAppSelector } from "@app/hooks";
 import { setLoading } from "@app/loadingSlice";
 import { resetDependencies } from "@features/form/dependencySlice";
 import { resetForm } from "@features/form/formSlice";
-import { Form } from "@models";
-import Router from "next/router";
-import Head from "next/head";
 import { saveTask } from "api/evaluation";
 import { selectEvalId } from "@app/envSlice";
-import Link from "next/link";
 
-const Task2Canvas: NextPage = () => {
+const Task1FollowUpCanvas: NextPage = () => {
   const evalId = useAppSelector(selectEvalId);
   const dispatch = useAppDispatch();
   const onSubmit = async (f: Form) => {
@@ -25,37 +24,24 @@ const Task2Canvas: NextPage = () => {
       return;
     }
 
-    dispatch(setLoading(false));
     dispatch(resetDependencies);
     dispatch(resetForm);
-    Router.push("/evaluation/task/2/follow-up");
+    dispatch(setLoading(false));
+    Router.push("/evaluation/task/3");
   };
 
   return (
     <div>
-      <div className="underline mb-5 flex justify-center text-bold text-lg">
-        <Link href="./">
-          <span className="cursor-pointer capitalize">
-            Click Here to Restart This Task
-          </span>
-        </Link>
-      </div>
-
       <ScrollToTop />
       <Hint
         children={
           <div>
-            <span className="font-bold text-lg mr-1">Scenario:</span>
-            You are a checklist designer of a transaction workflow. The owner
-            wants you to create a checklist template for "CardInput" process.
-            CardInput is the process which requires the credit/debit card
-            number, expire date and security code for a given transaction.
-            CardInput contains only "Transaction" model as the input
-            information. Additionally, the form needs to be connected with the
-            "CardDetails" output of the workflow process.
+            In this follow up task, the scenario is still the same as Task 1.
+            However, instead of manually query more information, you will
+            perform query the information from the suggestion option.
             <br />
             <br />
-            Read more details in the Google Forms.
+            More details are provided in the Google Forms.
           </div>
         }
       />
@@ -68,4 +54,4 @@ const Task2Canvas: NextPage = () => {
   );
 };
 
-export default Task2Canvas;
+export default Task1FollowUpCanvas;

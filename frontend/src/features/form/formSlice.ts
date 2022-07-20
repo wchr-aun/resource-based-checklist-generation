@@ -1,4 +1,11 @@
-import { BaseComponent, Component, Details, Form, Information } from "@models";
+import {
+  BaseComponent,
+  Component,
+  COMPONENT_TYPES,
+  Details,
+  Form,
+  Information,
+} from "@models";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import type { AppState } from "@app/store";
@@ -73,7 +80,20 @@ export const formSlice = createSlice({
       const { prefix, field, value } = action.payload;
       const node = getNode(prefix, state.components);
       if (!node) return;
-      node[field] = value as never;
+      if (field === "hide" || field === "required") {
+        node[field] = Boolean(value);
+        return;
+      }
+      if (
+        field === "componentType" &&
+        (value === COMPONENT_TYPES.DROPDOWN ||
+          value === COMPONENT_TYPES.CHECKBOXES ||
+          value === COMPONENT_TYPES.CHOICES ||
+          value === COMPONENT_TYPES.CONSTANT)
+      ) {
+        node["hide"] = false;
+      }
+      node[field] = value as string;
     },
     addNewField: (state, action: PayloadAction<string>) => {
       const prefix = action.payload;

@@ -75,7 +75,7 @@ function Dropdown(props: Props) {
                     <div
                       className={`text-gray-700 block px-4 py-2 text-sm cursor-pointer hover:bg-gray-200 ${
                         i === 0 && "text-center -ml-1 italic"
-                      }`}
+                      } ${v === value && "bg-gray-300"}`}
                       key={`test ${i}`}
                       onClick={() => updateValue(v !== name ? v : "", i)}
                     >
@@ -93,7 +93,7 @@ function Dropdown(props: Props) {
                     <div
                       className={`text-gray-700 block px-4 py-2 text-sm cursor-pointer hover:bg-gray-200 ${
                         i === 0 && "text-center -ml-1 italic"
-                      }`}
+                      } ${v === value && "bg-gray-300"}`}
                       key={`test ${i}`}
                       onClick={() => updateValue(v !== name ? v : "", i)}
                     >

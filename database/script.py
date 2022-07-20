@@ -4,13 +4,17 @@ import sys
 from config import config
 
 
-def connect(db):
+def connect(db, eval=False):
     """ Connect to the PostgreSQL database server """
     conn = None
     params = config(db)
 
     fd = open(os.path.dirname(__file__) + f'/init.sql', 'r')
     sqlFile = fd.read()
+    fd.close()
+
+    fd = open(os.path.dirname(__file__) + f'/eval.sql', 'r')
+    evalFile = fd.read()
     fd.close()
 
     fd = open(os.path.dirname(__file__) + f'/{db}.sql', 'r')
@@ -34,6 +38,12 @@ def connect(db):
                 continue
             cur.execute(line)
 
+        if eval:
+            for line in evalFile.split(';'):
+                if not line:
+                    continue
+                cur.execute(line)
+
         conn.commit()
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
@@ -46,9 +56,19 @@ def connect(db):
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
+        print("Resetting healthcare database...")
         connect('healthcare')
         exit(0)
-    db = sys.argv[1] or 'healthcare'
-    if db != 'healthcare' and db != 'payment':
+    eval = '--eval' in sys.argv
+    healthcare = '--healthcare' in sys.argv
+    payment = '--payment' in sys.argv
+    if healthcare:
+        print("Resetting healthcare database" + (' with eval' if eval else '') + '...')
+        connect('healthcare', eval)
         exit(0)
-    connect(db)
+    if payment:
+        print("Resetting payment database" + (' with eval' if eval else '') + '...')
+        connect('payment', eval)
+        exit(0)
+    print('Command line arguments not recognized')
+    exit(0)

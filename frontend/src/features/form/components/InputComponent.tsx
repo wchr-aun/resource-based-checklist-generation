@@ -37,10 +37,11 @@ import { selectEnv } from "@app/envSlice";
 
 interface Props {
   inputs: Information[];
+  hideSuggestion?: boolean;
 }
 
 function InputComponent(props: Props) {
-  const { inputs } = props;
+  const { inputs, hideSuggestion = false } = props;
   const dispatch = useAppDispatch();
   const noForeignTableModal = useRef((v: boolean) => {});
   const suggestedForeignModal = useRef((v: boolean) => {});
@@ -321,10 +322,14 @@ function InputComponent(props: Props) {
                 <div>
                   {!details.isQuery && (
                     <More
-                      options={[
-                        "Query more information using this field",
-                        "Get suggested query input information",
-                      ]}
+                      options={
+                        hideSuggestion
+                          ? ["Query more information using this field"]
+                          : [
+                              "Query more information using this field",
+                              "Get suggested query input information",
+                            ]
+                      }
                       onSelectOption={(index) =>
                         index == 0
                           ? onClickAddNewQuery(

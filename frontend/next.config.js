@@ -21,6 +21,9 @@ module.exports = (phase) => {
       if (isDev) return "http://localhost:8081";
       if (isProd) return "https://msc-payment-checklist.herokuapp.com";
     })(),
+    GITHUB_URL: (() => {
+      return "https://github.com/wchr-aun/resource-based-checklist-generation";
+    })(),
   };
 
   // next.config.js object
