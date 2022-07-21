@@ -3,10 +3,11 @@ import { useRef } from "react";
 
 interface Props {
   children: JSX.Element;
+  name: string;
 }
 
 function Hint(props: Props) {
-  const { children } = props;
+  const { children, name } = props;
   const openModal = useRef((v: boolean) => {});
   return (
     <div>
@@ -14,7 +15,7 @@ function Hint(props: Props) {
         className="fixed text-sm rounded-full p-3 bg-indigo-300 text-white origin-bottom-left left-5 bottom-5 shadow-lg cursor-pointer opacity-60 hover:opacity-100"
         onClick={() => openModal.current(true)}
       >
-        Instructions
+        {name}
       </div>
       <Modal openModal={openModal} body={children} />
     </div>

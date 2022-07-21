@@ -39,6 +39,7 @@ const Task1FollowUpCanvas: NextPage = () => {
     <div>
       <ScrollToTop />
       <Hint
+        name="Instructions"
         children={
           <div className="overflow-auto" style={{ maxHeight: "70vh" }}>
             <Tabs
@@ -154,6 +155,19 @@ const Task1FollowUpCanvas: NextPage = () => {
                         <li>
                           Output dependency: Linked to OpenedContract -
                           providerid
+                        </li>
+                      </div>
+                      <li>time_requested (Field type Input)</li>
+                      <div className="ml-7 list-decimal">
+                        <li>Required: Any</li>
+                        <li>Visibility: Hidden</li>
+                        <li>
+                          Input dependency: Linked to AcceptedContract -
+                          time_requested
+                        </li>
+                        <li>
+                          Output dependency: Linked to OpenedContract -
+                          time_requested
                         </li>
                       </div>
                       <li>Date Opened (Field type Date)</li>
