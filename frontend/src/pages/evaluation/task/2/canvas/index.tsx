@@ -42,7 +42,7 @@ const Task1FollowUpCanvas: NextPage = () => {
         children={
           <div className="overflow-auto" style={{ maxHeight: "70vh" }}>
             <Tabs
-              tabs={["Instruction", "Format Required"]}
+              tabs={["Instructions", "Format Required"]}
               currentTab={currentTab}
               onTabChange={(v) => setCurrentTab(v)}
             />
