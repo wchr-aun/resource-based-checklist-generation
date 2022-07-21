@@ -51,47 +51,92 @@ const Task2Canvas: NextPage = () => {
               <div className="text-lg font-bold">Format Required</div>
               <div className="ml-5">
                 <div>
-                  <span className="font-bold">Form Name:</span> Card Details
-                  Form
+                  <span className="font-bold">Form Name:</span> Award Contract
+                  Checklist
                 </div>
                 <div className="font-bold">Input Information</div>
                 <div className="ml-5 list-disc">
-                  <li>Purchased Items (Former OrderTransaction)</li>
+                  <li>Provider (Former ServiceProvider)</li>
                   <div className="ml-5 list-disc">
-                    <li>Order ID (Former id)</li>
-                    <li>Transaction ID (transactions - id queried by id)</li>
-                    <li>Item ID (item_list - item_id queried by id)</li>
-                    <li>Item Price (item_list - price queried by id)</li>
-                    <li>Item Quantity (item_list - quanlity queried by id)</li>
-                    <li>Total Price (Former total_price)</li>
+                    <li>Provider's Name (staff - name queried by actorid)</li>
+                    <li>
+                      Provider's Surname (staff - surname queried by actorid)
+                    </li>
+                  </div>
+                  <li>AcceptedContract</li>
+                  <div className="ml-5 list-disc">
+                    <li>Hide All</li>
                   </div>
                 </div>
                 <div className="font-bold">Form Adjustment</div>
                 <div className="ml-5 list-disc">
-                  <li>Card Details (Field type Header)</li>
+                  <li>Open Contract (Field type Header)</li>
                   <div className="ml-5 list-disc">
-                    <li>Card Number (Field type Input)</li>
+                    <li>idcontract (Field type Input)</li>
+                    <div className="ml-7 list-decimal">
+                      <li>Required: Any</li>
+                      <li>Visibility: Hidden</li>
+                      <li>
+                        Input dependency: Linked to AcceptedContract -
+                        idcontract
+                      </li>
+                      <li>
+                        Output dependency: Linked to OpenedContract - idcontract
+                      </li>
+                    </div>
+                    <li>reqservid (Field type Input)</li>
+                    <div className="ml-7 list-decimal">
+                      <li>Required: Any</li>
+                      <li>Visibility: Hidden</li>
+                      <li>
+                        Input dependency: Linked to AcceptedContract - reqservid
+                      </li>
+                      <li>
+                        Output dependency: Linked to OpenedContract - reqservid
+                      </li>
+                    </div>
+                    <li>providerid (Field type Input)</li>
+                    <div className="ml-7 list-decimal">
+                      <li>Required: Any</li>
+                      <li>Visibility: Hidden</li>
+                      <li>
+                        Input dependency: Linked to AcceptedContract -
+                        providerid
+                      </li>
+                      <li>
+                        Output dependency: Linked to OpenedContract - providerid
+                      </li>
+                    </div>
+                    <li>time_requested (Field type Input)</li>
+                    <div className="ml-7 list-decimal">
+                      <li>Required: Any</li>
+                      <li>Visibility: Hidden</li>
+                      <li>
+                        Input dependency: Linked to AcceptedContract -
+                        time_requested
+                      </li>
+                      <li>
+                        Output dependency: Linked to OpenedContract -
+                        time_requested
+                      </li>
+                    </div>
+                    <li>Date Opened (Field type Date)</li>
                     <div className="ml-7 list-decimal">
                       <li>Required: Yes</li>
                       <li>Visibility: Not Hidden</li>
                       <li>Input dependency: Unlinked</li>
                       <li>
-                        Output dependency: Linked to CardDetails - card_no
+                        Output dependency: Linked to OpenedContract -
+                        time_opened
                       </li>
                     </div>
-                    <li>Expire Date (Field type Date)</li>
+                    <li>Opened State (Field type Constant)</li>
                     <div className="ml-7 list-decimal">
-                      <li>Required: Yes</li>
-                      <li>Visibility: Not Hidden</li>
+                      <li>Value: 3</li>
                       <li>Input dependency: Unlinked</li>
-                      <li>Output dependency: Linked to CardDetails - expire</li>
-                    </div>
-                    <li>Security Code (Field type Input)</li>
-                    <div className="ml-7 list-decimal">
-                      <li>Required: Yes</li>
-                      <li>Visibility: Not Hidden</li>
-                      <li>Input dependency: Unlinked</li>
-                      <li>Output dependency: Linked to CardDetails - code</li>
+                      <li>
+                        Output dependency: Linked to OpenedContract - stateid
+                      </li>
                     </div>
                   </div>
                 </div>

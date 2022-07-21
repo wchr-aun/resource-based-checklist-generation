@@ -3,7 +3,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useAppDispatch } from "@app/hooks";
 import { setLoading } from "@app/loadingSlice";
-import { healthcareExamples } from "@app/healthcareExamples";
 import store from "@app/store";
 import { setDependencies } from "@features/form/dependencySlice";
 import { setForm } from "@features/form/formSlice";
@@ -14,6 +13,7 @@ import ProcessInput from "@features/processInput/ProcessInput";
 import { useEffect, useRef } from "react";
 import { setEnv } from "@app/envSlice";
 import { updateProcessInput } from "@features/processInput/processSlice";
+import { paymentExamples } from "@app/paymentExamples";
 
 const Task1: NextPage = () => {
   const dispatch = useAppDispatch();
@@ -22,13 +22,13 @@ const Task1: NextPage = () => {
   const callGenerateApi = async () => {
     dispatch(setLoading(true));
     const templateResponse = await getTemplate(
-      JSON.stringify(healthcareExamples[0]),
+      JSON.stringify(paymentExamples[0]),
       false,
-      "healthcare"
+      "payment"
     );
     const dependencyResponse = await getDependencies(
       store.getState().processInput.process,
-      "healthcare"
+      "payment"
     );
     dispatch(setLoading(false));
     dispatch(setForm(templateResponse));
@@ -37,10 +37,8 @@ const Task1: NextPage = () => {
   };
 
   useEffect(() => {
-    dispatch(
-      updateProcessInput(JSON.stringify(healthcareExamples[0], null, 2))
-    );
-    dispatch(setEnv("healthcare"));
+    dispatch(updateProcessInput(JSON.stringify(paymentExamples[0], null, 2)));
+    dispatch(setEnv("payment"));
   }, []);
 
   return (
@@ -52,16 +50,13 @@ const Task1: NextPage = () => {
         <div className="text-bold text-3xl underline">Task 1</div>
         <div className="text-left">
           <span className="font-bold text-lg mr-1">Scenario:</span>
-          Scenario: You are a checklist designer for a healthcare workflow. A
-          doctor asks you to create a checklist template for an AwardContract
-          process. In this process, a clinician agrees to another member of
-          clinical staff, (the ServiceProvider) to provide a medical service on
-          their behalf (i.e. delegating the task to someone else). The process
-          contains two useful pieces of input information: the ServiceProvider
-          that contains information on the doctor who is assigned to the
-          contract, and AcceptedContract that contains information about the
-          contract itself (i.e. the nature of the clinical task, details about
-          the patient, etc).
+          You are a checklist designer for a payment workflow. The owner wants
+          you to create a checklist template for a CardInput process. In this
+          process, a customer needs to enter the credit/debit card number,
+          expire date, and security code to pay for some purchased items. The
+          process contains OrderTransaction as the input information, with
+          fields as described below. Additionally, the output form needs to be
+          linked with the CardDetails output of the workflow process.
           <br />
           <br />
           You will be given the instructions to create a checklist template

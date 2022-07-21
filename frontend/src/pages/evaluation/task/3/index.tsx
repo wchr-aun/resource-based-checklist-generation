@@ -7,12 +7,12 @@ import { setDependencies } from "@features/form/dependencySlice";
 import { setForm } from "@features/form/formSlice";
 import { getDependencies } from "api/dependency";
 import { getTemplate } from "api/template";
-import { paymentExamples } from "@app/paymentExamples";
 import Modal from "@components/Modal";
 import ProcessInput from "@features/processInput/ProcessInput";
 import { useEffect, useRef } from "react";
 import { setEnv } from "@app/envSlice";
 import { updateProcessInput } from "@features/processInput/processSlice";
+import { healthcareExamples } from "@app/healthcareExamples";
 
 const Task2: NextPage = () => {
   const dispatch = useAppDispatch();
@@ -20,13 +20,13 @@ const Task2: NextPage = () => {
   const callGenerateApi = async (autogen: boolean) => {
     dispatch(setLoading(true));
     const templateResponse = await getTemplate(
-      JSON.stringify(paymentExamples[0]),
+      JSON.stringify(healthcareExamples[0]),
       autogen,
-      "payment"
+      "healthcare"
     );
     const dependencyResponse = await getDependencies(
-      JSON.stringify(paymentExamples[0]),
-      "payment"
+      JSON.stringify(healthcareExamples[0]),
+      "healthcare"
     );
     dispatch(setLoading(false));
     dispatch(setForm(templateResponse));
@@ -35,8 +35,10 @@ const Task2: NextPage = () => {
   };
 
   useEffect(() => {
-    dispatch(updateProcessInput(JSON.stringify(paymentExamples[0], null, 2)));
-    dispatch(setEnv("payment"));
+    dispatch(
+      updateProcessInput(JSON.stringify(healthcareExamples[0], null, 2))
+    );
+    dispatch(setEnv("healthcare"));
   }, []);
 
   return (
@@ -48,19 +50,23 @@ const Task2: NextPage = () => {
         <div className="text-bold text-3xl underline">Task 3</div>
         <div className="text-left">
           <span className="font-bold text-lg mr-1">Scenario:</span>
-          Scenario: You are a checklist designer for a payment workflow. The
-          owner wants you to create a checklist template for a CardInput
-          process. In this process, a customer needs to enter the credit/debit
-          card number, expire date, and security code to pay for some purchased
-          items. The process contains OrderTransaction as the input information,
-          with fields as described below. Additionally, the output form needs to
-          be linked with the CardDetails output of the workflow process.
+          You are a checklist designer for a healthcare workflow. A doctor asks
+          you to create a checklist template for an AwardContract process. In
+          this process, a clinician agrees to another member of clinical staff,
+          (the ServiceProvider) to provide a medical service on their behalf
+          (i.e. delegating the task to someone else). The process contains two
+          useful pieces of input information: the ServiceProvider that contains
+          information on the doctor who is assigned to the contract, and
+          AcceptedContract that contains information about the contract itself
+          (i.e. the nature of the clinical task, details about the patient,
+          etc).
           <br />
           <br />
           You need to create a checklist template based on the scenario above
-          with fully linked dependencies followed the Format Required. You are
-          also allowed to use any help tools introduced in Task 2 to perform
-          this task; however, there are no instructions in this task..
+          with fully linked dependencies followed the{" "}
+          <span className="font-extrabold">Format Required</span>. You are also
+          allowed to use any help tools introduced in Task 2 to perform this
+          task; however, there are no instructions in this task..
           <br />
           <br />
           More details are provided in the Google Forms.

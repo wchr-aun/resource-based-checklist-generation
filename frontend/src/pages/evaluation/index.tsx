@@ -78,7 +78,7 @@ const Evaluation: NextPage = () => {
               onClick={() => {
                 navigator.clipboard.writeText(evalId);
                 setCopyText("Copied!");
-                setInterval(() => {
+                setTimeout(() => {
                   setCopyText("Copy");
                 }, 1000);
               }}
