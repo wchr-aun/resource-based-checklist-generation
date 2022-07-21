@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { setEvalId } from "@app/envSlice";
 import { bookEvalId } from "api/evaluation";
 import { setLoading } from "@app/loadingSlice";
+import Checkbox from "@components/inputs/Checkbox";
 
 const Evaluation: NextPage = () => {
   function makeid() {
@@ -23,6 +24,7 @@ const Evaluation: NextPage = () => {
 
   const [evalId, setEid] = useState(makeid());
   const [copyText, setCopyText] = useState("Copy");
+  const [agree, setAgree] = useState(false);
   const dispatch = useAppDispatch();
 
   const bookingEvalId = async () => {
@@ -49,6 +51,43 @@ const Evaluation: NextPage = () => {
       </Head>
       <div className="border border-transparent rounded-lg bg-white py-8 px-16 text-center space-y-5">
         <div className="text-bold text-3xl underline">User Evaluation</div>
+
+        <div className="border rounded-lg py-5 border-gray-400 bg-gray-50">
+          <div>
+            You need to do the tasks provided in
+            <span className="underline text-indigo-700 ml-1">
+              <a href="https://forms.gle/ZAebC667MWWBCcUe6" target="_blank">
+                Google Forms
+              </a>
+            </span>
+          </div>
+          <div className="text-rose-500">
+            <div className="text-xl">
+              ** Please do not close the browser window during the survey. **
+            </div>
+            * If you do, you need to change the Evaluation ID in the Google
+            Forms and start the whole evaluation again. *
+          </div>
+          <div className="flex justify-center">
+            <div className="flex items-center">Evaluation ID:</div>
+            <div className="w-1/12 ml-2 flex items-center">
+              <Input placeholder={evalId} value={evalId} autoFocus={true} />
+            </div>
+            <button
+              className="ml-2 border border-indigo-500 text-indigo-500 px-4 py-2 rounded-lg hover:bg-indigo-50"
+              onClick={() => {
+                navigator.clipboard.writeText(evalId);
+                setCopyText("Copied!");
+                setInterval(() => {
+                  setCopyText("Copy");
+                }, 1000);
+              }}
+            >
+              {copyText}
+            </button>
+          </div>
+        </div>
+        <Divider />
         <div className="text-left">
           This project involves a checklist generation tool for WorkflowFM, a
           logic-based workflow management framework developed at the University
@@ -122,44 +161,29 @@ const Evaluation: NextPage = () => {
           </div>
         </div>
         <Divider />
-        <div>
-          You need to do the tasks provided in
-          <span className="underline text-indigo-700 ml-1">
-            <a href="https://forms.gle/ZAebC667MWWBCcUe6" target="_blank">
-              Google Forms
-            </a>
-          </span>
-        </div>
-        <div className="text-rose-500">
-          <div className="text-xl">
-            ** Please do not close the browser window during the survey **
-          </div>
-          * If you do, you need to change the Evaluation ID in the Google Forms
-          and start the whole evaluation again *
-        </div>
         <div className="flex justify-center">
-          <div className="flex items-center">Evaluation ID:</div>
-          <div className="w-1/12 ml-2 flex items-center">
-            <Input placeholder={evalId} value={evalId} autoFocus={true} />
-          </div>
-          <button
-            className="ml-2 border border-indigo-500 text-indigo-500 px-4 py-2 rounded-lg hover:bg-indigo-50"
-            onClick={() => {
-              navigator.clipboard.writeText(evalId);
-              setCopyText("Copied!");
-              setInterval(() => {
-                setCopyText("Copy");
-              }, 1000);
-            }}
-          >
-            {copyText}
-          </button>
+          <span className="text-rose-500 mr-2">*</span>
+          <Checkbox
+            name="I have read and agreed to both the Participant Information Sheet and
+          the the Participant Consent Form above."
+            checked={agree}
+            onChecked={() => setAgree(!agree)}
+          />
         </div>
-        <Link href="/evaluation/task/1">
-          <button className="border rounded-lg px-5 py-3 border-indigo-500 text-indigo-500 hover:bg-indigo-50 hover:border-indigo-700 hover:text-indigo-700">
+        {agree ? (
+          <Link href="/evaluation/task/1">
+            <button className="border shadow-sm rounded-lg px-5 py-3 border-indigo-500 text-indigo-500 hover:bg-indigo-50 hover:border-indigo-700 hover:text-indigo-700">
+              Start Evaluation
+            </button>
+          </Link>
+        ) : (
+          <button
+            disabled={true}
+            className="border rounded-lg px-5 py-3 border-gray-400 text-gray-400"
+          >
             Start Evaluation
           </button>
-        </Link>
+        )}
       </div>
     </div>
   );
