@@ -2,7 +2,6 @@ import { NextPage } from "next";
 import Head from "next/head";
 import { useAppDispatch } from "@app/hooks";
 import { setLoading } from "@app/loadingSlice";
-import { healthcareExamples } from "@app/healthcareExamples";
 import { setDependencies } from "@features/form/dependencySlice";
 import { setForm } from "@features/form/formSlice";
 import { getDependencies } from "api/dependency";
@@ -13,6 +12,7 @@ import Modal from "@components/Modal";
 import ProcessInput from "@features/processInput/ProcessInput";
 import { updateProcessInput } from "@features/processInput/processSlice";
 import { useEffect, useRef } from "react";
+import { paymentExamples } from "@app/paymentExamples";
 
 const Task1FollowUp: NextPage = () => {
   const openModal = useRef((v: boolean) => {});
@@ -20,13 +20,13 @@ const Task1FollowUp: NextPage = () => {
   const callGenerateApi = async () => {
     dispatch(setLoading(true));
     const templateResponse = await getTemplate(
-      JSON.stringify(healthcareExamples[0]),
+      JSON.stringify(paymentExamples[0]),
       true,
-      "healthcare"
+      "payment"
     );
     const dependencyResponse = await getDependencies(
-      JSON.stringify(healthcareExamples[0]),
-      "healthcare"
+      JSON.stringify(paymentExamples[0]),
+      "payment"
     );
     dispatch(setLoading(false));
     dispatch(setForm(templateResponse));
@@ -35,10 +35,8 @@ const Task1FollowUp: NextPage = () => {
   };
 
   useEffect(() => {
-    dispatch(
-      updateProcessInput(JSON.stringify(healthcareExamples[0], null, 2))
-    );
-    dispatch(setEnv("healthcare"));
+    dispatch(updateProcessInput(JSON.stringify(paymentExamples[0], null, 2)));
+    dispatch(setEnv("payment"));
   }, []);
 
   return (
@@ -52,23 +50,6 @@ const Task1FollowUp: NextPage = () => {
           In this task, the scenario is still the same as Task 1. However,
           instead of manually adding information fields and form fields, you
           will be using help tools provided by the system.
-          <br />
-          <br />
-          <span className="font-bold text-lg mr-1">Scenario:</span>
-          You are a checklist designer for a healthcare workflow. A doctor asks
-          you to create a checklist template for an AwardContract process. In
-          this process, a clinician agrees to another member of clinical staff,
-          (the ServiceProvider) to provide a medical service on their behalf
-          (i.e. delegating the task to someone else). The process contains two
-          useful pieces of input information: the ServiceProvider that contains
-          information on the doctor who is assigned to the contract, and
-          AcceptedContract that contains information about the contract itself
-          (i.e. the nature of the clinical task, details about the patient,
-          etc).
-          <br />
-          <br />
-          You will be given the instructions to create a checklist template
-          based on the scenario above.
           <br />
           <br />
           More details are provided in the Google Forms.
