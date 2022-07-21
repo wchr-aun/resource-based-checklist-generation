@@ -94,7 +94,7 @@ function OutputComponent(props: Props) {
               className={`w-1/12 flex justify-center items-center border rounded-md text-xs cursor-pointer ${
                 collapsible[prefix]
                   ? "bg-gray-200 border-gray-200 text-gray-500"
-                  : "bg-white text-gray-800 border-gray-300 shadow-sm"
+                  : "bg-white text-gray-800 border-gray-300 shadow-md"
               }`}
               onClick={() => {
                 setCollapsible({
@@ -170,7 +170,7 @@ function OutputComponent(props: Props) {
         className="text-sm text-gray-600 p-2 border border-dashed rounded-md cursor-pointer text-center bg-gray-100 hover:bg-white"
         onClick={() => onAddModel()}
       >
-        + Add a Model
+        + Add a Field
       </div>
     </div>
   );

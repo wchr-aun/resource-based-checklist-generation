@@ -149,7 +149,7 @@ function ProcessInput(props: Props) {
                 className={`${
                   value && !blockNoAutoGen
                     ? "border-rose-500 text-rose-500 hover:border-rose-700 hover:text-rose-700 hover:bg-rose-50"
-                    : "text-gray-400"
+                    : "text-gray-400 cursor-not-allowed"
                 } border px-4 py-2 rounded-lg`}
                 onClick={() => !blockNoAutoGen && onSelectModel(false)}
                 disabled={blockNoAutoGen}
@@ -160,7 +160,7 @@ function ProcessInput(props: Props) {
                 className={`${
                   value && !blockYesAutoGen
                     ? "border-indigo-500 text-indigo-500 hover:border-indigo-700 hover:text-indigo-700 hover:bg-indigo-50"
-                    : "text-gray-400"
+                    : "text-gray-400 cursor-not-allowed"
                 } border px-4 py-2 rounded-lg`}
                 onClick={() => !blockYesAutoGen && onSelectModel(true)}
                 disabled={blockYesAutoGen}

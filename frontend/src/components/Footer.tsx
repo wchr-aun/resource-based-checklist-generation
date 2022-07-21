@@ -15,8 +15,8 @@ function Footer() {
   }, []);
 
   return (
-    <footer className="p-4 opacity-50 hover:opacity-100">
-      <div className="text-sm text-gray-500 text-center">
+    <footer className="p-4 flex justify-center">
+      <div className="w-fit text-sm text-gray-500 text-center opacity-50 hover:opacity-100">
         <div>
           © 2022{" "}
           <a href="http://www.workflowfm.com/" target="_blank">
@@ -28,9 +28,9 @@ function Footer() {
           <a href={process.env.GITHUB_URL} target="_blank">
             <FontAwesomeIcon className="mr-1" icon={faGithub} />
             GitHub: {process.env.GITHUB_URL?.replace("https://github.com/", "")}
-            {" | "} Version: {appVersion}
           </a>
         </span>
+        {" | "} Version: {appVersion}
       </div>
     </footer>
   );

@@ -322,13 +322,14 @@ function InputComponent(props: Props) {
                 <div>
                   {!details.isQuery && (
                     <More
-                      options={
+                      options={[
+                        "Query more information using this field",
+                        "Get suggested query input information",
+                      ]}
+                      disabledOptions={
                         hideSuggestion
-                          ? ["Query more information using this field"]
-                          : [
-                              "Query more information using this field",
-                              "Get suggested query input information",
-                            ]
+                          ? ["Get suggested query input information"]
+                          : []
                       }
                       onSelectOption={(index) =>
                         index == 0

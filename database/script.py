@@ -60,10 +60,11 @@ if __name__ == '__main__':
         print("Resetting healthcare database...")
         connect('healthcare')
         exit(0)
-    if '--only-eval' in sys.argv:
-        connect('healthcare', True, True)
-        exit(0)
-    eval = '--eval' in sys.argv
+    # if '--only-eval' in sys.argv:
+    #     connect('healthcare', True, True)
+    #     exit(0)
+    # eval = '--eval' in sys.argv
+    eval = False
     healthcare = '--healthcare' in sys.argv
     payment = '--payment' in sys.argv
     if healthcare:
