@@ -264,7 +264,7 @@ function InputComponent(props: Props) {
                               })
                             )
                           }
-                          name="Select Table"
+                          name="Select Queried Table"
                           className="w-full"
                         />
                         <Dropdown
@@ -297,7 +297,7 @@ function InputComponent(props: Props) {
                               })
                             )
                           }
-                          name="Select Field"
+                          name="Select Queried Field"
                           className="w-full"
                         />
                       </div>
