@@ -56,34 +56,49 @@ const Task1Canvas: NextPage = () => {
                 <div className="ml-5 list-decimal">
                   <li>Click on "Start Task 1" to start the task.</li>
                   <li>
-                    Create an OrderTransaction process template WITHOUT
-                    auto-generation.
+                    Create an <span className="italic">OrderTransaction</span>{" "}
+                    process template WITHOUT auto-generation.
                   </li>
                   <li>Change the name of the form to "Card Details Form".</li>
                   <li>
-                    Hide the customer_id field in the input information section
-                    (second section).
+                    Hide the <span className="italic">customer_id</span> field
+                    in the input information section (second section).
                   </li>
                   <li>
                     Then, query 4 new fields using id of the OrderTransaction.
                   </li>
                   <li>
-                    Set the queried tables and queried fields to transactions -
-                    id, item_list - id, item_list - price, and item_list -
-                    quantity.
+                    Set the queried tables and queried fields to{" "}
+                    <span className="italic">
+                      transactions - id, item_list - id, item_list - price,
+                    </span>
+                    {" and "}
+                    <span className="italic">item_list - quantity</span>.
                   </li>
                   <li>
-                    Change the 6 remaining field names to "Order ID",
-                    "Transaction ID", "Item ID", "Item Price", "Item Quantity",
-                    and "Total Price".
+                    Change the 6 remaining field names to
+                    <span className="italic">
+                      "Order ID", "Transaction ID", "Item ID", "Item Price",
+                      "Item Quantity",
+                    </span>
+                    {" and "}
+                    <span className="italic">"Total Price".</span>
                   </li>
                   <li>
                     Check the position of each input information field is in
-                    order as followed by the Format Required below.
+                    order as followed by the{" "}
+                    <span
+                      className="cursor-pointer underline text-indigo-700"
+                      onClick={() => setCurrentTab(1)}
+                    >
+                      Format Required
+                    </span>{" "}
+                    tab.
                   </li>
                   <li>
-                    Change the name of the OrderTransaction to "Purchased
-                    Items".
+                    Change the name of the{" "}
+                    <span className="italic">OrderTransaction</span> to
+                    "Purchased Items".
                   </li>
                   <li>
                     In the form adjustment section (last section), add a new
@@ -93,7 +108,14 @@ const Task1Canvas: NextPage = () => {
                   <li>Expand the header and add 3 new fields inside it.</li>
                   <li>
                     For the adjustment of each field inside the header, refer to
-                    the Format Required below.
+                    the{" "}
+                    <span
+                      className="cursor-pointer underline text-indigo-700"
+                      onClick={() => setCurrentTab(1)}
+                    >
+                      Format Required
+                    </span>{" "}
+                    tab.
                     <br />
                     <div className="italic ml-5">
                       (Tips: Dependencies can be managed through the "Dependency
@@ -106,7 +128,7 @@ const Task1Canvas: NextPage = () => {
                     like the figure given in{" "}
                     <a
                       href="/images/EvaluationPreview.png"
-                      className="text-indigo-500 underline"
+                      className="text-indigo-700 underline"
                       target="_blank"
                     >
                       Preview

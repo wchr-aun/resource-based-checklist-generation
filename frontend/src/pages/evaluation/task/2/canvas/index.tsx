@@ -53,42 +53,55 @@ const Task1FollowUpCanvas: NextPage = () => {
                 <div className="ml-5 list-decimal">
                   <li>Click on "Start Task 2" to start the task.</li>
                   <li>
-                    Create an OrderTransaction process template WITH
-                    auto-generation.
+                    Create an <span className="italic">OrderTransaction</span>{" "}
+                    process template WITH auto-generation.
                   </li>
                   <li>Change the name of the form to "Card Details Form".</li>
                   <li>
-                    Hide the customer_id field in the input information section
-                    (second section).
+                    Hide the <span className="italic">customer_id</span> field
+                    in the input information section (second section).
                   </li>
                   <li>
-                    Then, query 4 new fields using id of the OrderTransaction
-                    using the suggestion option (is now enabled!).
+                    Then, query 4 new fields using id of the{" "}
+                    <span className="italic">OrderTransaction</span> using the
+                    suggestion option (is now enabled!).
                   </li>
                   <li>
-                    Change the 6 remaining field names to "Order ID",
-                    "Transaction ID", "Item ID", "Item Price", "Item Quantity",
-                    and "Total Price".
+                    Change the 6 remaining field names to{" "}
+                    <span className="italic">
+                      "Order ID", "Transaction ID", "Item ID", "Item Price",
+                      "Item Quantity",
+                    </span>
+                    {" and "}
+                    <span className="italic">"Total Price".</span>
                   </li>
                   <li>
                     Check the position of each input information field is in
-                    order as followed by the Format Required below.
+                    order as followed by the{" "}
+                    <span className="font-extrabold">Format Required</span> tab.
                   </li>
                   <li>
-                    Change the name of the OrderTransaction to "Purchased
-                    Items".
+                    Change the name of the{" "}
+                    <span className="italic">OrderTransaction</span> to
+                    "Purchased Items".
                   </li>
                   <li>
                     In the form adjustment section (last section), check each
-                    field in the section if they all follow the Format Required
-                    below (names, types, dependencies, etc.).
+                    field in the section if they all follow the{" "}
+                    <span
+                      className="cursor-pointer underline text-indigo-700"
+                      onClick={() => setCurrentTab(1)}
+                    >
+                      Format Required
+                    </span>{" "}
+                    tab (names, types, dependencies, etc.).
                   </li>
                   <li>
                     Preview the result to check the template. It should look
                     like the figure given in{" "}
                     <a
                       href="/images/EvaluationPreview.png"
-                      className="text-indigo-500 underline"
+                      className="text-indigo-700 underline"
                       target="_blank"
                     >
                       Preview

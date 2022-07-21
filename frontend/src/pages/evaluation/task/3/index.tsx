@@ -63,9 +63,10 @@ const Task2: NextPage = () => {
           <br />
           <br />
           You need to create a checklist template based on the scenario above
-          with fully linked dependencies followed the Format Required. You are
-          also allowed to use any help tools introduced in Task 2 to perform
-          this task; however, there are no instructions in this task..
+          with fully linked dependencies followed the{" "}
+          <span className="font-extrabold">Format Required</span>. You are also
+          allowed to use any help tools introduced in Task 2 to perform this
+          task; however, there are no instructions in this task..
           <br />
           <br />
           More details are provided in the Google Forms.
