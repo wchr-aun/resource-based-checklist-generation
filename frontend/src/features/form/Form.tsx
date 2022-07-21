@@ -34,11 +34,16 @@ import DependenciesModal from "./components/DependenciesModal";
 
 interface Props {
   isEval?: boolean;
+  hideSuggestion?: boolean;
   onEvalSubmit?: (f: Form) => void;
 }
 
 function FormTemplate(props: Props) {
-  const { isEval = false, onEvalSubmit = (f: Form) => {} } = props;
+  const {
+    isEval = false,
+    onEvalSubmit = (f: Form) => {},
+    hideSuggestion = false,
+  } = props;
   const dispatch = useAppDispatch();
   const processName = useAppSelector(selectProcessName);
   const components = useAppSelector(selectComponents);
@@ -48,6 +53,7 @@ function FormTemplate(props: Props) {
   const openModal = useRef((v: boolean) => {});
   const successModal = useRef((v: boolean) => {});
   const manageDependModal = useRef((v: boolean) => {});
+  const confirmModal = useRef((v: boolean) => {});
   const outputDependencies = useAppSelector(selectOutputDependencies);
   const env = useAppSelector(selectEnv);
   const router = useRouter();
@@ -176,7 +182,7 @@ function FormTemplate(props: Props) {
         }
         onClick={() => setFocusedComponent(2)}
       >
-        <InputComponent inputs={information} />
+        <InputComponent inputs={information} hideSuggestion={hideSuggestion} />
       </div>
       {focusedComponent === 2 && (
         <div className="text-sm ml-4 italic text-right uppercase">
@@ -287,12 +293,45 @@ function FormTemplate(props: Props) {
           </button> */}
           <button
             className="border border-indigo-500 hover:border-indigo-700 hover:text-indigo-700 hover:bg-indigo-50 text-indigo-500 font-bold py-2 px-4 rounded mt-5"
-            onClick={submitForm}
+            onClick={() => confirmModal.current(true)}
           >
             Create
           </button>
         </div>
       </div>
+
+      <Modal
+        size="w-1/4"
+        openModal={confirmModal}
+        body={
+          <div>
+            <div className="text-xl font-bold">Confirmation</div>
+            <Divider className="-mx-6" />
+            <div>
+              After confirming this the template will be created and stored to
+              the system, do you still want to proceed?
+            </div>
+            <Divider className="-mx-6" />
+            <div className="flex justify-end space-x-2">
+              <button
+                className="border border-rose-500 rounded-lg px-3 py-2 text-rose-500 hover:bg-rose-50 hover:text-rose-700 hover:border-rose-700"
+                onClick={() => confirmModal.current(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="border border-indigo-500 rounded-lg px-3 py-2 text-indigo-500 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-700"
+                onClick={() => {
+                  submitForm();
+                  confirmModal.current(false);
+                }}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        }
+      />
 
       <Modal
         body={

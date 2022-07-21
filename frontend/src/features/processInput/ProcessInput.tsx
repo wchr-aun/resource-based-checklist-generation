@@ -25,10 +25,16 @@ const jsonValidation = (s: string) => {
 
 interface Props {
   onClickCreate: (v: boolean) => void;
+  blockYesAutoGen?: boolean;
+  blockNoAutoGen?: boolean;
 }
 
 function ProcessInput(props: Props) {
-  const { onClickCreate } = props;
+  const {
+    onClickCreate,
+    blockYesAutoGen = false,
+    blockNoAutoGen = false,
+  } = props;
   const dispatch = useAppDispatch();
   const openModal = useRef((v: boolean) => {});
   const value = useAppSelector(selectProcessInput);
@@ -103,16 +109,16 @@ function ProcessInput(props: Props) {
       </div>
       <Paragraph
         disabled={true}
-        value={value}
+        value={value || "Please select an example from the dropdown above."}
         onChange={(v: string) => dispatch(updateProcessInput(v))}
         rows={Math.max(
-          Math.min(value.split(/\r\n|\r|\n/).length, showImage ? 5 : 25),
+          Math.min(value.split(/\r\n|\r|\n/).length, showImage ? 10 : 25),
           5
         )}
         className={
           jsonValidation(value)
             ? "border-gray-200 focus:border-teal-500"
-            : " border-red-500 focus:border-red-500"
+            : " border-rose-500 focus:border-rose-500 text-rose-500 italic text-center"
         }
       />
       <Divider />
@@ -141,21 +147,23 @@ function ProcessInput(props: Props) {
             <div className="flex justify-end space-x-2">
               <button
                 className={`${
-                  value
+                  value && !blockNoAutoGen
                     ? "border-rose-500 text-rose-500 hover:border-rose-700 hover:text-rose-700 hover:bg-rose-50"
                     : "text-gray-400"
                 } border px-4 py-2 rounded-lg`}
-                onClick={() => onSelectModel(false)}
+                onClick={() => !blockNoAutoGen && onSelectModel(false)}
+                disabled={blockNoAutoGen}
               >
                 No
               </button>
               <button
                 className={`${
-                  value
+                  value && !blockYesAutoGen
                     ? "border-indigo-500 text-indigo-500 hover:border-indigo-700 hover:text-indigo-700 hover:bg-indigo-50"
                     : "text-gray-400"
                 } border px-4 py-2 rounded-lg`}
-                onClick={() => onSelectModel(true)}
+                onClick={() => !blockYesAutoGen && onSelectModel(true)}
+                disabled={blockYesAutoGen}
               >
                 Yes
               </button>

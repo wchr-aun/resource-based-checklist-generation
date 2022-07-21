@@ -1,19 +1,18 @@
 import { NextPage } from "next";
 import FormTemplate from "@features/form/Form";
-import Head from "next/head";
 import Hint from "@features/hint/Hint";
 import ScrollToTop from "@features/ScrollToTop/ScrollToTop";
 import { useAppDispatch, useAppSelector } from "@app/hooks";
 import { setLoading } from "@app/loadingSlice";
-import { Form } from "@models";
-import Router from "next/router";
 import { resetDependencies } from "@features/form/dependencySlice";
 import { resetForm } from "@features/form/formSlice";
-import Link from "next/link";
-import { selectEvalId } from "@app/envSlice";
+import { Form } from "@models";
+import Router from "next/router";
+import Head from "next/head";
 import { saveTask } from "api/evaluation";
+import { selectEvalId } from "@app/envSlice";
 
-const Task3Canvas: NextPage = () => {
+const Task2Canvas: NextPage = () => {
   const evalId = useAppSelector(selectEvalId);
   const dispatch = useAppDispatch();
   const onSubmit = async (f: Form) => {
@@ -26,45 +25,49 @@ const Task3Canvas: NextPage = () => {
     }
 
     dispatch(setLoading(false));
-
     dispatch(resetDependencies);
     dispatch(resetForm);
-    Router.push("/evaluation/done");
+    Router.push("/evaluation/task/4");
   };
 
   return (
     <div>
-      <div className="underline mb-5 flex justify-center text-bold text-lg">
-        <Link href="./">
-          <span className="cursor-pointer capitalize">
-            Click Here to Restart This Task
-          </span>
-        </Link>
-      </div>
-
       <ScrollToTop />
       <Hint
         children={
           <div>
             <span className="font-bold text-lg mr-1">Scenario:</span>
-            You are a checklist designer of a healthcare workflow. A doctor
-            wants you to create a checklist template for "ProvideService"
-            process. ProvideService is the process which the doctor who is
-            assigned to perform a healthcare service to either 1.) update the
-            status of the service from `pending` to `completed` or 2.) inform
-            about obstacles that blocks the service. The process contains two
-            input information namely "OpenContract" and
-            "PendingHealthcareService" and expects the output to be either 1.)
-            "CompletedHealthcareService" or 2.) "Obstacle" and
-            "PendingHealthcareService".
+            You are a checklist designer for a payment workflow. The owner wants
+            you to create a checklist template for a CardInput process. In this
+            process, a customer needs to enter the credit/debit card number,
+            expire date, and security code to pay for some purchased items. The
+            process contains OrderTransaction as the input information, with
+            fields as described below. Additionally, the output form needs to be
+            linked with the CardDetails output of the workflow process.
             <br />
             <br />
-            Read more details in the Google Forms.
+            <div className="ml-5">
+              1. OrderTransaction is the input information of this process. It
+              contains three main fields: id, customer_id, and total_price.
+            </div>
+            <div className="ml-5">
+              2. CardDetails is the only output of this process. The output form
+              is required to link to three fields within this output in order to
+              fulfil the data model. The fields are card_no, expire, and code.
+            </div>
+            <br />
+            You need to create a checklist template based on the scenario above
+            with the output being fully linked with the form. The template must
+            match with the format given below. You need to create a checklist
+            template based on the scenario above.
+            <br />
+            <br />
+            More details are provided in the Google Forms.
           </div>
         }
       />
       <Head>
-        <title>Canvas: Resource-based Checklist Generation</title>
+        <title>Canvas Task 3: Resource-based Checklist Generation</title>
       </Head>
 
       <FormTemplate isEval={true} onEvalSubmit={onSubmit} />
@@ -72,4 +75,4 @@ const Task3Canvas: NextPage = () => {
   );
 };
 
-export default Task3Canvas;
+export default Task2Canvas;

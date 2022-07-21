@@ -4,13 +4,17 @@ import sys
 from config import config
 
 
-def connect(db):
+def connect(db, eval=False, only_eval=False):
     """ Connect to the PostgreSQL database server """
     conn = None
     params = config(db)
 
     fd = open(os.path.dirname(__file__) + f'/init.sql', 'r')
     sqlFile = fd.read()
+    fd.close()
+
+    fd = open(os.path.dirname(__file__) + f'/eval.sql', 'r')
+    evalFile = fd.read()
     fd.close()
 
     fd = open(os.path.dirname(__file__) + f'/{db}.sql', 'r')
@@ -24,15 +28,22 @@ def connect(db):
 
         cur = conn.cursor()
 
-        for line in sqlFile.split(';'):
-            if not line:
-                continue
-            cur.execute(line)
+        if not only_eval:
+            for line in sqlFile.split(';'):
+                if not line:
+                    continue
+                cur.execute(line)
 
-        for line in contextSqlFile.split(';'):
-            if not line:
-                continue
-            cur.execute(line)
+            for line in contextSqlFile.split(';'):
+                if not line:
+                    continue
+                cur.execute(line)
+
+        if eval or only_eval:
+            for line in evalFile.split(';'):
+                if not line:
+                    continue
+                cur.execute(line)
 
         conn.commit()
         cur.close()
@@ -46,9 +57,22 @@ def connect(db):
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
+        print("Resetting healthcare database...")
         connect('healthcare')
         exit(0)
-    db = sys.argv[1] or 'healthcare'
-    if db != 'healthcare' and db != 'payment':
+    if '--only-eval' in sys.argv:
+        connect('healthcare', True, True)
         exit(0)
-    connect(db)
+    eval = '--eval' in sys.argv
+    healthcare = '--healthcare' in sys.argv
+    payment = '--payment' in sys.argv
+    if healthcare:
+        print("Resetting healthcare database" + (' with eval' if eval else '') + '...')
+        connect('healthcare', eval)
+        exit(0)
+    if payment:
+        print("Resetting payment database" + (' with eval' if eval else '') + '...')
+        connect('payment', eval)
+        exit(0)
+    print('Command line arguments not recognized')
+    exit(0)

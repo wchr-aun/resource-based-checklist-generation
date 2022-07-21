@@ -1,0 +1,1177 @@
+[
+  {
+    "components": [],
+    "information": [
+      {
+        "details": [
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "idprovider",
+            "isQuery": false,
+            "name": "idprovider",
+            "order": 0,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "actorid",
+            "isQuery": false,
+            "name": "actorid",
+            "order": 1,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "actorid",
+            "hide": false,
+            "inputDependencyField": "actorid",
+            "isQuery": true,
+            "name": "Provider's Name",
+            "order": 2,
+            "queryField": "name",
+            "queryTable": "staff"
+          },
+          {
+            "array": false,
+            "foreignKey": "actorid",
+            "hide": false,
+            "inputDependencyField": "actorid",
+            "isQuery": true,
+            "name": "Provider's Surname",
+            "order": 3,
+            "queryField": "surname",
+            "queryTable": "staff"
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "serviceid",
+            "isQuery": false,
+            "name": "serviceid",
+            "order": 4,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "level",
+            "isQuery": false,
+            "name": "level",
+            "order": 5,
+            "queryField": "",
+            "queryTable": ""
+          }
+        ],
+        "inputDependency": "ServiceProvider",
+        "name": "ServiceProvider",
+        "order": 0
+      },
+      {
+        "details": [
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "idcontract",
+            "isQuery": false,
+            "name": "idcontract",
+            "order": 0,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "reqservid",
+            "isQuery": false,
+            "name": "reqservid",
+            "order": 1,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "providerid",
+            "isQuery": false,
+            "name": "providerid",
+            "order": 2,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "time_requested",
+            "isQuery": false,
+            "name": "time_requested",
+            "order": 3,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "stateid",
+            "isQuery": false,
+            "name": "stateid",
+            "order": 4,
+            "queryField": "",
+            "queryTable": ""
+          }
+        ],
+        "inputDependency": "AcceptedContract",
+        "name": "AcceptedContract",
+        "order": 1
+      }
+    ],
+    "name": "AwardContract",
+    "processName": "AwardContract"
+  },
+  {
+    "components": [],
+    "information": [
+      {
+        "details": [
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "idprovider",
+            "isQuery": false,
+            "name": "idprovider",
+            "order": 0,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "actorid",
+            "isQuery": false,
+            "name": "actorid",
+            "order": 1,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "actorid",
+            "hide": false,
+            "inputDependencyField": "actorid",
+            "isQuery": true,
+            "name": "Provider's Name",
+            "order": 2,
+            "queryField": "name",
+            "queryTable": "staff"
+          },
+          {
+            "array": false,
+            "foreignKey": "actorid",
+            "hide": false,
+            "inputDependencyField": "actorid",
+            "isQuery": true,
+            "name": "Provider's Surname",
+            "order": 3,
+            "queryField": "surname",
+            "queryTable": "staff"
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "serviceid",
+            "isQuery": false,
+            "name": "serviceid",
+            "order": 4,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "level",
+            "isQuery": false,
+            "name": "level",
+            "order": 5,
+            "queryField": "",
+            "queryTable": ""
+          }
+        ],
+        "inputDependency": "ServiceProvider",
+        "name": "ServiceProvider",
+        "order": 0
+      },
+      {
+        "details": [
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "idcontract",
+            "isQuery": false,
+            "name": "idcontract",
+            "order": 0,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "reqservid",
+            "isQuery": false,
+            "name": "reqservid",
+            "order": 1,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "providerid",
+            "isQuery": false,
+            "name": "providerid",
+            "order": 2,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "time_requested",
+            "isQuery": false,
+            "name": "time_requested",
+            "order": 3,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "stateid",
+            "isQuery": false,
+            "name": "stateid",
+            "order": 4,
+            "queryField": "",
+            "queryTable": ""
+          }
+        ],
+        "inputDependency": "AcceptedContract",
+        "name": "AcceptedContract",
+        "order": 1
+      }
+    ],
+    "name": "AwardContract",
+    "processName": "AwardContract"
+  },
+  {
+    "components": [
+      {
+        "children": [
+          {
+            "children": [],
+            "componentType": "INPUT",
+            "function": "",
+            "hide": false,
+            "inputDependency": "",
+            "inputDependencyField": "",
+            "name": "Card Number",
+            "order": 0,
+            "outputDependency": "CardDetails",
+            "outputDependencyField": "card_no",
+            "required": true,
+            "validation": "",
+            "value": ""
+          },
+          {
+            "children": [],
+            "componentType": "DATE",
+            "function": "",
+            "hide": false,
+            "inputDependency": "",
+            "inputDependencyField": "",
+            "name": "Expire Date",
+            "order": 1,
+            "outputDependency": "CardDetails",
+            "outputDependencyField": "expire",
+            "required": true,
+            "validation": "",
+            "value": ""
+          },
+          {
+            "children": [],
+            "componentType": "INPUT",
+            "function": "",
+            "hide": false,
+            "inputDependency": "",
+            "inputDependencyField": "",
+            "name": "Security Code",
+            "order": 2,
+            "outputDependency": "CardDetails",
+            "outputDependencyField": "code",
+            "required": true,
+            "validation": "",
+            "value": ""
+          }
+        ],
+        "componentType": "HEADER",
+        "function": "",
+        "hide": false,
+        "inputDependency": "",
+        "inputDependencyField": "",
+        "name": "Card Details",
+        "order": 0,
+        "outputDependency": "",
+        "outputDependencyField": "",
+        "required": false,
+        "validation": "",
+        "value": ""
+      }
+    ],
+    "information": [
+      {
+        "details": [
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": false,
+            "inputDependencyField": "id",
+            "isQuery": false,
+            "name": "Order ID",
+            "order": 0,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "id",
+            "hide": false,
+            "inputDependencyField": "id",
+            "isQuery": true,
+            "name": "Transaction ID",
+            "order": 1,
+            "queryField": "id",
+            "queryTable": "transactions"
+          },
+          {
+            "array": false,
+            "foreignKey": "id",
+            "hide": false,
+            "inputDependencyField": "id",
+            "isQuery": true,
+            "name": "Item ID",
+            "order": 2,
+            "queryField": "item_id",
+            "queryTable": "item_list"
+          },
+          {
+            "array": false,
+            "foreignKey": "id",
+            "hide": false,
+            "inputDependencyField": "id",
+            "isQuery": true,
+            "name": "Item Price",
+            "order": 3,
+            "queryField": "price",
+            "queryTable": "item_list"
+          },
+          {
+            "array": false,
+            "foreignKey": "id",
+            "hide": false,
+            "inputDependencyField": "id",
+            "isQuery": true,
+            "name": "Quantity",
+            "order": 4,
+            "queryField": "quantity",
+            "queryTable": "item_list"
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "customer_id",
+            "isQuery": false,
+            "name": "customer_id",
+            "order": 5,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": false,
+            "inputDependencyField": "total_price",
+            "isQuery": false,
+            "name": "Total Price",
+            "order": 6,
+            "queryField": "",
+            "queryTable": ""
+          }
+        ],
+        "inputDependency": "OrderTransaction",
+        "name": "OrderTransaction",
+        "order": 0
+      }
+    ],
+    "name": "CardInput",
+    "processName": "CardInput"
+  },
+  {
+    "components": [
+      {
+        "children": [
+          {
+            "children": [],
+            "componentType": "INPUT",
+            "function": "",
+            "hide": false,
+            "inputDependency": "",
+            "inputDependencyField": "",
+            "name": "Card Number",
+            "order": 0,
+            "outputDependency": "CardDetails",
+            "outputDependencyField": "card_no",
+            "required": true,
+            "validation": "",
+            "value": ""
+          },
+          {
+            "children": [],
+            "componentType": "DATE",
+            "function": "",
+            "hide": false,
+            "inputDependency": "",
+            "inputDependencyField": "",
+            "name": "Expire Date",
+            "order": 1,
+            "outputDependency": "CardDetails",
+            "outputDependencyField": "expire",
+            "required": true,
+            "validation": "",
+            "value": ""
+          },
+          {
+            "children": [],
+            "componentType": "INPUT",
+            "function": "",
+            "hide": false,
+            "inputDependency": "",
+            "inputDependencyField": "",
+            "name": "Security Code",
+            "order": 2,
+            "outputDependency": "CardDetails",
+            "outputDependencyField": "code",
+            "required": true,
+            "validation": "",
+            "value": ""
+          }
+        ],
+        "componentType": "HEADER",
+        "function": "",
+        "hide": false,
+        "inputDependency": "",
+        "inputDependencyField": "",
+        "name": "Card Details",
+        "order": 0,
+        "outputDependency": "",
+        "outputDependencyField": "",
+        "required": false,
+        "validation": "",
+        "value": ""
+      }
+    ],
+    "information": [
+      {
+        "details": [
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": false,
+            "inputDependencyField": "id",
+            "isQuery": false,
+            "name": "Order ID",
+            "order": 0,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "id",
+            "hide": false,
+            "inputDependencyField": "id",
+            "isQuery": true,
+            "name": "Transaction ID",
+            "order": 1,
+            "queryField": "id",
+            "queryTable": "transactions"
+          },
+          {
+            "array": false,
+            "foreignKey": "id",
+            "hide": false,
+            "inputDependencyField": "id",
+            "isQuery": true,
+            "name": "Item ID",
+            "order": 2,
+            "queryField": "item_id",
+            "queryTable": "item_list"
+          },
+          {
+            "array": false,
+            "foreignKey": "id",
+            "hide": false,
+            "inputDependencyField": "id",
+            "isQuery": true,
+            "name": "Item Price",
+            "order": 3,
+            "queryField": "price",
+            "queryTable": "item_list"
+          },
+          {
+            "array": false,
+            "foreignKey": "id",
+            "hide": false,
+            "inputDependencyField": "id",
+            "isQuery": true,
+            "name": "Quantity",
+            "order": 4,
+            "queryField": "quantity",
+            "queryTable": "item_list"
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "customer_id",
+            "isQuery": false,
+            "name": "customer_id",
+            "order": 5,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": false,
+            "inputDependencyField": "total_price",
+            "isQuery": false,
+            "name": "Total Price",
+            "order": 6,
+            "queryField": "",
+            "queryTable": ""
+          }
+        ],
+        "inputDependency": "OrderTransaction",
+        "name": "OrderTransaction",
+        "order": 0
+      }
+    ],
+    "name": "CardInput",
+    "processName": "CardInput"
+  },
+  {
+    "components": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [],
+                "componentType": "INPUT",
+                "function": "",
+                "hide": true,
+                "inputDependency": "PendingHealthcareService",
+                "inputDependencyField": "idreqserv",
+                "name": "idreqserv",
+                "order": 0,
+                "outputDependency": "CompletedHealthcareService",
+                "outputDependencyField": "idreqserv",
+                "required": true,
+                "validation": "",
+                "value": ""
+              },
+              {
+                "children": [],
+                "componentType": "INPUT",
+                "function": "",
+                "hide": true,
+                "inputDependency": "PendingHealthcareService",
+                "inputDependencyField": "requesterid",
+                "name": "requesterid",
+                "order": 1,
+                "outputDependency": "CompletedHealthcareService",
+                "outputDependencyField": "requesterid",
+                "required": true,
+                "validation": "",
+                "value": ""
+              },
+              {
+                "children": [],
+                "componentType": "INPUT",
+                "function": "",
+                "hide": true,
+                "inputDependency": "PendingHealthcareService",
+                "inputDependencyField": "serviceid",
+                "name": "serviceid",
+                "order": 2,
+                "outputDependency": "CompletedHealthcareService",
+                "outputDependencyField": "serviceid",
+                "required": true,
+                "validation": "",
+                "value": ""
+              },
+              {
+                "children": [],
+                "componentType": "INPUT",
+                "function": "",
+                "hide": true,
+                "inputDependency": "PendingHealthcareService",
+                "inputDependencyField": "patientid",
+                "name": "patientid",
+                "order": 3,
+                "outputDependency": "CompletedHealthcareService",
+                "outputDependencyField": "patientid",
+                "required": true,
+                "validation": "",
+                "value": ""
+              },
+              {
+                "children": [],
+                "componentType": "INPUT",
+                "function": "",
+                "hide": true,
+                "inputDependency": "PendingHealthcareService",
+                "inputDependencyField": "responsibleid",
+                "name": "responsibleid",
+                "order": 4,
+                "outputDependency": "CompletedHealthcareService",
+                "outputDependencyField": "responsibleid",
+                "required": true,
+                "validation": "",
+                "value": ""
+              },
+              {
+                "children": [],
+                "componentType": "INPUT",
+                "function": "",
+                "hide": true,
+                "inputDependency": "PendingHealthcareService",
+                "inputDependencyField": "date",
+                "name": "date",
+                "order": 5,
+                "outputDependency": "CompletedHealthcareService",
+                "outputDependencyField": "date",
+                "required": true,
+                "validation": "",
+                "value": ""
+              },
+              {
+                "children": [],
+                "componentType": "INPUT",
+                "function": "",
+                "hide": false,
+                "inputDependency": "PendingHealthcareService",
+                "inputDependencyField": "type",
+                "name": "type",
+                "order": 6,
+                "outputDependency": "CompletedHealthcareService",
+                "outputDependencyField": "type",
+                "required": true,
+                "validation": "",
+                "value": ""
+              },
+              {
+                "children": [],
+                "componentType": "CONSTANT",
+                "function": "",
+                "hide": false,
+                "inputDependency": "",
+                "inputDependencyField": "",
+                "name": "State ID",
+                "order": 7,
+                "outputDependency": "CompletedHealthcareService",
+                "outputDependencyField": "stateid",
+                "required": true,
+                "validation": "5",
+                "value": ""
+              },
+              {
+                "children": [],
+                "componentType": "PARAGRAPH",
+                "function": "",
+                "hide": false,
+                "inputDependency": "",
+                "inputDependencyField": "",
+                "name": "Notes",
+                "order": 8,
+                "outputDependency": "CompletedHealthcareService",
+                "outputDependencyField": "notes",
+                "required": true,
+                "validation": "",
+                "value": ""
+              }
+            ],
+            "componentType": "HEADER",
+            "function": "",
+            "hide": false,
+            "inputDependency": "",
+            "inputDependencyField": "",
+            "name": "Completed Service",
+            "order": 0,
+            "outputDependency": "",
+            "outputDependencyField": "",
+            "required": false,
+            "validation": "",
+            "value": ""
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "componentType": "CHOICES",
+                    "function": "",
+                    "hide": false,
+                    "inputDependency": "",
+                    "inputDependencyField": "",
+                    "name": "Name",
+                    "order": 0,
+                    "outputDependency": "Obstacle",
+                    "outputDependencyField": "name",
+                    "required": true,
+                    "validation": "^Air Embolism$|^Heart Failure$",
+                    "value": ""
+                  }
+                ],
+                "componentType": "HEADER",
+                "function": "",
+                "hide": false,
+                "inputDependency": "",
+                "inputDependencyField": "",
+                "name": "Obstacle",
+                "order": 0,
+                "outputDependency": "",
+                "outputDependencyField": "",
+                "required": false,
+                "validation": "",
+                "value": ""
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "componentType": "INPUT",
+                    "function": "",
+                    "hide": true,
+                    "inputDependency": "PendingHealthcareService",
+                    "inputDependencyField": "idreqserv",
+                    "name": "idreqserv",
+                    "order": 0,
+                    "outputDependency": "PendingHealthcareService",
+                    "outputDependencyField": "idreqserv",
+                    "required": true,
+                    "validation": "",
+                    "value": ""
+                  },
+                  {
+                    "children": [],
+                    "componentType": "INPUT",
+                    "function": "",
+                    "hide": true,
+                    "inputDependency": "PendingHealthcareService",
+                    "inputDependencyField": "requesterid",
+                    "name": "requesterid",
+                    "order": 1,
+                    "outputDependency": "PendingHealthcareService",
+                    "outputDependencyField": "requesterid",
+                    "required": true,
+                    "validation": "",
+                    "value": ""
+                  },
+                  {
+                    "children": [],
+                    "componentType": "INPUT",
+                    "function": "",
+                    "hide": true,
+                    "inputDependency": "PendingHealthcareService",
+                    "inputDependencyField": "serviceid",
+                    "name": "serviceid",
+                    "order": 2,
+                    "outputDependency": "PendingHealthcareService",
+                    "outputDependencyField": "serviceid",
+                    "required": true,
+                    "validation": "",
+                    "value": ""
+                  },
+                  {
+                    "children": [],
+                    "componentType": "INPUT",
+                    "function": "",
+                    "hide": true,
+                    "inputDependency": "PendingHealthcareService",
+                    "inputDependencyField": "patientid",
+                    "name": "patientid",
+                    "order": 3,
+                    "outputDependency": "PendingHealthcareService",
+                    "outputDependencyField": "patientid",
+                    "required": true,
+                    "validation": "",
+                    "value": ""
+                  },
+                  {
+                    "children": [],
+                    "componentType": "INPUT",
+                    "function": "",
+                    "hide": true,
+                    "inputDependency": "PendingHealthcareService",
+                    "inputDependencyField": "responsibleid",
+                    "name": "responsibleid",
+                    "order": 4,
+                    "outputDependency": "PendingHealthcareService",
+                    "outputDependencyField": "responsibleid",
+                    "required": true,
+                    "validation": "",
+                    "value": ""
+                  },
+                  {
+                    "children": [],
+                    "componentType": "INPUT",
+                    "function": "",
+                    "hide": true,
+                    "inputDependency": "PendingHealthcareService",
+                    "inputDependencyField": "date",
+                    "name": "date",
+                    "order": 5,
+                    "outputDependency": "PendingHealthcareService",
+                    "outputDependencyField": "date",
+                    "required": true,
+                    "validation": "",
+                    "value": ""
+                  },
+                  {
+                    "children": [],
+                    "componentType": "INPUT",
+                    "function": "",
+                    "hide": true,
+                    "inputDependency": "PendingHealthcareService",
+                    "inputDependencyField": "type",
+                    "name": "type",
+                    "order": 6,
+                    "outputDependency": "PendingHealthcareService",
+                    "outputDependencyField": "type",
+                    "required": true,
+                    "validation": "",
+                    "value": ""
+                  },
+                  {
+                    "children": [],
+                    "componentType": "INPUT",
+                    "function": "",
+                    "hide": true,
+                    "inputDependency": "PendingHealthcareService",
+                    "inputDependencyField": "stateid",
+                    "name": "stateid",
+                    "order": 7,
+                    "outputDependency": "PendingHealthcareService",
+                    "outputDependencyField": "stateid",
+                    "required": true,
+                    "validation": "",
+                    "value": ""
+                  },
+                  {
+                    "children": [],
+                    "componentType": "INPUT",
+                    "function": "",
+                    "hide": true,
+                    "inputDependency": "PendingHealthcareService",
+                    "inputDependencyField": "notes",
+                    "name": "notes",
+                    "order": 8,
+                    "outputDependency": "PendingHealthcareService",
+                    "outputDependencyField": "notes",
+                    "required": true,
+                    "validation": "",
+                    "value": ""
+                  }
+                ],
+                "componentType": "HEADER",
+                "function": "",
+                "hide": false,
+                "inputDependency": "",
+                "inputDependencyField": "",
+                "name": "2 - PendingHealthcareService",
+                "order": 1,
+                "outputDependency": "",
+                "outputDependencyField": "",
+                "required": false,
+                "validation": "",
+                "value": ""
+              }
+            ],
+            "componentType": "HEADER",
+            "function": "",
+            "hide": false,
+            "inputDependency": "",
+            "inputDependencyField": "",
+            "name": "Obstacle Found",
+            "order": 1,
+            "outputDependency": "",
+            "outputDependencyField": "",
+            "required": false,
+            "validation": "",
+            "value": ""
+          }
+        ],
+        "componentType": "TAB",
+        "function": "",
+        "hide": false,
+        "inputDependency": "",
+        "inputDependencyField": "",
+        "name": "Tabs",
+        "order": 0,
+        "outputDependency": "",
+        "outputDependencyField": "",
+        "required": false,
+        "validation": "",
+        "value": ""
+      }
+    ],
+    "information": [
+      {
+        "details": [
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "idreqserv",
+            "isQuery": false,
+            "name": "idreqserv",
+            "order": 0,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "requesterid",
+            "isQuery": false,
+            "name": "requesterid",
+            "order": 1,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "serviceid",
+            "isQuery": false,
+            "name": "serviceid",
+            "order": 2,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "serviceid",
+            "hide": false,
+            "inputDependencyField": "serviceid",
+            "isQuery": true,
+            "name": "Service Name",
+            "order": 3,
+            "queryField": "name",
+            "queryTable": "services"
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "patientid",
+            "isQuery": false,
+            "name": "patientid",
+            "order": 4,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "patientid",
+            "hide": false,
+            "inputDependencyField": "patientid",
+            "isQuery": true,
+            "name": "Patient Name",
+            "order": 5,
+            "queryField": "name",
+            "queryTable": "patients"
+          },
+          {
+            "array": false,
+            "foreignKey": "patientid",
+            "hide": false,
+            "inputDependencyField": "patientid",
+            "isQuery": true,
+            "name": "Patient Surname",
+            "order": 6,
+            "queryField": "surname",
+            "queryTable": "patients"
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "responsibleid",
+            "isQuery": false,
+            "name": "responsibleid",
+            "order": 7,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "date",
+            "isQuery": false,
+            "name": "date",
+            "order": 8,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "type",
+            "isQuery": false,
+            "name": "type",
+            "order": 9,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "stateid",
+            "isQuery": false,
+            "name": "stateid",
+            "order": 10,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": false,
+            "inputDependencyField": "notes",
+            "isQuery": false,
+            "name": "Notes",
+            "order": 11,
+            "queryField": "",
+            "queryTable": ""
+          }
+        ],
+        "inputDependency": "PendingHealthcareService",
+        "name": "Healthcare Service",
+        "order": 0
+      },
+      {
+        "details": [
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "idcontract",
+            "isQuery": false,
+            "name": "idcontract",
+            "order": 0,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "reqservid",
+            "isQuery": false,
+            "name": "reqservid",
+            "order": 1,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "providerid",
+            "isQuery": false,
+            "name": "providerid",
+            "order": 2,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "time_requested",
+            "isQuery": false,
+            "name": "time_requested",
+            "order": 3,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "time_opened",
+            "isQuery": false,
+            "name": "time_opened",
+            "order": 4,
+            "queryField": "",
+            "queryTable": ""
+          },
+          {
+            "array": false,
+            "foreignKey": "",
+            "hide": true,
+            "inputDependencyField": "stateid",
+            "isQuery": false,
+            "name": "stateid",
+            "order": 5,
+            "queryField": "",
+            "queryTable": ""
+          }
+        ],
+        "inputDependency": "OpenContract",
+        "name": "OpenContract",
+        "order": 1
+      }
+    ],
+    "name": "ProvideService",
+    "processName": "ProvideService"
+  }
+]

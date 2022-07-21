@@ -253,7 +253,8 @@ function DependenciesModal(props: Props) {
                 a
                   .map((b, ii) => (b.parentName === parentFilter ? ii : -1))
                   .sort()
-                  .slice(-1)[0] !== i && <Divider key={`${i}-divider`} />,
+                  .slice(-1)[0] !== i &&
+                  a.length !== i + 1 && <Divider key={`${i}-divider`} />,
               ]
           )
         ) : (
@@ -281,7 +282,7 @@ function DependenciesModal(props: Props) {
                   <div className="text-teal-600">Passed!</div>
                 ) : (
                   <div className="text-rose-500">
-                    Dependencies unlinked found!
+                    Output dependencies unlinked found!
                   </div>
                 )}
               </div>

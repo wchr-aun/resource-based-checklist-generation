@@ -1,16 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { AppState } from "@app/store";
+import { appVersion } from "./version";
 
 export interface ProcessInputState {
   env: "healthcare" | "payment";
   isEvaluating: boolean;
   evalId: string;
+  appVersion: string;
 }
 
 const initialState: ProcessInputState = {
   env: "healthcare",
   isEvaluating: false,
   evalId: "-",
+  appVersion: appVersion,
 };
 
 export const envSlice = createSlice({
@@ -36,5 +39,6 @@ export const { setEnv, setEvalId, resetEval } = envSlice.actions;
 export const selectEnv = (state: AppState) => state.env.env;
 export const selectIsEval = (state: AppState) => state.env.isEvaluating;
 export const selectEvalId = (state: AppState) => state.env.evalId;
+export const selectAppVersion = (state: AppState) => state.env.appVersion;
 
 export default envSlice.reducer;

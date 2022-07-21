@@ -10,7 +10,6 @@ import { Form } from "@models";
 import { saveTask } from "api/evaluation";
 import { NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import Router from "next/router";
 
 const Task2FollowUpCanvas: NextPage = () => {
@@ -19,7 +18,7 @@ const Task2FollowUpCanvas: NextPage = () => {
   const onSubmit = async (f: Form) => {
     dispatch(setLoading(true));
 
-    const success = await saveTask(evalId, "task2followup", f);
+    const success = await saveTask(evalId, "task4", f);
     if (!success) {
       dispatch(setLoading(false));
       return;
@@ -29,36 +28,26 @@ const Task2FollowUpCanvas: NextPage = () => {
     dispatch(resetForm);
 
     dispatch(setLoading(false));
-    Router.push("/evaluation/task/3");
+    Router.push("/evaluation/task/5");
   };
 
   return (
     <div>
-      <div className="underline mb-5 flex justify-center text-bold text-lg">
-        <Link href="./">
-          <span className="cursor-pointer capitalize">
-            Click Here to Restart This Task
-          </span>
-        </Link>
-      </div>
-
       <ScrollToTop />
       <Hint
         children={
           <div>
-            In this follow up task, the scenario is still the same as Task 2.
+            In this follow up task, the scenario is still the same as Task 3.
             However, instead of manually creating the form, you will select the
             auto-generation option.
             <br />
             <br />
-            Read more details in the Google Forms.
+            More details are provided in the Google Forms.
           </div>
         }
       />
       <Head>
-        <title>
-          Canvas Task 2 Follow-up: Resource-based Checklist Generation
-        </title>
+        <title>Canvas Task 4: Resource-based Checklist Generation</title>
       </Head>
 
       <FormTemplate isEval={true} onEvalSubmit={onSubmit} />

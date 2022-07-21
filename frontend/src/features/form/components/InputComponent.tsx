@@ -37,10 +37,11 @@ import { selectEnv } from "@app/envSlice";
 
 interface Props {
   inputs: Information[];
+  hideSuggestion?: boolean;
 }
 
 function InputComponent(props: Props) {
-  const { inputs } = props;
+  const { inputs, hideSuggestion = false } = props;
   const dispatch = useAppDispatch();
   const noForeignTableModal = useRef((v: boolean) => {});
   const suggestedForeignModal = useRef((v: boolean) => {});
@@ -153,7 +154,7 @@ function InputComponent(props: Props) {
               className="cursor-pointer text-gray-600 flex self-center space-x-2"
               onClick={() => dispatch(toggleHideAllInput(i))}
             >
-              <span className="text-sm text-gray-500 flex self-center">
+              <span className="text-sm text-gray-500 flex self-center select-none">
                 {info.details.every((v) => v.hide) ? "Visible All" : "Hide All"}
               </span>
               <FontAwesomeIcon
@@ -321,10 +322,14 @@ function InputComponent(props: Props) {
                 <div>
                   {!details.isQuery && (
                     <More
-                      options={[
-                        "Query more information using this field",
-                        "Get suggested query input information",
-                      ]}
+                      options={
+                        hideSuggestion
+                          ? ["Query more information using this field"]
+                          : [
+                              "Query more information using this field",
+                              "Get suggested query input information",
+                            ]
+                      }
                       onSelectOption={(index) =>
                         index == 0
                           ? onClickAddNewQuery(
@@ -343,7 +348,7 @@ function InputComponent(props: Props) {
                     />
                   )}
                 </div>
-                <div className="cursor-pointer text-gray-600">
+                <div className="cursor-pointer text-gray-600 select-none">
                   {!details.isQuery ? (
                     <div
                       className="flex space-x-2"
