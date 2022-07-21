@@ -50,30 +50,30 @@ const Evaluation: NextPage = () => {
       <div className="border border-transparent rounded-lg bg-white py-8 px-16 text-center space-y-5">
         <div className="text-bold text-3xl underline">User Evaluation</div>
         <div className="text-left">
-          This project is a checklist generation tool for WorkflowFM, a
+          This project involves a checklist generation tool for WorkflowFM, a
           logic-based workflow management framework developed at the University
-          of Edinburgh. A checklist generation tool is a tool that can generate
-          a checklist given the workflow process and the data models of each
-          process. In other words, this tool is a form generator (such as Google
-          Forms, Office Forms, etc.) for workflow management framework.
+          of Edinburgh. A checklist generation tool is a tool to create
+          checklists or forms (similarly to Google Forms, Microsoft Form, etc.)
+          that allows people to perform tasks as part of a larger, collaborative
+          workflow of individual processes.
           <br />
           <br />
-          This survey is to collect the data of user performance, functionality
-          score, and usability score. All the personal information is anonymous,
-          therefore, please enter your opinions truthfully.
+          This survey aims to collect feedback related to user performance,
+          functionality, and usability. All personal or identifiable information
+          will be fully anonymised, therefore, please enter your opinions
+          truthfully.
           <br />
           <br />
           In the following sections, you will be given scenarios with tasks to
-          do. In the first two tasks, there will be detailed instructions
-          provided to help you get used to the system. In the final task, you
-          will be given only the scenario and a list of things you need to do.
-          Between each task, you will be asked to do functionality
-          questionnaire.
+          do in order to generate certain checklists. In the first four tasks,
+          there will be instructions provided to help you get used to the
+          system. In the final task, you will be given only the scenario and a
+          list of things you need to do. Between each task, you will be asked to
+          do functionality questionnaire.
           <br />
           <br />
-          After all the tasks are done, you will be asked to do usability
-          questionnaire. Then, followed by an optional open-ended feedback at
-          the end.
+          After all the tasks are done, you will be asked to fill in a short
+          questionnaire and an optional open-ended feedback at the end.
         </div>
         <Divider />
         <div>

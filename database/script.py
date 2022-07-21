@@ -4,7 +4,7 @@ import sys
 from config import config
 
 
-def connect(db, eval=False):
+def connect(db, eval=False, only_eval=False):
     """ Connect to the PostgreSQL database server """
     conn = None
     params = config(db)
@@ -28,17 +28,18 @@ def connect(db, eval=False):
 
         cur = conn.cursor()
 
-        for line in sqlFile.split(';'):
-            if not line:
-                continue
-            cur.execute(line)
+        if not only_eval:
+            for line in sqlFile.split(';'):
+                if not line:
+                    continue
+                cur.execute(line)
 
-        for line in contextSqlFile.split(';'):
-            if not line:
-                continue
-            cur.execute(line)
+            for line in contextSqlFile.split(';'):
+                if not line:
+                    continue
+                cur.execute(line)
 
-        if eval:
+        if eval or only_eval:
             for line in evalFile.split(';'):
                 if not line:
                     continue
@@ -58,6 +59,9 @@ if __name__ == '__main__':
     if len(sys.argv) == 1:
         print("Resetting healthcare database...")
         connect('healthcare')
+        exit(0)
+    if '--only-eval' in sys.argv:
+        connect('healthcare', True, True)
         exit(0)
     eval = '--eval' in sys.argv
     healthcare = '--healthcare' in sys.argv

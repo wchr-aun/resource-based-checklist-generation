@@ -40,13 +40,26 @@ const Task2Canvas: NextPage = () => {
             You are a checklist designer for a payment workflow. The owner wants
             you to create a checklist template for a CardInput process. In this
             process, a customer needs to enter the credit/debit card number,
-            expire date, and security code to pay for the items. The process
-            contains only Transaction as the input information. Additionally,
-            the output form needs to be linked with the CardDetails output of
-            the workflow process.
+            expire date, and security code to pay for some purchased items. The
+            process contains OrderTransaction as the input information, with
+            fields as described below. Additionally, the output form needs to be
+            linked with the CardDetails output of the workflow process.
             <br />
             <br />
-            You need to create a checklist template based on the scenario above.
+            <div className="ml-5">
+              1. OrderTransaction is the input information of this process. It
+              contains three main fields: id, customer_id, and total_price.
+            </div>
+            <div className="ml-5">
+              2. CardDetails is the only output of this process. The output form
+              is required to link to three fields within this output in order to
+              fulfil the data model. The fields are card_no, expire, and code.
+            </div>
+            <br />
+            You need to create a checklist template based on the scenario above
+            with the output being fully linked with the form. The template must
+            match with the format given below. You need to create a checklist
+            template based on the scenario above.
             <br />
             <br />
             More details are provided in the Google Forms.

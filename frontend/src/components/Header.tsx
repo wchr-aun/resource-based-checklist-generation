@@ -19,42 +19,44 @@ function Header() {
   return (
     <div>
       <nav className="flex items-center justify-between flex-wrap bg-white p-6 text-indigo-900">
-        {!router.pathname.includes("/preview") &&
-          !router.pathname.includes("/checklist") && (
-            <div
-              className="flex items-center flex-shrink-0 mr-6 cursor-pointer"
-              onClick={() =>
-                !router.pathname.includes("/evaluation/") && router.push("/")
-              }
-            >
-              <span className="font-semibold text-xl">WorkflowFM:</span>
-              <span className="text-lg ml-2 font-extrabold capitalize">
-                {router.pathname === "/"
-                  ? "Checklist Generation Tool"
-                  : router.pathname.replace(/\//g, " ")}
-              </span>
-            </div>
+        <span className="select-none">
+          {!router.pathname.includes("/preview") &&
+            !router.pathname.includes("/checklist") && (
+              <div
+                className="flex items-center flex-shrink-0 mr-6 cursor-pointer"
+                onClick={() =>
+                  !router.pathname.includes("/evaluation/") && router.push("/")
+                }
+              >
+                <span className="font-semibold text-xl">WorkflowFM:</span>
+                <span className="text-lg ml-2 font-extrabold capitalize">
+                  {router.pathname === "/"
+                    ? "Checklist Generation Tool"
+                    : router.pathname.replace(/\//g, " ")}
+                </span>
+              </div>
+            )}
+          {router.pathname.includes("/checklist") && (
+            <Link href="/">
+              <a className="flex items-center flex-shrink-0 mr-6 cursor-pointer">
+                <span className="font-semibold text-xl">WorkflowFM:</span>
+                <span className="text-lg ml-2 font-extrabold capitalize">
+                  Checklist #{router.query.id}
+                </span>
+              </a>
+            </Link>
           )}
-        {router.pathname.includes("/checklist") && (
-          <Link href="/">
-            <a className="flex items-center flex-shrink-0 mr-6 cursor-pointer">
-              <span className="font-semibold text-xl">WorkflowFM:</span>
-              <span className="text-lg ml-2 font-extrabold capitalize">
-                Checklist #{router.query.id}
-              </span>
-            </a>
-          </Link>
-        )}
-        {router.pathname.includes("/preview") && (
-          <Link href={router.asPath.replace("/preview", "")}>
-            <div className="flex items-center flex-shrink-0 mr-6 cursor-pointer">
-              <span className="font-semibold text-xl">WorkflowFM:</span>
-              <span className="text-lg ml-2 font-extrabold capitalize">
-                Back to Canvas
-              </span>
-            </div>
-          </Link>
-        )}
+          {router.pathname.includes("/preview") && (
+            <Link href={router.asPath.replace("/preview", "")}>
+              <div className="flex items-center flex-shrink-0 mr-6 cursor-pointer">
+                <span className="font-semibold text-xl">WorkflowFM:</span>
+                <span className="text-lg ml-2 font-extrabold capitalize">
+                  Back to Canvas
+                </span>
+              </div>
+            </Link>
+          )}
+        </span>
         {router.pathname === "/" ? (
           <div className="flex space-x-3">
             <Link href="/evaluation">

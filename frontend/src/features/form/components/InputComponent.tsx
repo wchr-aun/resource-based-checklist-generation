@@ -154,7 +154,7 @@ function InputComponent(props: Props) {
               className="cursor-pointer text-gray-600 flex self-center space-x-2"
               onClick={() => dispatch(toggleHideAllInput(i))}
             >
-              <span className="text-sm text-gray-500 flex self-center">
+              <span className="text-sm text-gray-500 flex self-center select-none">
                 {info.details.every((v) => v.hide) ? "Visible All" : "Hide All"}
               </span>
               <FontAwesomeIcon
@@ -348,7 +348,7 @@ function InputComponent(props: Props) {
                     />
                   )}
                 </div>
-                <div className="cursor-pointer text-gray-600">
+                <div className="cursor-pointer text-gray-600 select-none">
                   {!details.isQuery ? (
                     <div
                       className="flex space-x-2"
