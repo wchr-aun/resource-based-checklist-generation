@@ -5,10 +5,11 @@ import { useEffect, useRef, useState } from "react";
 interface Props {
   onSelectOption: (index: number) => void;
   options: string[];
+  disabledOptions?: string[];
 }
 
 function More(props: Props) {
-  const { onSelectOption, options } = props;
+  const { onSelectOption, options, disabledOptions = [] } = props;
   const [show, setShow] = useState(false);
   const catMenu = useRef<HTMLDivElement>(null);
   const closeOpenMenus = (e: MouseEvent) => {
@@ -38,9 +39,14 @@ function More(props: Props) {
         <div className="border rounded-lg px-3 bg-white absolute border-gray-300">
           {options.map((v, i) => (
             <div
-              className="hover:bg-gray-200 -mx-3 px-3 py-2 text-sm cursor-pointer text-center"
+              className={`hover:bg-gray-200 -mx-3 px-3 py-2 text-sm cursor-pointer text-center ${
+                disabledOptions.includes(v)
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
               key={i}
               onClick={() => {
+                if (disabledOptions.includes(v)) return;
                 setShow(false);
                 onSelectOption(i);
               }}

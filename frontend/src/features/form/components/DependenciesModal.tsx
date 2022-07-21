@@ -146,7 +146,9 @@ function DependenciesModal(props: Props) {
         {leafComponents.length > 0 ? (
           leafComponents.map(
             (c, i, a) =>
-              (parentFilter === "" || c.parentName === parentFilter) && [
+              (parentFilter === "" ||
+                c.parentName === parentFilter ||
+                (parentFilter === "/" && c.parentName === "")) && [
                 <div className="space-y-2" key={i}>
                   <div className="text-bold text-sm">
                     <span className="text-gray-400">{c.parentName || ""}</span>

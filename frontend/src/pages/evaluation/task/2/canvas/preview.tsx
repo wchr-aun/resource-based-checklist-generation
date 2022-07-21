@@ -5,8 +5,11 @@ import InformationComponent from "@components/Information";
 import ScrollToTop from "@features/ScrollToTop/ScrollToTop";
 import type { NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Preview: NextPage = () => {
+  const router = useRouter();
   const form = store.getState().form;
   if (form.processName === "" && form.components.length === 0) {
     return <div>Nothing to Preview</div>;
@@ -37,6 +40,15 @@ const Preview: NextPage = () => {
       )}
       <div>Form</div>
       <Checklist checklist={form.components} />
+      <div className="pt-6">
+        <div className="bg-white p-5 border">
+          <Link href={router.asPath.replace("/preview", "")}>
+            <button className="border border-zinc-500 text-zinc-500 px-5 py-2 rounded-lg hover:bg-zinc-50 hover:text-zinc-600 hover:border-zinc-600">
+              Back
+            </button>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };

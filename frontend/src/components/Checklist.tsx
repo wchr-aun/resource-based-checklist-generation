@@ -45,7 +45,7 @@ function Checklist(props: Props) {
               <div className="flex justify-between py-2">
                 <div className="font-bold">{component.name}</div>
                 <div
-                  className="cursor-pointer flex self-center text-sm font-medium"
+                  className="cursor-pointer flex self-center text-sm font-medium select-none"
                   onClick={() =>
                     setShow({
                       ...show,

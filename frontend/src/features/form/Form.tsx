@@ -172,10 +172,11 @@ function FormTemplate(props: Props) {
       </div>
       {focusedComponent === 1 && (
         <div className="text-sm ml-4 italic text-right uppercase">
-          Name of the form
+          Form Name
         </div>
       )}
       <Divider />
+      <div className="text-sm ml-4 font-bold uppercase">Input Information</div>
       <div
         className={
           focusedComponent === 2 ? "pl-2 bg-indigo-500 border rounded-lg" : ""
@@ -184,15 +185,13 @@ function FormTemplate(props: Props) {
       >
         <InputComponent inputs={information} hideSuggestion={hideSuggestion} />
       </div>
-      {focusedComponent === 2 && (
-        <div className="text-sm ml-4 italic text-right uppercase">
-          Information from the workflow
-        </div>
-      )}
       <Divider />
+      <div className="text-sm ml-4 font-bold uppercase">Form Adjustment</div>
       <div
         className={
-          focusedComponent === 3 ? "pl-2 bg-indigo-500 border rounded-lg" : ""
+          focusedComponent === 3
+            ? "pl-2 bg-indigo-500 border rounded-lg select-none"
+            : ""
         }
         onClick={() => setFocusedComponent(3)}
       >
@@ -265,11 +264,6 @@ function FormTemplate(props: Props) {
           onClickSetupDependency={setupDependency}
         />
       </div>
-      {focusedComponent === 3 && (
-        <div className="text-sm ml-4 italic text-right uppercase">
-          Form Adjustment
-        </div>
-      )}
       <div className="flex justify-between bg-white border mt-2 px-5 pb-5">
         <div className="space-x-2">
           <Link href={`${router.asPath}/preview`}>
@@ -334,6 +328,7 @@ function FormTemplate(props: Props) {
       />
 
       <Modal
+        lockBackground={true}
         body={
           <DependencyModal
             node={selectedNode}

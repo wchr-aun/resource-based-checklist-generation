@@ -64,21 +64,67 @@ const Evaluation: NextPage = () => {
           truthfully.
           <br />
           <br />
+          <span className="font-bold">
+            More details are provided in the Participant Information Sheet{" "}
+            <a
+              className="text-indigo-700 underline"
+              href="https://github.com/wchr-aun/resource-based-checklist-generation/blob/main/overleaf/pdf/Participant%20Information%20Sheet%20.pdf"
+              target="_blank"
+            >
+              Here
+            </a>
+          </span>
+          <br />
+          <br />
+          <span className="italic">
+            This survey has been approved by Informatics Research Ethics
+            committee. <br /> The Ethics application number is 486463.
+          </span>
+          <br />
+          <br />
           In the following sections, you will be given scenarios with tasks to
-          do in order to generate certain checklists. In the first four tasks,
-          there will be instructions provided to help you get used to the
-          system. In the final task, you will be given only the scenario and a
-          list of things you need to do. Between each task, you will be asked to
-          do functionality questionnaire.
+          do in order to generate specific checklists. In the first two tasks,
+          instructions will be provided to help you get used to the system. In
+          the final task, you will be given only the scenario and a list of
+          things you need to do. Between each task, you will be asked to do a
+          functionality questionnaire.
           <br />
           <br />
           After all the tasks are done, you will be asked to fill in a short
           questionnaire and an optional open-ended feedback at the end.
+          <Divider className="py-10" />
+          By participating in the study, you agree that: your opinions regarding
+          the user interface and user experience will be used to evaluate the
+          functionality and usability of the project.
+          <div className="ml-5 list-disc">
+            <li>
+              I have read and understood the Participant Information Sheet for
+              this study, I have had the opportunity to ask questions, and any
+              questions I had were answered to my satisfaction.
+            </li>
+            <li>
+              My participation is voluntary, and I can withdraw at any time
+              without giving a reason. Withdrawing will not affect any of my
+              rights.
+            </li>
+            <li>
+              I consent to my anonymised data being used in an MSc Dissertation
+              as well as potential academic publications and presentations.
+            </li>
+            <li>
+              I understand that my anonymised data will be stored for the
+              duration outlined in the Participant Information Sheet.
+            </li>
+            <li>
+              I allow my data to be used in future ethically approved research.
+            </li>
+            <li>I agree to take part in this study.</li>
+          </div>
         </div>
         <Divider />
         <div>
           You need to do the tasks provided in
-          <span className="underline text-indigo-500 ml-1">
+          <span className="underline text-indigo-700 ml-1">
             <a href="https://forms.gle/ZAebC667MWWBCcUe6" target="_blank">
               Google Forms
             </a>

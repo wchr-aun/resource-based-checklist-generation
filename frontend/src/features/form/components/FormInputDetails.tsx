@@ -60,10 +60,10 @@ const FormInputDetails: NextPage<Props> = (props) => {
       )}
       {node.componentType === COMPONENT_TYPES.DATE && (
         <div className="flex space-x-1">
-          <div className="w-4/5">
+          <div className="w-full">
             <Date disabled={true} />
           </div>
-          <div className="w-1/5">
+          {/* <div className="w-1/5">
             <Dropdown
               className="w-full"
               name="Select an Option"
@@ -71,7 +71,7 @@ const FormInputDetails: NextPage<Props> = (props) => {
               onUpdateValue={(_, value) => onSelectFunction(value)}
               value={node.function}
             />
-          </div>
+          </div> */}
         </div>
       )}
       {node.componentType === COMPONENT_TYPES.TIME && (
@@ -123,13 +123,13 @@ const FormInputDetails: NextPage<Props> = (props) => {
                 className="cursor-pointer flex space-x-1"
                 onClick={() => onClickSetupDependency(node)}
               >
+                <FontAwesomeIcon
+                  icon={node.inputDependencyField ? faLink : faUnlink}
+                  className="mt-1"
+                />
                 <div>Dependency Setup</div>
                 <FontAwesomeIcon
-                  icon={
-                    node.inputDependencyField && node.outputDependencyField
-                      ? faLink
-                      : faUnlink
-                  }
+                  icon={node.outputDependencyField ? faLink : faUnlink}
                   className="mt-1"
                 />
               </div>
