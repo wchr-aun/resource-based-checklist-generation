@@ -9,6 +9,7 @@ import { setEvalId } from "@app/envSlice";
 import { bookEvalId } from "api/evaluation";
 import { setLoading } from "@app/loadingSlice";
 import Checkbox from "@components/inputs/Checkbox";
+import Tooltip from "@components/Tooltip";
 
 const Evaluation: NextPage = () => {
   function makeid() {
@@ -177,12 +178,20 @@ const Evaluation: NextPage = () => {
             </button>
           </Link>
         ) : (
-          <button
-            disabled={true}
-            className="border rounded-lg px-5 py-3 border-gray-400 text-gray-400"
-          >
-            Start Evaluation
-          </button>
+          <div className="flex justify-center">
+            <Tooltip
+              className="w-fit"
+              position="mb-12"
+              tip="Please check the box to agree to the above statements."
+            >
+              <button
+                disabled={true}
+                className="border rounded-lg px-5 py-3 border-gray-400 text-gray-400 cursor-not-allowed"
+              >
+                Start Evaluation
+              </button>
+            </Tooltip>
+          </div>
         )}
       </div>
     </div>

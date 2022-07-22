@@ -40,7 +40,9 @@ function More(props: Props) {
           {options.map((v, i) => (
             <div
               className={`hover:bg-gray-200 -mx-3 px-3 py-2 text-sm cursor-pointer text-center ${
-                disabledOptions.includes(v) ? "cursor-not-allowed" : ""
+                disabledOptions.includes(v)
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
               }`}
               key={i}
               onClick={() => {

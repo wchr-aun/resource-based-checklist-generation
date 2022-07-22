@@ -54,6 +54,7 @@ const Task2Canvas: NextPage = () => {
                   <span className="font-bold">Form Name:</span> Award Contract
                   Checklist
                 </div>
+                <br />
                 <div className="font-bold">Input Information</div>
                 <div className="ml-5 list-disc">
                   <li>Provider (Former ServiceProvider)</li>
@@ -68,6 +69,7 @@ const Task2Canvas: NextPage = () => {
                     <li>Hide All</li>
                   </div>
                 </div>
+                <br />
                 <div className="font-bold">Form Adjustment</div>
                 <div className="ml-5 list-disc">
                   <li>Open Contract (Field type Header)</li>

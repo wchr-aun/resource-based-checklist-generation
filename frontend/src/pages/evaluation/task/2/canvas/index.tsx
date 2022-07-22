@@ -140,6 +140,7 @@ const Task1FollowUpCanvas: NextPage = () => {
                     <span className="font-bold">Form Name:</span> Card Details
                     Form
                   </div>
+                  <br />
                   <div className="font-bold">Input Information</div>
                   <div className="ml-5 list-disc">
                     <li>Purchased Items (Former OrderTransaction)</li>
@@ -150,6 +151,7 @@ const Task1FollowUpCanvas: NextPage = () => {
                       <li>Total Price (Former total_price)</li>
                     </div>
                   </div>
+                  <br />
                   <div className="font-bold">Form Adjustment</div>
                   <div className="ml-5 list-disc">
                     <li>Card Details (Field type Header)</li>
