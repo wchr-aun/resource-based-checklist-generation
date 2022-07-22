@@ -292,9 +292,9 @@ function DependenciesModal(props: Props) {
                 </div>,
                 a
                   .map((b, ii) => (b.parentName === parentFilter ? ii : -1))
-                  .sort()
+                  .sort((a, b) => a - b)
                   .slice(-1)[0] !== i &&
-                  a.length !== i + 1 && <Divider key={`${i}-divider`} />,
+                  a.length !== i + 1 && <Divider key={i + "divider"} />,
               ]
           )
         ) : (
