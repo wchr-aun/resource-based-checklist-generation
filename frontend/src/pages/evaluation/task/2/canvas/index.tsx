@@ -78,7 +78,13 @@ const Task1FollowUpCanvas: NextPage = () => {
                   <li>
                     Check the position of each input information field is in
                     order as followed by the{" "}
-                    <span className="font-extrabold">Format Required</span> tab.
+                    <span
+                      className="cursor-pointer underline text-indigo-700"
+                      onClick={() => setCurrentTab(1)}
+                    >
+                      Format Required
+                    </span>{" "}
+                    tab.
                   </li>
                   <li>
                     Change the name of the{" "}
@@ -173,9 +179,6 @@ const Task1FollowUpCanvas: NextPage = () => {
                   <br />
                   Visibility is a requirement if a specific field needs to be
                   set as hidden.
-                  <br />
-                  <br />
-                  Value is the specific value of a constant field.
                   <br />
                   <br />
                   Input dependency is the source of a field's value in the form.

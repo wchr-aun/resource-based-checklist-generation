@@ -202,9 +202,6 @@ const Task1Canvas: NextPage = () => {
                   set as hidden.
                   <br />
                   <br />
-                  Value is the specific value of a constant field.
-                  <br />
-                  <br />
                   Input dependency is the source of a field's value in the form.
                   For example, if the input dependency of Card Number is linked
                   to OrderTransaction - id, the value of this field will always

@@ -132,7 +132,7 @@ const Task2Canvas: NextPage = () => {
                     </div>
                     <li>Opened State (Field type Constant)</li>
                     <div className="ml-7 list-decimal">
-                      <li>Value: 3</li>
+                      <li>Value*: 3</li>
                       <li>Input dependency: Unlinked</li>
                       <li>
                         Output dependency: Linked to OpenedContract - stateid
@@ -141,6 +141,33 @@ const Task2Canvas: NextPage = () => {
                   </div>
                 </div>
               </div>
+            </div>
+            <Divider />
+            <div className="text-sm border rounded-lg p-3">
+              Value* is the specific value of a constant field.
+              <br />
+              <br />
+              Required is a requirement if a specific field needs to be set as
+              required.
+              <br />
+              <br />
+              Visibility is a requirement if a specific field needs to be set as
+              hidden.
+              <br />
+              <br />
+              Input dependency is the source of a field's value in the form. For
+              example, if the input dependency of Card Number is linked to
+              OrderTransaction - id, the value of this field will always depend
+              on OrderTransaction - id. Meanwhile, being unlinked means the
+              field will solely depend on the user input.
+              <br />
+              <br />
+              Output dependency is the destination of values for a component in
+              the form. For example, the output dependency of Card Number is
+              linked to CardDetails - card_no. That means the value of Card
+              Number will be directly saved to CardDetails - card_no. Unlike
+              input dependency, output dependency cannot be unlinked. Being
+              unlinked means that field does not have anywhere to store.
             </div>
           </div>
         }
