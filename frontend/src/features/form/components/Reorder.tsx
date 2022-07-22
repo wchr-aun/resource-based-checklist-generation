@@ -1,3 +1,4 @@
+import Tooltip from "@components/Tooltip";
 import {
   faAngleDown,
   faAngleUp,
@@ -29,20 +30,24 @@ const Reorder: NextPage<Props> = (props) => {
                 order > 0 ? (order < childrenNo ? "-mb-2" : "") : "hidden"
               }
             >
-              <button
-                className="text-xs w-full border-2 border-transparent rounded-full focus:border-indigo-500 px-0.5"
-                onClick={() => onClick("UP")}
-              >
-                <FontAwesomeIcon icon={faAngleUp} />
-              </button>
+              <Tooltip tip="Move up">
+                <button
+                  className="text-xs w-full border-2 border-transparent rounded-full focus:border-indigo-500 px-0.5"
+                  onClick={() => onClick("UP")}
+                >
+                  <FontAwesomeIcon icon={faAngleUp} />
+                </button>
+              </Tooltip>
             </div>
             <div className={order < childrenNo ? "" : "hidden"}>
-              <button
-                className="text-xs w-full border-2 border-transparent rounded-full focus:border-indigo-500 px-0.5"
-                onClick={() => onClick("DOWN")}
-              >
-                <FontAwesomeIcon icon={faAngleDown} />
-              </button>
+              <Tooltip tip="Move down">
+                <button
+                  className="text-xs w-full border-2 border-transparent rounded-full focus:border-indigo-500 px-0.5"
+                  onClick={() => onClick("DOWN")}
+                >
+                  <FontAwesomeIcon icon={faAngleDown} />
+                </button>
+              </Tooltip>
             </div>
           </div>
         )}

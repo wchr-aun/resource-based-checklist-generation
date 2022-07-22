@@ -157,7 +157,33 @@ function DependenciesModal(props: Props) {
                   <div className="flex justify-between space-x-5">
                     <div className="flex-col w-full space-y-1">
                       <div className="flex items-center w-full">
-                        <div className="w-2/3">Input Dependency:</div>
+                        <div className="w-2/3">
+                          Input Dependency:{" "}
+                          {leafInputDependencyField[i] && (
+                            <span
+                              className="ml-2 text-sm underline cursor-pointer text-indigo-500"
+                              onClick={() => {
+                                setLeafInputDependency(
+                                  leafInputDependency
+                                    .slice(0, i)
+                                    .concat("")
+                                    .concat(leafInputDependency.slice(i + 1))
+                                );
+
+                                setLeafInputDependencyField(
+                                  leafInputDependencyField
+                                    .slice(0, i)
+                                    .concat("")
+                                    .concat(
+                                      leafInputDependencyField.slice(i + 1)
+                                    )
+                                );
+                              }}
+                            >
+                              Unlinked
+                            </span>
+                          )}
+                        </div>
                         <Dropdown
                           name="Select Input Dependency"
                           options={inputDependencies.map((v) => v.name)}

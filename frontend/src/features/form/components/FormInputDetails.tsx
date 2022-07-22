@@ -110,8 +110,7 @@ const FormInputDetails: NextPage<Props> = (props) => {
       {node.componentType !== COMPONENT_TYPES.HEADER &&
         node.componentType !== COMPONENT_TYPES.CHECKBOXES &&
         node.componentType !== COMPONENT_TYPES.CHOICES &&
-        node.componentType !== COMPONENT_TYPES.DROPDOWN &&
-        node.componentType !== COMPONENT_TYPES.CONSTANT && (
+        node.componentType !== COMPONENT_TYPES.DROPDOWN && (
           <div className="text-xs flex justify-between px-2">
             {/* <Input
               value={node.validation}
@@ -135,18 +134,20 @@ const FormInputDetails: NextPage<Props> = (props) => {
               </div>
             </div>
 
-            <div className="flex space-x-3">
-              <Checkbox
-                name="Required"
-                checked={node.required}
-                onChecked={onRequiredChange}
-              />
-              <Checkbox
-                name="Hide"
-                checked={node.hide}
-                onChecked={onEditableChange}
-              />
-            </div>
+            {node.componentType !== COMPONENT_TYPES.CONSTANT && (
+              <div className="flex space-x-3">
+                <Checkbox
+                  name="Required"
+                  checked={node.required}
+                  onChecked={onRequiredChange}
+                />
+                <Checkbox
+                  name="Hide"
+                  checked={node.hide}
+                  onChecked={onEditableChange}
+                />
+              </div>
+            )}
           </div>
         )}
     </div>

@@ -36,13 +36,11 @@ function More(props: Props) {
         onClick={() => setShow(!show)}
       />
       {show && (
-        <div className="border rounded-lg px-3 bg-white absolute border-gray-300">
+        <div className="z-10 border rounded-lg px-3 bg-white absolute border-gray-300">
           {options.map((v, i) => (
             <div
               className={`hover:bg-gray-200 -mx-3 px-3 py-2 text-sm cursor-pointer text-center ${
-                disabledOptions.includes(v)
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
+                disabledOptions.includes(v) ? "cursor-not-allowed" : ""
               }`}
               key={i}
               onClick={() => {

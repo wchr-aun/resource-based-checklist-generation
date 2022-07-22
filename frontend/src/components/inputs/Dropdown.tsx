@@ -1,3 +1,4 @@
+import Tooltip from "@components/Tooltip";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
@@ -9,6 +10,7 @@ interface Props {
   prefix?: string;
   onUpdateValue?: (prefix: string, v: string, i: number) => void;
   className?: string;
+  tip?: string;
 }
 
 function Dropdown(props: Props) {
@@ -19,6 +21,7 @@ function Dropdown(props: Props) {
     prefix = "root",
     onUpdateValue = () => {},
     className = "",
+    tip = "",
   } = props;
   const [show, setShow] = useState<boolean>(false);
   const [isBottom, setIsBottom] = useState<boolean>(false);
@@ -48,24 +51,26 @@ function Dropdown(props: Props) {
   return (
     <div className="w-full">
       <div className={`relative inline-block ${className}`} ref={catMenu}>
-        <button
-          type="button"
-          className={`${className} relative py-2 pl-4 pr-8 text-sm overflow-hidden whitespace-nowrap text-ellipsis rounded-md border-2 border-gray-200 shadow-sm bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-gray-100 focus:ring-indigo-500 font-semibold`}
-          onClick={() => {
-            setIsBottom(
-              (2 * screen.availHeight) / 3 <
-                (catMenu.current?.getBoundingClientRect().bottom || 0)
-            );
-            setShow(!show);
-          }}
-        >
-          {options.find((v) => v === value) || name}
-          <FontAwesomeIcon
-            className="right-4 top-3 absolute"
-            icon={faAngleDown}
-            size="sm"
-          />
-        </button>
+        <Tooltip position="mb-10" tip={tip}>
+          <button
+            type="button"
+            className={`${className} relative py-2 pl-4 pr-8 text-sm overflow-hidden whitespace-nowrap text-ellipsis rounded-md border-2 border-gray-200 shadow-sm bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-gray-100 focus:ring-indigo-500 font-semibold`}
+            onClick={() => {
+              setIsBottom(
+                (2 * screen.availHeight) / 3 <
+                  (catMenu.current?.getBoundingClientRect().bottom || 0)
+              );
+              setShow(!show);
+            }}
+          >
+            {options.find((v) => v === value) || name}
+            <FontAwesomeIcon
+              className="right-4 top-3 absolute"
+              icon={faAngleDown}
+              size="sm"
+            />
+          </button>
+        </Tooltip>
         {show &&
           (isBottom ? (
             <div className="lg:w-full lg:max-h-72 max-h-32 max-w-32 overflow-auto break-words z-10 origin-top-left bottom-0 absolute mb-12 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">

@@ -14,7 +14,6 @@ import { selectEvalId } from "@app/envSlice";
 import Tabs from "@components/Tabs";
 import { useState } from "react";
 import Divider from "@components/Divider";
-import Link from "next/link";
 
 const Task1Canvas: NextPage = () => {
   const evalId = useAppSelector(selectEvalId);
@@ -53,6 +52,17 @@ const Task1Canvas: NextPage = () => {
             {currentTab === 0 ? (
               <div className="px-3 pt-1">
                 <div className="text-lg font-bold">Instructions</div>
+                <div>
+                  These instructions are given in order to help users create a
+                  template according to the{" "}
+                  <span
+                    className="cursor-pointer underline text-indigo-700"
+                    onClick={() => setCurrentTab(1)}
+                  >
+                    Format Required
+                  </span>
+                  .
+                </div>
                 <div className="ml-5 list-decimal">
                   <li>Click on "Start Task 1" to start the task.</li>
                   <li>
@@ -65,21 +75,18 @@ const Task1Canvas: NextPage = () => {
                     in the input information section (second section).
                   </li>
                   <li>
-                    Then, query 4 new fields using id of the OrderTransaction.
+                    Then, query 2 new fields using id of the OrderTransaction.
                   </li>
                   <li>
                     Set the queried tables and queried fields to{" "}
-                    <span className="italic">
-                      transactions - id, item_list - id, item_list - price,
-                    </span>
+                    <span className="italic">transactions - id</span>
                     {" and "}
-                    <span className="italic">item_list - quantity</span>.
+                    <span className="italic">item_list - id</span>.
                   </li>
                   <li>
-                    Change the 6 remaining field names to
+                    Change the 4 remaining field names to
                     <span className="italic">
-                      "Order ID", "Transaction ID", "Item ID", "Item Price",
-                      "Item Quantity",
+                      "Order ID", "Transaction ID", "Item ID",
                     </span>
                     {" and "}
                     <span className="italic">"Total Price".</span>
@@ -153,10 +160,6 @@ const Task1Canvas: NextPage = () => {
                       <li>Order ID (Former id)</li>
                       <li>Transaction ID (transactions - id queried by id)</li>
                       <li>Item ID (item_list - item_id queried by id)</li>
-                      <li>Item Price (item_list - price queried by id)</li>
-                      <li>
-                        Item Quantity (item_list - quanlity queried by id)
-                      </li>
                       <li>Total Price (Former total_price)</li>
                     </div>
                   </div>
