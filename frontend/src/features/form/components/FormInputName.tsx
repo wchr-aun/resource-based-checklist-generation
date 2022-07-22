@@ -5,6 +5,7 @@ import { faTrash, faClone } from "@fortawesome/free-solid-svg-icons";
 import { Component, COMPONENT_TYPE_LIST } from "@models";
 import type { NextPage } from "next";
 import Reorder from "./Reorder";
+import Tooltip from "@components/Tooltip";
 
 interface Props {
   node: Component;
@@ -52,22 +53,27 @@ const FormInputName: NextPage<Props> = (props) => {
           value={node.componentType}
           onUpdateValue={onDropdownChange}
           className="w-full"
+          tip="Field Type"
         />
       </div>
       <div className="w-1/12 flex space-x-5 justify-center">
         <div className="flex self-center text-gray-600 hover:text-gray-400">
-          <FontAwesomeIcon
-            className="cursor-pointer"
-            icon={faClone}
-            onClick={onDuplicate}
-          />
+          <Tooltip tip="Duplicate">
+            <FontAwesomeIcon
+              className="cursor-pointer"
+              icon={faClone}
+              onClick={onDuplicate}
+            />
+          </Tooltip>
         </div>
         <div className="flex self-center text-gray-600 hover:text-red-400">
-          <FontAwesomeIcon
-            className="cursor-pointer"
-            icon={faTrash}
-            onClick={onDelete}
-          />
+          <Tooltip tip="Delete">
+            <FontAwesomeIcon
+              className="cursor-pointer"
+              icon={faTrash}
+              onClick={onDelete}
+            />
+          </Tooltip>
         </div>
       </div>
     </div>

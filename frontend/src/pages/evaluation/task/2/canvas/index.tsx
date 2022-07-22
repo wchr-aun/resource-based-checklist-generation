@@ -50,6 +50,17 @@ const Task1FollowUpCanvas: NextPage = () => {
             {currentTab === 0 ? (
               <div className="px-3 pt-1">
                 <div className="text-lg font-bold">Instructions</div>
+                <div>
+                  These instructions are given in order to help users create a
+                  template according to the{" "}
+                  <span
+                    className="cursor-pointer underline text-indigo-700"
+                    onClick={() => setCurrentTab(1)}
+                  >
+                    Format Required
+                  </span>
+                  .
+                </div>
                 <div className="ml-5 list-decimal">
                   <li>Click on "Start Task 2" to start the task.</li>
                   <li>
@@ -62,15 +73,19 @@ const Task1FollowUpCanvas: NextPage = () => {
                     in the input information section (second section).
                   </li>
                   <li>
-                    Then, query 4 new fields using id of the{" "}
+                    Then, query 2 new fields using id of the{" "}
                     <span className="italic">OrderTransaction</span> using the
                     suggestion option (is now enabled!).
+                    <br />
+                    <div className="ml-4 italic">
+                      (Hint: You may need to delete unused fields from the
+                      suggestion.)
+                    </div>
                   </li>
                   <li>
-                    Change the 6 remaining field names to{" "}
+                    Change the 4 remaining field names to{" "}
                     <span className="italic">
-                      "Order ID", "Transaction ID", "Item ID", "Item Price",
-                      "Item Quantity",
+                      "Order ID", "Transaction ID", "Item ID",
                     </span>
                     {" and "}
                     <span className="italic">"Total Price".</span>
@@ -125,6 +140,7 @@ const Task1FollowUpCanvas: NextPage = () => {
                     <span className="font-bold">Form Name:</span> Card Details
                     Form
                   </div>
+                  <br />
                   <div className="font-bold">Input Information</div>
                   <div className="ml-5 list-disc">
                     <li>Purchased Items (Former OrderTransaction)</li>
@@ -132,13 +148,10 @@ const Task1FollowUpCanvas: NextPage = () => {
                       <li>Order ID (Former id)</li>
                       <li>Transaction ID (transactions - id queried by id)</li>
                       <li>Item ID (item_list - item_id queried by id)</li>
-                      <li>Item Price (item_list - price queried by id)</li>
-                      <li>
-                        Item Quantity (item_list - quanlity queried by id)
-                      </li>
                       <li>Total Price (Former total_price)</li>
                     </div>
                   </div>
+                  <br />
                   <div className="font-bold">Form Adjustment</div>
                   <div className="ml-5 list-disc">
                     <li>Card Details (Field type Header)</li>

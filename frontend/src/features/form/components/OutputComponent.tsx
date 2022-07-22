@@ -4,6 +4,7 @@ import { Component, COMPONENT_TYPES } from "@models";
 import Divider from "@components/Divider";
 import FormInputName from "./FormInputName";
 import FormInputDetails from "./FormInputDetails";
+import Tooltip from "@components/Tooltip";
 
 interface Props {
   components: Component[];
@@ -91,11 +92,7 @@ function OutputComponent(props: Props) {
               onDelete={() => onDelete(key, parent.order)}
             />
             <div
-              className={`w-1/12 flex justify-center items-center border rounded-md text-xs cursor-pointer ${
-                collapsible[prefix]
-                  ? "bg-gray-200 border-gray-200 text-gray-500"
-                  : "bg-white text-gray-800 border-gray-300 shadow-md"
-              }`}
+              className={`w-1/12`}
               onClick={() => {
                 setCollapsible({
                   ...collapsible,
@@ -103,7 +100,23 @@ function OutputComponent(props: Props) {
                 });
               }}
             >
-              {collapsible[prefix] ? "Collapse" : "Expand"}
+              <Tooltip
+                className={`w-full h-full flex justify-center items-center border rounded-md text-xs cursor-pointer ${
+                  collapsible[prefix]
+                    ? "bg-gray-200 border-gray-200 text-gray-500"
+                    : "bg-white text-gray-800 border-gray-300 shadow-sm"
+                }`}
+                position="mb-10"
+                tip={
+                  collapsible[prefix] ? `Collapse Children` : `Expand Children`
+                }
+              >
+                <div>
+                  {collapsible[prefix]
+                    ? `Collapse (${parent.children.length})`
+                    : `Expand (${parent.children.length})`}
+                </div>
+              </Tooltip>
             </div>
           </div>
           {collapsible[prefix] && (

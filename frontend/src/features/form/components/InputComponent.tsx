@@ -34,6 +34,7 @@ import SuggestedForeignModal from "./SuggestedForeignModal";
 import { setLoading } from "@app/loadingSlice";
 import Reorder from "./Reorder";
 import { selectEnv } from "@app/envSlice";
+import Tooltip from "@components/Tooltip";
 
 interface Props {
   inputs: Information[];
@@ -150,23 +151,32 @@ function InputComponent(props: Props) {
               }
               className="w-1/4"
             />
-            <div
-              className="cursor-pointer text-gray-600 flex self-center space-x-2"
-              onClick={() => dispatch(toggleHideAllInput(i))}
+            <Tooltip
+              className="flex self-center"
+              tip={
+                info.details.every((v) => v.hide) ? "Visible All" : "Hide All"
+              }
             >
-              <span className="text-sm text-gray-500 flex self-center select-none">
-                {info.details.every((v) => v.hide) ? "Visible All" : "Hide All"}
-              </span>
-              <FontAwesomeIcon
-                icon={
-                  info.details.every((v) => v.hide)
-                    ? faEyeSlash
-                    : info.details.some((v) => v.hide)
-                    ? faEyeLowVision
-                    : faEye
-                }
-              />
-            </div>
+              <div
+                className="cursor-pointer text-gray-600 flex self-center space-x-2"
+                onClick={() => dispatch(toggleHideAllInput(i))}
+              >
+                <span className="text-sm text-gray-500 flex self-center select-none">
+                  {info.details.every((v) => v.hide)
+                    ? "Visible All"
+                    : "Hide All"}
+                </span>
+                <FontAwesomeIcon
+                  icon={
+                    info.details.every((v) => v.hide)
+                      ? faEyeSlash
+                      : info.details.some((v) => v.hide)
+                      ? faEyeLowVision
+                      : faEye
+                  }
+                />
+              </div>
+            </Tooltip>
           </div>
           {info.details.map((details, j) => (
             <div className="ml-3 flex space-x-2" key={j}>
@@ -209,27 +219,40 @@ function InputComponent(props: Props) {
                         dispatch(toggleHideQuery({ parentIndex: i, index: j }))
                       }
                     >
-                      <FontAwesomeIcon
-                        icon={
+                      <Tooltip
+                        className="mt-1.5"
+                        tip={
                           details.queryHide
                             ? details.foreignKey &&
                               details.queryField &&
                               details.queryTable
-                              ? faCircleCheck
-                              : faCircleXmark
-                            : faAngleUp
+                              ? "Linked"
+                              : "Query Unlinked"
+                            : ""
                         }
-                        className={
-                          !details.queryHide
-                            ? "text-gray-500"
-                            : details.foreignKey &&
-                              details.queryField &&
-                              details.queryTable
-                            ? "text-teal-500"
-                            : "text-rose-400"
-                        }
-                        size="xs"
-                      />
+                      >
+                        <FontAwesomeIcon
+                          icon={
+                            details.queryHide
+                              ? details.foreignKey &&
+                                details.queryField &&
+                                details.queryTable
+                                ? faCircleCheck
+                                : faCircleXmark
+                              : faAngleUp
+                          }
+                          className={
+                            !details.queryHide
+                              ? "text-gray-500"
+                              : details.foreignKey &&
+                                details.queryField &&
+                                details.queryTable
+                              ? "text-teal-500"
+                              : "text-rose-400"
+                          }
+                          size="xs"
+                        />
+                      </Tooltip>
                     </div>
                   )}
                 </div>
@@ -351,39 +374,45 @@ function InputComponent(props: Props) {
                 </div>
                 <div className="cursor-pointer text-gray-600 select-none">
                   {!details.isQuery ? (
-                    <div
-                      className="flex space-x-2"
-                      onClick={() =>
-                        dispatch(
-                          toggleHideInput({ infoIndex: i, detailsIndex: j })
-                        )
-                      }
-                    >
-                      <span className="text-sm flex self-center">
-                        ({details.hide ? "Hidden" : "Visible"})
-                      </span>
-                      <FontAwesomeIcon
-                        className="flex self-center"
-                        icon={details.hide ? faEyeSlash : faEye}
-                        size="sm"
-                      />
-                    </div>
+                    <Tooltip tip={details.hide ? "Unhide" : "Hide"}>
+                      <div
+                        className="flex space-x-2"
+                        onClick={() =>
+                          dispatch(
+                            toggleHideInput({ infoIndex: i, detailsIndex: j })
+                          )
+                        }
+                      >
+                        <span className="text-sm flex self-center">
+                          ({details.hide ? "Hidden" : "Visible"})
+                        </span>
+                        <FontAwesomeIcon
+                          className="flex self-center"
+                          icon={details.hide ? faEyeSlash : faEye}
+                          size="sm"
+                        />
+                      </div>
+                    </Tooltip>
                   ) : (
-                    <div
-                      className="flex space-x-2 hover:text-red-400 text-gray-600"
-                      onClick={() =>
-                        dispatch(
-                          deletedInputDetails({ parentIndex: i, index: j })
-                        )
-                      }
-                    >
-                      <span className="text-sm flex self-center">(Delete)</span>
-                      <FontAwesomeIcon
-                        className="flex self-center"
-                        icon={faTrash}
-                        size="sm"
-                      />
-                    </div>
+                    <Tooltip tip="Delete">
+                      <div
+                        className="flex space-x-2 hover:text-red-400 text-gray-600"
+                        onClick={() =>
+                          dispatch(
+                            deletedInputDetails({ parentIndex: i, index: j })
+                          )
+                        }
+                      >
+                        <span className="text-sm flex self-center">
+                          (Delete)
+                        </span>
+                        <FontAwesomeIcon
+                          className="flex self-center"
+                          icon={faTrash}
+                          size="sm"
+                        />
+                      </div>
+                    </Tooltip>
                   )}
                 </div>
               </div>

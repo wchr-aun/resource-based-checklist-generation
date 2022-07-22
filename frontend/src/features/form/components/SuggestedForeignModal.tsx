@@ -1,4 +1,5 @@
 import Divider from "@components/Divider";
+import Tooltip from "@components/Tooltip";
 import {
   faChevronRight,
   faCircleInfo,
@@ -48,12 +49,14 @@ function suggestedForeignModal(props: Props) {
               </div>
               <div className="w-5/12">{foreign.queryField}</div>
               <div className="w-5/12">{foreign.queryTable}</div>
-              <div className="w-1/6 text-right">
-                <FontAwesomeIcon
-                  className="cursor-pointer text-gray-600 hover:text-rose-400"
-                  icon={faTrash}
-                  onClick={() => onClickDelete(i)}
-                />
+              <div className="w-1/6 flex justify-end pr-5 self-center">
+                <Tooltip className="w-fit" tip="Delete">
+                  <FontAwesomeIcon
+                    className="cursor-pointer text-gray-600 hover:text-rose-400"
+                    icon={faTrash}
+                    onClick={() => onClickDelete(i)}
+                  />
+                </Tooltip>
               </div>
             </div>
           ))}
