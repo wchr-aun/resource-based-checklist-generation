@@ -63,10 +63,18 @@ const Task2Canvas: NextPage = () => {
                     <li>
                       Provider's Surname (staff - surname queried by actorid)
                     </li>
+                    <li>Service Name (services - name queried by serviceid)</li>
+                    <li>
+                      Service Description (services - description queried by
+                      serviceid)
+                    </li>
                   </div>
                   <li>AcceptedContract</li>
                   <div className="ml-5 list-disc">
-                    <li>Hide All</li>
+                    <li>
+                      Patient ID (requestedservices - patientid queried by
+                      reqservid)
+                    </li>
                   </div>
                 </div>
                 <br />
