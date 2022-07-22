@@ -318,6 +318,7 @@ export const formSlice = createSlice({
           foreignKey: string;
           queryTable: string;
           queryField: string;
+          array: boolean;
         }[];
       }>
     ) => {
@@ -344,6 +345,7 @@ export const formSlice = createSlice({
           queryTable: v.queryTable,
           queryField: v.queryField,
           queryHide: true,
+          array: v.array,
         }))
       );
       state.information[parentIndex].details.sort((a, b) => a.order - b.order);
