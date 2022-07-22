@@ -48,6 +48,14 @@ function InputComponent(props: Props) {
   const suggestedForeignModal = useRef((v: boolean) => {});
   const queryOptions = useAppSelector(selectForeign);
   const env = useAppSelector(selectEnv);
+  const [allForeigns, setAllForeigns] = useState<
+    {
+      foreignKey: string;
+      queryTable: string;
+      queryField: string;
+      array: boolean;
+    }[]
+  >([]);
 
   const [suggestedForeigns, setSuggestedForeigns] = useState<{
     parentIndex: number;
@@ -113,7 +121,16 @@ function InputComponent(props: Props) {
       dispatch(setLoading(false));
       return;
     }
-    console.log(_res);
+    setAllForeigns(
+      _res.flatMap((q) =>
+        q.fields.map((f) => ({
+          foreignKey: q.foreignKey,
+          queryTable: q.queryTable,
+          queryField: f,
+          array: _res.length > 1,
+        }))
+      )
+    );
     const res = await getRecommenedForeign(modelName, fieldName, env);
     dispatch(setLoading(false));
     setSuggestedForeigns({
@@ -450,6 +467,7 @@ function InputComponent(props: Props) {
         body={
           <SuggestedForeignModal
             suggestedForeigns={suggestedForeigns}
+            allForeigns={allForeigns}
             onClickCancel={() => suggestedForeignModal.current(false)}
             onClickOK={() => onConfirmSetNewInputDetails()}
             onClickDelete={(index) =>
@@ -458,6 +476,12 @@ function InputComponent(props: Props) {
                 foreigns: suggestedForeigns.foreigns.filter(
                   (_, i) => i !== index
                 ),
+              })
+            }
+            onClickAdd={(indices) =>
+              setSuggestedForeigns({
+                ...suggestedForeigns,
+                foreigns: indices.map((i) => allForeigns[i]),
               })
             }
           />
