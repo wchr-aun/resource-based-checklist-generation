@@ -69,7 +69,7 @@ const Task2Canvas: NextPage = () => {
                       serviceid)
                     </li>
                   </div>
-                  <li>AcceptedContract</li>
+                  <li>Patient (Former AcceptedContract)</li>
                   <div className="ml-5 list-disc">
                     <li>
                       Patient ID (requestedservices - patientid queried by
