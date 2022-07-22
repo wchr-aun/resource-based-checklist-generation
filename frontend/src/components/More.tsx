@@ -39,10 +39,10 @@ function More(props: Props) {
         <div className="z-10 border rounded-lg px-3 bg-white absolute border-gray-300">
           {options.map((v, i) => (
             <div
-              className={`hover:bg-gray-200 -mx-3 px-3 py-2 text-sm cursor-pointer text-center ${
+              className={`hover:bg-gray-200 -mx-3 px-3 py-2 text-sm text-center ${
                 disabledOptions.includes(v)
                   ? "opacity-50 cursor-not-allowed"
-                  : ""
+                  : "cursor-pointer"
               }`}
               key={i}
               onClick={() => {
