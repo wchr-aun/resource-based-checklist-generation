@@ -3,7 +3,7 @@ import Divider from "@components/Divider";
 import Dropdown from "@components/inputs/Dropdown";
 import Modal from "@components/Modal";
 import { DependencyDetails, LeafComponent } from "@models";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { updateDependencies } from "../formSlice";
 
 interface Props {
@@ -52,6 +52,8 @@ function DependenciesModal(props: Props) {
   const [validateResult, setValidateResult] = useState(false);
   const [validateMessage, setValidateMessage] = useState("");
   const [parentFilter, setParentFilter] = useState("");
+  const mainRef = useRef<HTMLDivElement>(null);
+  const [renderScale, setRenderScale] = useState(1);
   const parentNames = leafComponents
     .map((l) => l.parentName || "/")
     .filter((v, i, a) => a.indexOf(v) === i);
@@ -111,6 +113,12 @@ function DependenciesModal(props: Props) {
     onClose();
   };
 
+  useEffect(() => {
+    if (mainRef.current) {
+      setRenderScale(mainRef.current?.clientHeight / window.innerHeight);
+    }
+  }, []);
+
   return (
     <div>
       <div className="flex justify-between items-center">
@@ -137,188 +145,161 @@ function DependenciesModal(props: Props) {
           <Divider className="-mx-6" />
         </div>
       )}
-      <div className="relative">
-        <div
-          className="overflow-y-auto space-y-2 py-3 px-5"
-          style={{
-            maxHeight: validateMessage ? "35vh" : "65vh",
-          }}
-        >
-          {leafComponents.length > 0 ? (
-            leafComponents.map(
-              (c, i, a) =>
-                (parentFilter === "" ||
-                  c.parentName === parentFilter ||
-                  (parentFilter === "/" && c.parentName === "")) && [
-                  <div className="space-y-2" key={i}>
-                    <div className="text-bold text-sm">
-                      <span className="text-gray-400">
-                        {c.parentName || ""}
-                      </span>
-                      <span className="text-indigo-500">/{c.name}</span>
-                    </div>
-                    <div className="flex justify-between space-x-5">
-                      <div className="flex-col w-full space-y-1">
-                        <div className="flex items-center w-full">
-                          <div className="w-2/3">
-                            Input Dependency:{" "}
-                            {leafInputDependencyField[i] && (
-                              <span
-                                className="ml-2 text-sm underline cursor-pointer text-indigo-500"
-                                onClick={() => {
-                                  setLeafInputDependency(
-                                    leafInputDependency
-                                      .slice(0, i)
-                                      .concat("")
-                                      .concat(leafInputDependency.slice(i + 1))
-                                  );
-
-                                  setLeafInputDependencyField(
-                                    leafInputDependencyField
-                                      .slice(0, i)
-                                      .concat("")
-                                      .concat(
-                                        leafInputDependencyField.slice(i + 1)
-                                      )
-                                  );
-                                }}
-                              >
-                                Unlinked
-                              </span>
-                            )}
-                          </div>
-                          <div className="w-3/4">
-                            <Dropdown
-                              name="Select Input Dependency"
-                              options={inputDependencies.map((v) => v.name)}
-                              position="static"
-                              dropdownSize="w-1/4"
-                              value={leafInputDependency[i]}
-                              className="w-full"
-                              onUpdateValue={(_, v) => {
+      <div
+        className={`${
+          renderScale > 0.65 && "overflow-y-auto"
+        } space-y-2 py-3 px-5`}
+        style={{
+          maxHeight: validateMessage ? "35vh" : "65vh",
+        }}
+        ref={mainRef}
+      >
+        {leafComponents.length > 0 ? (
+          leafComponents.map(
+            (c, i, a) =>
+              (parentFilter === "" ||
+                c.parentName === parentFilter ||
+                (parentFilter === "/" && c.parentName === "")) && [
+                <div className="space-y-2" key={i}>
+                  <div className="text-bold text-sm">
+                    <span className="text-gray-400">{c.parentName || ""}</span>
+                    <span className="text-indigo-500">/{c.name}</span>
+                  </div>
+                  <div className="flex justify-between space-x-5">
+                    <div className="flex-col w-full space-y-1">
+                      <div className="flex items-center w-full">
+                        <div className="w-2/3">
+                          Input Dependency:{" "}
+                          {leafInputDependencyField[i] && (
+                            <span
+                              className="ml-2 text-sm underline cursor-pointer text-indigo-500"
+                              onClick={() => {
                                 setLeafInputDependency(
                                   leafInputDependency
                                     .slice(0, i)
-                                    .concat(v)
+                                    .concat("")
                                     .concat(leafInputDependency.slice(i + 1))
                                 );
+
                                 setLeafInputDependencyField(
                                   leafInputDependencyField
                                     .slice(0, i)
-                                    .concat(v)
+                                    .concat("")
                                     .concat(
                                       leafInputDependencyField.slice(i + 1)
                                     )
                                 );
                               }}
-                            />
-                          </div>
+                            >
+                              Unlinked
+                            </span>
+                          )}
                         </div>
-                        {leafInputDependency[i] && (
-                          <div className="flex items-center w-full">
-                            <div className="w-2/3">Field:</div>
-
-                            <div className="w-3/4">
-                              <Dropdown
-                                name="Select Input Dependency Field"
-                                position="static"
-                                dropdownSize="w-1/4"
-                                options={inputDependencies
-                                  .filter(
-                                    (d) => d.name === leafInputDependency[i]
-                                  )
-                                  .flatMap((v) => v.children)}
-                                value={leafInputDependencyField[i]}
-                                className="w-full"
-                                onUpdateValue={(_, v) =>
-                                  setLeafInputDependencyField(
-                                    leafInputDependencyField
-                                      .slice(0, i)
-                                      .concat(v)
-                                      .concat(
-                                        leafInputDependencyField.slice(i + 1)
-                                      )
-                                  )
-                                }
-                              />
-                            </div>
-                          </div>
-                        )}
+                        <Dropdown
+                          name="Select Input Dependency"
+                          options={inputDependencies.map((v) => v.name)}
+                          value={leafInputDependency[i]}
+                          className="w-full"
+                          onUpdateValue={(_, v) => {
+                            setLeafInputDependency(
+                              leafInputDependency
+                                .slice(0, i)
+                                .concat(v)
+                                .concat(leafInputDependency.slice(i + 1))
+                            );
+                            setLeafInputDependencyField(
+                              leafInputDependencyField
+                                .slice(0, i)
+                                .concat(v)
+                                .concat(leafInputDependencyField.slice(i + 1))
+                            );
+                          }}
+                        />
                       </div>
-
-                      <div className="flex-col w-full space-y-1">
+                      {leafInputDependency[i] && (
                         <div className="flex items-center w-full">
-                          <div className="w-2/3">Output Dependency:</div>
-                          <div className="w-3/4">
-                            <Dropdown
-                              name="Select Output Dependency"
-                              position="static"
-                              dropdownSize="w-1/4"
-                              options={outputDependencies.map((v) => v.name)}
-                              value={leafOutputDependency[i]}
-                              className="w-full"
-                              onUpdateValue={(_, v) => {
-                                setLeafOutputDependency(
-                                  leafOutputDependency
-                                    .slice(0, i)
-                                    .concat(v)
-                                    .concat(leafOutputDependency.slice(i + 1))
-                                );
-                                setLeafOutputDependencyField(
-                                  leafOutputDependencyField
-                                    .slice(0, i)
-                                    .concat("")
-                                    .concat(
-                                      leafOutputDependencyField.slice(i + 1)
-                                    )
-                                );
-                              }}
-                            />
-                          </div>
+                          <div className="w-2/3">Field:</div>
+
+                          <Dropdown
+                            name="Select Input Dependency Field"
+                            options={inputDependencies
+                              .filter((d) => d.name === leafInputDependency[i])
+                              .flatMap((v) => v.children)}
+                            value={leafInputDependencyField[i]}
+                            className="w-full"
+                            onUpdateValue={(_, v) =>
+                              setLeafInputDependencyField(
+                                leafInputDependencyField
+                                  .slice(0, i)
+                                  .concat(v)
+                                  .concat(leafInputDependencyField.slice(i + 1))
+                              )
+                            }
+                          />
                         </div>
-                        {leafOutputDependency[i] && (
-                          <div className="flex items-center w-full">
-                            <div className="w-2/3">Field:</div>
-                            <div className="w-3/4">
-                              <Dropdown
-                                name="Select Output Dependency Field"
-                                position="static"
-                                dropdownSize="w-1/4"
-                                options={outputDependencies
-                                  .filter(
-                                    (d) => d.name === leafOutputDependency[i]
-                                  )
-                                  .flatMap((v) => v.children)}
-                                value={leafOutputDependencyField[i]}
-                                className="w-full"
-                                onUpdateValue={(_, v) =>
-                                  setLeafOutputDependencyField(
-                                    leafOutputDependencyField
-                                      .slice(0, i)
-                                      .concat(v)
-                                      .concat(
-                                        leafOutputDependencyField.slice(i + 1)
-                                      )
-                                  )
-                                }
-                              />
-                            </div>
-                          </div>
-                        )}
-                      </div>
+                      )}
                     </div>
-                  </div>,
-                  a
-                    .map((b, ii) => (b.parentName === parentFilter ? ii : -1))
-                    .sort()
-                    .slice(-1)[0] !== i &&
-                    a.length !== i + 1 && <Divider key={`${i}-divider`} />,
-                ]
-            )
-          ) : (
-            <div className="text-center">No components found.</div>
-          )}
-        </div>
+
+                    <div className="flex-col w-full space-y-1">
+                      <div className="flex items-center w-full">
+                        <div className="w-2/3">Output Dependency:</div>
+                        <Dropdown
+                          name="Select Output Dependency"
+                          options={outputDependencies.map((v) => v.name)}
+                          value={leafOutputDependency[i]}
+                          className="w-full"
+                          onUpdateValue={(_, v) => {
+                            setLeafOutputDependency(
+                              leafOutputDependency
+                                .slice(0, i)
+                                .concat(v)
+                                .concat(leafOutputDependency.slice(i + 1))
+                            );
+                            setLeafOutputDependencyField(
+                              leafOutputDependencyField
+                                .slice(0, i)
+                                .concat("")
+                                .concat(leafOutputDependencyField.slice(i + 1))
+                            );
+                          }}
+                        />
+                      </div>
+                      {leafOutputDependency[i] && (
+                        <div className="flex items-center w-full">
+                          <div className="w-2/3">Field:</div>
+                          <Dropdown
+                            name="Select Output Dependency Field"
+                            options={outputDependencies
+                              .filter((d) => d.name === leafOutputDependency[i])
+                              .flatMap((v) => v.children)}
+                            value={leafOutputDependencyField[i]}
+                            className="w-full"
+                            onUpdateValue={(_, v) =>
+                              setLeafOutputDependencyField(
+                                leafOutputDependencyField
+                                  .slice(0, i)
+                                  .concat(v)
+                                  .concat(
+                                    leafOutputDependencyField.slice(i + 1)
+                                  )
+                              )
+                            }
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>,
+                a
+                  .map((b, ii) => (b.parentName === parentFilter ? ii : -1))
+                  .sort()
+                  .slice(-1)[0] !== i &&
+                  a.length !== i + 1 && <Divider key={`${i}-divider`} />,
+              ]
+          )
+        ) : (
+          <div className="text-center">No components found.</div>
+        )}
       </div>
       <Divider className="-mx-6" />
       <div className="flex justify-between">
