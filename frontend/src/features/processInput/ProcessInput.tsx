@@ -73,7 +73,7 @@ function ProcessInput(props: Props) {
         </div>
         <Dropdown
           options={examples.map((example) => example.name)}
-          name="Select Example"
+          name="Select Process"
           onUpdateValue={(_1, _, i) =>
             dispatch(selectProcess(JSON.stringify(examples[i - 1], null, 2)))
           }

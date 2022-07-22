@@ -56,6 +56,7 @@ function InputComponent(props: Props) {
       foreignKey: string;
       queryTable: string;
       queryField: string;
+      array: boolean;
     }[];
   }>({
     parentIndex: -1,
@@ -112,6 +113,7 @@ function InputComponent(props: Props) {
       dispatch(setLoading(false));
       return;
     }
+    console.log(_res);
     const res = await getRecommenedForeign(modelName, fieldName, env);
     dispatch(setLoading(false));
     setSuggestedForeigns({
@@ -122,10 +124,12 @@ function InputComponent(props: Props) {
           foreignKey: string;
           queryTable: string;
           field: string;
+          array: boolean;
         }) => ({
           foreignKey: foreign.foreignKey,
           queryTable: foreign.queryTable,
           queryField: foreign.field,
+          array: _res.length > 1,
         })
       ),
     });
