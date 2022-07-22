@@ -66,8 +66,8 @@ const Task1Canvas: NextPage = () => {
                 <div className="ml-5 list-decimal">
                   <li>Click on "Start Task 1" to start the task.</li>
                   <li>
-                    Create an <span className="italic">OrderTransaction</span>{" "}
-                    process template WITHOUT auto-generation.
+                    Create an <span className="italic">CardInput</span> process
+                    template WITHOUT auto-generation.
                   </li>
                   <li>Change the name of the form to "Card Details Form".</li>
                   <li>
@@ -81,7 +81,7 @@ const Task1Canvas: NextPage = () => {
                     Set the queried tables and queried fields to{" "}
                     <span className="italic">transactions - id</span>
                     {" and "}
-                    <span className="italic">item_list - id</span>.
+                    <span className="italic">item_list - item_id</span>.
                   </li>
                   <li>
                     Change the 4 remaining field names to

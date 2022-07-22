@@ -64,8 +64,8 @@ const Task1FollowUpCanvas: NextPage = () => {
                 <div className="ml-5 list-decimal">
                   <li>Click on "Start Task 2" to start the task.</li>
                   <li>
-                    Create an <span className="italic">OrderTransaction</span>{" "}
-                    process template WITH auto-generation.
+                    Create an <span className="italic">CardInput</span> process
+                    template WITH auto-generation.
                   </li>
                   <li>Change the name of the form to "Card Details Form".</li>
                   <li>
