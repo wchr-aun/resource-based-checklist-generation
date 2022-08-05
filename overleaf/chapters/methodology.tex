@@ -1,162 +1,21 @@
-% overall design, architectural design, interface design, database design
-% implementation - frontend (main, canvas, checklist) and backend (template creation, template storing, 3, 4)
-% user diagram
-
-% \section{Limitations}
+To accomplish the objectives of this project, we separated them into major milestones and had a weekly meeting with the supervisor to update our progress and see how the schedule went according to the initial plan. In the end, we ended up having four different stages to develop this project: design, implementation, testing, and evaluation.
 
 \section{Design}
-% justify out of context wborkflow process
+Before the design stage, we started gathering and analysing requirements from multiple sources including literature reviews \cite{checklistdesign, papapanagiotou2017workflowfm}, interactive discussion with the product owner|who happened to be my supervisor, and researching upon related tools and projects such as Bizagi \cite{bizagi}, Google Forms \cite{googleforms}, and Microsoft Forms \cite{msforms}.
 
-\subsection{Software's Structure}
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=\textwidth]{overleaf/images/softwares_structure.png}
-    \caption{Software's Structure}
-    \label{fig:software_structure}
-\end{figure}
+After we understood the requirements, we began designing the overall system interaction and how the data should enter and exit our system. This includes designing the overall system diagram, the functionalities, software's structure, the interfaces, the use case diagram, the sequence diagrams, and the database.
 
-\subsection{Architectural Design}
-- choices: React, Vue, Angular, Scala.js
-
-- chose: React, Next.js, TailwindCSS, Redux
-
-- choices: Node.js, Scala, Java
-
-- choices for Scala: akka-http, http4s, play
-
-chose: Scala, Akka-http
-
-- GitHub, GitHub Actions, PostgreSQL, ElephantSQL, Vercel, Heroku
-
-\subsection{Interface Design}
-
-- Chen's design \cite{checklistdesign}
-
-- Form creators; e.g. google forms, microsoft forms
-
-- differences between the original design and the final design
-
-\subsection{Database Design}
-- main checklist design
-
-- templates, components
-
-- input\_information\_parent, input\_information\_child, input\_information\_child\_query
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=\textwidth]{overleaf/images/checklist_db_design.png}
-    \caption{Checklist Database Design}
-    \label{fig:checklist_db_design}
-\end{figure}
-
-\section{Functional Specification}
-
+% the user flow diagram, the diagram flow of the system interaction, checklist template's data models, the use case diagram, the sequence diagrams, the interface design, and the database structure.
 
 \section{Implementation}
-\subsection{Frontend}
+In this stage, we built the prototype based on the designs we made. This stage was separated into three major components: frontend, backend, and naive suggestion. The frontend and backend were developed concurrently, and the naive suggestion was added as an additional feature after the other two. Furthermore, we tested the prototype upon more complex processes to support various types of inputs and outputs that might come into the system in the real-world case.
+% Furthermore, we decided on the technologies used for this project at this stage.
 
-\subsubsection{Main Screen}
-
-\subsubsection{Canvas Screen}
-
-\subsubsection{Preview Screen}
-
-\subsubsection{Checklist Screen}
-
-\subsection{Backend}
-
-\subsubsection{Application Programming Interfaces}
-- workflow process to checklist template
-
-- get dependencies
-
-- get foreign tables/keys
-
-- saving template
-
-- retrieve finished templates
+% \subsection{Testing}
+% The testing stage is where the prototype is tested on more complex processes with variety types of inputs and outputs. After performing, we analysed the results and adjusted the prototype on things that needed to be improved.
 
 
-\subsection{Naive Suggestion}
-\subsubsection{Naive Queryable Field Suggestion}
-\subsubsection{Naive Dependency Suggestion}
+\section{Evaluation}
+At this stage, we conducted a user evaluation in which participants completed two similar tasks with instructions creating checklist templates with and without naive suggestions and another task without instructions. After performing tasks, participants were asked to provide scores on the functionality and usability of the prototype on a scale of 1 to 5.
 
-\section{Diagrams}
-\subsection{Use Case Diagram}
-\begin{figure}[ht!]
-    \centering
-    \includegraphics[width=\textwidth]{overleaf/images/use_case_diagram.png}
-    \caption{Use Case Diagram}
-    \label{fig:use_case_diagram}
-\end{figure}
-
-\subsection{Sequence Diagrams}
-\begin{figure}[ht!]
-    \centering
-    \includegraphics[width=\textwidth]{overleaf/images/create_template.png}
-    \caption{Sequence Diagram of Create Template Scenario}
-    \label{fig:create_template}
-\end{figure}
-
-\noindent
-\textbf{Scenario \#1:} Figure \ref{fig:create_template} \\
-\textbf{Goal:} \\
-\textbf{Preconditions:} \\
-\textbf{Breakdown:} \\
-
-\begin{figure}[ht!]
-    \centering
-    \includegraphics[width=\textwidth]{overleaf/images/add_new_information_query.png}
-    \caption{Sequence Diagram of Add New Information Query Scenario}
-    \label{fig:add_new_information_query}
-\end{figure}
-
-\noindent
-\textbf{Scenario \#2:} Figure \ref{fig:add_new_information_query} \\
-\textbf{Goal:} \\
-\textbf{Preconditions:} \\
-\textbf{Breakdown:} \\
-
-\begin{figure}[ht!]
-    \centering
-    \includegraphics[width=0.4\textwidth]{overleaf/images/show_preview.png}
-    \caption{Sequence Diagram of Show Preview Scenario}
-    \label{fig:show_preview}
-\end{figure}
-
-\noindent
-\textbf{Scenario \#3:} Figure \ref{fig:show_preview} \\
-\textbf{Goal:} \\
-\textbf{Preconditions:} \\
-\textbf{Breakdown:} \\
-
-\begin{figure}[ht!]
-    \centering
-    \includegraphics[width=\textwidth]{overleaf/images/save_template.png}
-    \caption{Sequence Diagram of Save Template Scenario}
-    \label{fig:save_template}
-\end{figure}
-
-\noindent
-\textbf{Scenario \#4:} Figure \ref{fig:save_template} \\
-\textbf{Goal:} \\
-\textbf{Preconditions:} \\
-\textbf{Breakdown:} \\
-
-\begin{figure}[ht!]
-    \centering
-    \includegraphics[width=\textwidth]{overleaf/images/view_template.png}
-    \caption{Sequence Diagram of View Template Scenario}
-    \label{fig:view_template}
-\end{figure}
-
-\noindent
-\textbf{Scenario \#5:} Figure \ref{fig:view_template} \\
-\textbf{Goal:} \\
-\textbf{Preconditions:} \\
-\textbf{Breakdown:} \\
-
-\section{Challenges}
-
-tree structure of workflowfm's processes, doing all suggestions within sql queries, design challenges (queryable input fields), http4s sucks-akka-http works
+The usability scores were used to calculate the System Usability Scale (SUS) score \cite{susscores} to evaluate how good the prototype was. Additionally, the results from each task were recorded anonymously and used to compute the precision, recall, and accuracy scores \cite{rocanalysis} on the user performance.
