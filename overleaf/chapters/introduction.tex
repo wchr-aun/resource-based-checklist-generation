@@ -141,9 +141,9 @@ This checklist generator must utilise WorkflowFM's advantage of being resource-b
         \item Can generate a checklist based on the process input given by the system.
         \item Can query and display any related useful information in the checklist.
         \item Can facilitate users in creating a checklist using the advantage of WorkflowFM.
-        \item Can be easily deployed on any platform.
+        \item Can be easily deployed and hosted on any platform online.
     \end{enumerate}
-    \item To evaluate the prototype by using usability scores and performance metrics.
+    % \item To evaluate the prototype by using usability scores and performance metrics.
 \end{enumerate}
 
 
@@ -168,6 +168,7 @@ This project is a web-based application developed as a part of WorkflowFM. Even 
     \item The prototype will focus only on the creation of a checklist template, and not on the checklist usage.
     \item The incoming processes must contain all the required information that needs to be displayed or linked.
     \item The prototype will fully support limited to HD resolution or higher display devices, such as PCs or tablets.
+    % \item The prototype will be designed as a minimum value product (MVP).
     % design limitation input information query
 \end{enumerate}
 % out of context workflow process
@@ -178,12 +179,12 @@ To accomplish the objectives of this project, we separated them into major miles
 \subsection{Design}
 Before the design stage, we started gathering and analysing requirements from multiple sources including literature reviews \cite{checklistdesign, papapanagiotou2017workflowfm}, interactive discussion with the product owner|who happened to be our supervisor, and researching upon related tools and projects such as Bizagi \cite{bizagi}, Google Forms \cite{googleforms}, and Microsoft Forms \cite{msforms}.
 
-After we understood the requirements, we began designing the overall system interaction and how the data should enter and exit our system. This includes designing the overall system diagram, the functionalities, software's structure, the interfaces, the use case diagram, the sequence diagrams, and the database.
+After we understood the requirements, we began designing the overall system interaction and how the information should enter and exit our system. This includes designing the overall system diagram, functional specification, use case diagram, software structure, checklist's structure, and interface navigation.
 
 % the user flow diagram, the diagram flow of the system interaction, checklist template's data models, the use case diagram, the sequence diagrams, the interface design, and the database structure.
 
 \subsection{Implementation}
-In this stage, we built the prototype based on the designs we made. This stage was separated into three major components: frontend, backend, and naive suggestion. The frontend and backend were developed concurrently, and the naive suggestion was added as an additional feature after the other two. Furthermore, we tested the prototype upon more complex processes to support various types of inputs and outputs that might come into the system in the real-world case.
+In this stage, we built the prototype based on the designs we made. But before we could start implementing, we had to decide on the technologies used for this project, including frontend, backend, database, and ci/cd. The development was separated into two major components: frontend and backend. Furthermore, we tested the prototype upon more complex processes to support various types of inputs and outputs that might come into the system in real-world cases.
 % Furthermore, we decided on the technologies used for this project at this stage.
 
 % \subsection{Testing}
@@ -193,5 +194,7 @@ In this stage, we built the prototype based on the designs we made. This stage w
 \subsection{Evaluation}
 At this stage, we conducted a user evaluation in which participants completed two similar tasks with instructions creating checklist templates with and without naive suggestions and another task without instructions. After performing tasks, participants were asked to provide scores on the functionality and usability of the prototype on a scale of 1 to 5.
 
-The usability scores were used to calculate the System Usability Scale (SUS) score \cite{susscores} to evaluate how good the prototype was. Additionally, the results from each task were recorded anonymously and used to compute the precision, recall, and accuracy scores \cite{rocanalysis} on the user performance.
+We aimed to evaluate two crucial things: usability and accuracy. The usability was measured against the System Usability Scale (SUS) score \cite{susscores}, which was calculated using the usability scores. The accuracy was measured using the results of each task performed by participants. These two metrics gave us basic ideas of how the prototype performed and what needed to be improved.
+
+% The usability scores were used to calculate the System Usability Scale (SUS) score \cite{susscores} to evaluate how good the prototype was. Additionally, the results from each task were recorded anonymously and used to compute the accuracy scores to evaluate how .
 
