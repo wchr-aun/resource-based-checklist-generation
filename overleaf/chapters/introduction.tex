@@ -198,3 +198,21 @@ We aimed to evaluate two crucial things: usability and accuracy. The usability w
 
 % The usability scores were used to calculate the System Usability Scale (SUS) score \cite{susscores} to evaluate how good the prototype was. Additionally, the results from each task were recorded anonymously and used to compute the accuracy scores to evaluate how .
 
+\section{Running Example}
+\label{running_example}
+We are giving a running example which will be used as the reference example across the whole dissertation.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\textwidth]{overleaf/images/template_example.png}
+    \caption{Running Example}
+    \label{fig:template_example}
+\end{figure}
+
+This example process in Figure \ref{fig:template_example} is an online payment process that computes an order with or without discounts coming in and asks the customer for the billing address and the payment method, which can be either PayPal or Debit/Credit card.
+
+The order without discounts (\verb!order!) contains the order number (\verb!order id!) and the total price (\verb!total price!). The order with discounts contains the order number (\verb!order id!), the total price (\verb!total price!), and the discount percentage (\verb!discount!).
+% additional to the order without discounts.
+The billing address contains the home address (\verb!home address!) and country \verb!country! for the address in the receipt. The PayPal method only contains the PayPal account (\verb!account!). The Debit/Credit card contains the card number (\verb!card number!), the expired date (\verb!expired date!), and the security code (\verb!security code!).
+
+% We will assume that \verb!orders!, being an entity, contains two fields: \verb!order id! and \verb!total price!; \verb!orders with discounts! contains three fields: \verb!order id!, \verb!total price!, and \verb!discount percent!; \verb!billing address! contains two fields: \verb!home address! and \verb!country!; \verb!paypal! contains only \verb!paypal account!; and \verb!debit/credit card! contains three fields: \verb!card number!, \verb!expire date!, and \verb!security code!.
