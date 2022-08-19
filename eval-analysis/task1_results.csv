@@ -1,0 +1,16 @@
+,form_name,information_name,customer_id_hide,order_name,total_price,tx_id,tx_id_name,item_id,item_id_name,c_len,c_header,c_child_len,c_card_no,c_expire,c_code,c_card_no_ode,c_expire_ode,c_code_ode,c_card_no_ide,c_expire_ide,c_code_ide,accuracy
+0,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,1.0
+1,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,1.0
+2,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,1.0
+3,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,1.0
+4,True,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,0.09523809523809523
+5,True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,0.9523809523809523
+6,True,True,True,True,True,True,False,True,False,True,False,True,False,False,False,False,False,False,False,False,False,0.42857142857142855
+7,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True,False,True,True,False,True,0.8571428571428571
+8,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,0.9523809523809523
+9,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,0.9523809523809523
+10,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,1.0
+11,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,1.0
+12,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,1.0
+13,True,True,True,True,True,True,True,True,True,True,False,True,False,False,True,False,False,True,False,False,True,0.6666666666666666
+14,0.8571428571428571,0.8571428571428571,1.0,0.9285714285714286,0.9285714285714286,0.9285714285714286,0.8571428571428571,0.9285714285714286,0.8571428571428571,0.9285714285714286,0.7857142857142857,0.9285714285714286,0.7857142857142857,0.7142857142857143,0.8571428571428571,0.7857142857142857,0.7142857142857143,0.8571428571428571,0.7857142857142857,0.7142857142857143,0.8571428571428571,0.8503401360544217

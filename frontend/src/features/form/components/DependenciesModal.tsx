@@ -147,7 +147,7 @@ function DependenciesModal(props: Props) {
       )}
       <div
         className={`${
-          renderScale > 0.65 && "overflow-y-auto"
+          renderScale > 0.5 && "overflow-y-auto"
         } space-y-2 py-3 px-5`}
         style={{
           maxHeight: validateMessage ? "35vh" : "65vh",
