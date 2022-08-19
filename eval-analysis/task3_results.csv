@@ -1,0 +1,16 @@
+,form_name,service_hide,contract_hide,provider_name,provider_name_fname,provider_surname,provider_surname_fname,service_name,service_name_fname,service_desc,service_desc_fname,patient_id,patient_id_fname,c_len,c_header,c_child_len,c_idcontract,c_reqservid,c_providerid,c_time_requested,c_time_opened,c_stateid,accuracy
+0,True,True,True,True,True,True,False,True,True,True,True,True,True,True,False,True,True,True,True,True,True,False,0.8636363636363636
+1,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,1.0
+2,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,0.9545454545454546
+3,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,0.9545454545454546
+4,True,True,True,True,False,True,True,True,True,True,True,False,False,True,True,True,True,True,True,True,True,True,0.8636363636363636
+5,False,False,False,True,True,True,True,True,False,True,False,True,True,True,True,True,True,True,True,True,False,False,0.6818181818181818
+6,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,1.0
+7,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,True,0.9545454545454546
+8,True,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,0.9545454545454546
+9,False,True,False,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,False,False,0.7727272727272727
+10,True,True,False,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,False,False,0.8181818181818182
+11,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,1.0
+12,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,False,0.9090909090909091
+13,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,1.0
+14,0.7857142857142857,0.9285714285714286,0.7857142857142857,1.0,0.8571428571428571,1.0,0.9285714285714286,1.0,0.9285714285714286,1.0,0.9285714285714286,0.9285714285714286,0.9285714285714286,1.0,0.6428571428571429,1.0,1.0,1.0,1.0,1.0,0.7857142857142857,0.5714285714285714,0.9090909090909092
