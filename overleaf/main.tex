@@ -6,13 +6,13 @@
 % \documentclass[logo,msc,adi]{infthesis}     % Adv Design Inf
 % \documentclass[logo,msc,ai]{infthesis}      % AI
 % \documentclass[logo,msc,cogsci]{infthesis}  % Cognitive Sci
-% \documentclass[logo,msc,cs]{infthesis}      % Computer Sci
+\documentclass[logo,msc,cs]{infthesis}      % Computer Sci
 % \documentclass[logo,msc,cyber]{infthesis}   % Cyber Sec
 % \documentclass[logo,msc,datasci]{infthesis} % Data Sci
 % \documentclass[logo,msc,di]{infthesis}      % Design Inf
 % \documentclass[logo,msc,dsti]{infthesis}    % Data Sci TI
 % \documentclass[logo,msc,inf]{infthesis}     % Informatics
-\documentclass[logo,msc]{infthesis}           % degree unspecified, do not change except to add your degree
+% \documentclass[logo,msc]{infthesis}           % degree unspecified, do not change except to add your degree
 %%%%%%%%%%%%%%%%%%%%%%%%
 % Understand any problems and seek approval before assuming it's ok to remove ugcheck.
 \usepackage{msccheck}
@@ -22,6 +22,11 @@
 % you should catch most accidental changes of page layout though.
 
 \usepackage{microtype} % recommended, but you can remove if it causes problems
+
+\usepackage{tabularx}
+\usepackage{makecell}
+\usepackage{graphicx}
+\usepackage{hyperref}
 
 \begin{document}
 \begin{preliminary}
@@ -70,17 +75,23 @@ Date when approval was obtained: 2022-06-30
 
 \input{overleaf/chapters/background}
 
-\chapter{Methodology}
-% overall design, architectural design, interface design, database design
-% implementation - frontend (main, canvas, checklist) and backend (template creation, template storing, 3, 4)
-% user diagram
-\input{overleaf/chapters/methodology}
+% \chapter{Methodology}
+% % % overall design, architectural design, interface design, database design
+% % % implementation - frontend (main, canvas, checklist) and backend (template creation, template storing, 3, 4)
+% % % user diagram
+% \input{overleaf/chapters/methodology}
 
-\chapter{Evaluation}
+\chapter{Design}
+\input{overleaf/chapters/design}
+
+\chapter{Implementation}
+\input{overleaf/chapters/implementation}
+
+\chapter{Evaluation and Results}
 % results
 \input{overleaf/chapters/evaluation}
 
-\chapter{Conclusions and Remarks}
+\chapter{Conclusions}
 % what the work was, what we did, how we evaluated, what the results were, recommendation for future works
 \input{overleaf/chapters/conclusions}
 

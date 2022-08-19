@@ -64,6 +64,29 @@
     eushield}
 
 \usepackage{pdfpages}
+\usepackage{listings}
+\lstdefinestyle{mystyle}{
+numbers=left,
+    numbersep=1em,
+    numberstyle=\tiny\noaccsupp,
+    frame=single,
+    framesep=\fboxsep,
+    framerule=\fboxrule,
+    xleftmargin=\dimexpr\fboxsep+\fboxrule\relax,
+    xrightmargin=\dimexpr\fboxsep+\fboxrule\relax,
+    breaklines=true,
+    tabsize=2,
+    columns=flexible,
+    basicstyle=\ttfamily\bfseries\scriptsize,
+    % breakatwhitespace=false,
+    % breaklines=true,
+    % captionpos=b,
+    % frame=single,
+    % numbers=left,
+    % numbersep=1em,
+    % numberstyle=\tiny\color{red}\noaccsupp
+}
+\lstset{style=mystyle}
 
 %%%% The following packages are also used but are included further on rather
 %%%% than here, either because their options depend on the class options or
